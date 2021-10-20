@@ -1,3 +1,4 @@
+// tool for generating random math excercises
 math math = new math();
 utils U = new utils();
 errors errors = new errors();
