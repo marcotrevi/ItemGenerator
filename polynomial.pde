@@ -1,5 +1,14 @@
 class polynomial {
+  ArrayList<monomial> terms = new ArrayList<monomial>();
 
-  polynomial(int nVariables) {
+  polynomial() {
+  }
+
+  String stringify() {
+    String P = "";
+    for (int i=0; i<terms.size(); i++) {
+      P = P + terms.get(i).stringify();
+    }
+    return P;
   }
 }

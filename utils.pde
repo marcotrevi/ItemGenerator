@@ -4,6 +4,7 @@ class utils {
   utils() {
   }
 
+  //###################################################################### methods which return a monomial 
 
   monomial generateMonomial(float complexity) {
     float[] r = new float[3];
@@ -114,6 +115,92 @@ class utils {
     }
     return NS;
   }
+  monomial scalarProduct(monomial M, int[] k) {
+    monomial P = new monomial(M.nVariables);
+    P.sign = M.sign;
+    P.variables = M.variables;
+    P.coefficient[0] = M.coefficient[0]*k[0];
+    P.coefficient[1] = M.coefficient[1]*k[1];
+    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+
+    for (int i=0; i<P.nVariables; i++) {
+      P.degrees[i] = M.degrees[i];
+    }
+    P.setDegree();
+    return P;
+  }
+
+  monomial productMonomial(monomial M1, monomial M2) {
+    IntList variables = new IntList();
+    IntList degrees = new IntList();
+
+    // check common variables
+    for (int i=0; i<M1.nVariables; i++) {
+      for (int j=0; j<M2.nVariables; j++) {
+        if (M1.variables[i] == M2.variables[j]) {
+          // found same variable in index i in M1 and j in M2
+          variables.append(M1.variables[i]);
+          degrees.append(M1.degrees[i]+M2.degrees[j]);
+        }
+      }
+    }
+
+    for (int i=0; i<M1.nVariables; i++) {
+      if (!foundVariable(M1.variables[i], M2)) {
+        variables.append(M1.variables[i]);
+        degrees.append(M1.degrees[i]);
+      }
+    }
+    for (int i=0; i<M2.nVariables; i++) {
+      if (!foundVariable(M2.variables[i], M1)) {
+        variables.append(M2.variables[i]);
+        degrees.append(M2.degrees[i]);
+      }
+    }
+
+    int nVariables = variables.size();
+
+    monomial P = new monomial(nVariables);
+    P.sign = M1.sign * M2.sign;
+    P.coefficient[0] = M1.coefficient[0]*M2.coefficient[0];
+    P.coefficient[1] = M1.coefficient[1]*M2.coefficient[1];
+    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+
+    for (int i=0; i<nVariables; i++) {
+      P.variables[i] = variables.get(i);
+      P.degrees[i] = degrees.get(i);
+    }
+    P.setDegree();
+    return P;
+  }
+
+  monomial squareMonomial(monomial M) {
+    monomial S = new monomial(M.nVariables);
+    S.sign = 1;
+    S.variables = M.variables;
+    S.coefficient[0] = int(pow(M.coefficient[0], 2));
+    S.coefficient[1] = int(pow(M.coefficient[1], 2));
+    for (int i=0; i<S.nVariables; i++) {
+      S.degrees[i] = M.degrees[i]*2;
+    }
+    S.setDegree();
+    return S;
+  }
+
+  monomial oppositeMonomial(monomial M) {
+    monomial S = new monomial(M.nVariables);
+    S.variables = M.variables;
+    S.sign = -M.sign;
+    S.coefficient[0] = M.coefficient[0];
+    S.coefficient[1] = M.coefficient[1];
+    for (int i=0; i<S.nVariables; i++) {
+      S.degrees[i] = M.degrees[i];
+    }
+    S.setDegree();
+    return S;
+  }
+
+  //################################################################################################# methods which operate on monomials
 
   boolean areSimilar(monomial M1, monomial M2) {
     boolean check = true;
@@ -186,36 +273,6 @@ class utils {
     }
     return ans;
   }
-  //################################################################ ITEM GENERATOR
-  item generateItem(String type, float complexity) {
-    monomial X, Y;
-    item I = new item();
-    // each item type has its own constructor
-    switch(type) {
-    case "x^2-y^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = differenceOfSquares(X, Y);
-      break;
-    case "(x+y)(x-y)":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = sumDifference(X, Y);
-      break;
-    case "x^2+y^2+2xy":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = binomialSquareExpanded(X, Y);
-      break;
-    case "(x+y)^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = binomialSquareCompact(X, Y);
-      break;
-    }
-    return I;
-  }
-  //#################################################################################
 
   IntList removeInt(IntList list, int n) {
     IntList L = new IntList();
@@ -263,66 +320,6 @@ class utils {
     return sample;
   }
 
-
-  monomial scalarProduct(monomial M, int[] k) {
-    monomial P = new monomial(M.nVariables);
-    P.sign = M.sign;
-    P.variables = M.variables;
-    P.coefficient[0] = M.coefficient[0]*k[0];
-    P.coefficient[1] = M.coefficient[1]*k[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-
-    for (int i=0; i<P.nVariables; i++) {
-      P.degrees[i] = M.degrees[i];
-    }
-    P.setDegree();
-    return P;
-  }
-
-  monomial productMonomial(monomial M1, monomial M2) {
-    IntList variables = new IntList();
-    IntList degrees = new IntList();
-
-    // check common variables
-    for (int i=0; i<M1.nVariables; i++) {
-      for (int j=0; j<M2.nVariables; j++) {
-        if (M1.variables[i] == M2.variables[j]) {
-          // found same variable in index i in M1 and j in M2
-          variables.append(M1.variables[i]);
-          degrees.append(M1.degrees[i]+M2.degrees[j]);
-        }
-      }
-    }
-
-    for (int i=0; i<M1.nVariables; i++) {
-      if (!foundVariable(M1.variables[i], M2)) {
-        variables.append(M1.variables[i]);
-        degrees.append(M1.degrees[i]);
-      }
-    }
-    for (int i=0; i<M2.nVariables; i++) {
-      if (!foundVariable(M2.variables[i], M1)) {
-        variables.append(M2.variables[i]);
-        degrees.append(M2.degrees[i]);
-      }
-    }
-
-    int nVariables = variables.size();
-
-    monomial P = new monomial(nVariables);
-    P.sign = M1.sign * M2.sign;
-    P.coefficient[0] = M1.coefficient[0]*M2.coefficient[0];
-    P.coefficient[1] = M1.coefficient[1]*M2.coefficient[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-
-    for (int i=0; i<nVariables; i++) {
-      P.variables[i] = variables.get(i);
-      P.degrees[i] = degrees.get(i);
-    }
-    P.setDegree();
-    return P;
-  }
-
   boolean foundVariable(int k, monomial M) {
     boolean check = false;
     for (int i=0; i<M.nVariables; i++) {
@@ -333,31 +330,16 @@ class utils {
     return check;
   }
 
-  monomial squareMonomial(monomial M) {
-    monomial S = new monomial(M.nVariables);
-    S.sign = 1;
-    S.variables = M.variables;
-    S.coefficient[0] = int(pow(M.coefficient[0], 2));
-    S.coefficient[1] = int(pow(M.coefficient[1], 2));
-    for (int i=0; i<S.nVariables; i++) {
-      S.degrees[i] = M.degrees[i]*2;
+  String removePlus(String s) {
+    String r = "";
+    if (s.substring(0, 1).equals("+")) {
+      r = s.substring(1, s.length());
+    } else {
+      r = s;
     }
-    S.setDegree();
-    return S;
+    return r;
   }
-
-  monomial oppositeMonomial(monomial M) {
-    monomial S = new monomial(M.nVariables);
-    S.variables = M.variables;
-    S.sign = -M.sign;
-    S.coefficient[0] = M.coefficient[0];
-    S.coefficient[1] = M.coefficient[1];
-    for (int i=0; i<S.nVariables; i++) {
-      S.degrees[i] = M.degrees[i];
-    }
-    S.setDegree();
-    return S;
-  }
+  //################################################################## methods which return a polynomial
 
   String multiSum(monomial[] M, int[] perm) {
     // returns a permutation of the sum of the M's
@@ -396,14 +378,35 @@ class utils {
     return ans;
   }
 
-  String removePlus(String s) {
-    String r = "";
-    if (s.substring(0, 1).equals("+")) {
-      r = s.substring(1, s.length());
-    } else {
-      r = s;
+  //################################################################ ITEM GENERATOR
+
+  item generateItem(String type, float complexity) {
+    monomial X, Y;
+    item I = new item();
+    // each item type has its own constructor
+    switch(type) {
+    case "x^2-y^2":
+      X = U.generateMonomial(complexity);
+      Y = U.generateNonSimilar(X, complexity);
+      I = differenceOfSquares(X, Y);
+      break;
+    case "(x+y)(x-y)":
+      X = U.generateMonomial(complexity);
+      Y = U.generateNonSimilar(X, complexity);
+      I = sumDifference(X, Y);
+      break;
+    case "x^2+y^2+2xy":
+      X = U.generateMonomial(complexity);
+      Y = U.generateNonSimilar(X, complexity);
+      I = binomialSquareExpanded(X, Y);
+      break;
+    case "(x+y)^2":
+      X = U.generateMonomial(complexity);
+      Y = U.generateNonSimilar(X, complexity);
+      I = binomialSquareCompact(X, Y);
+      break;
     }
-    return r;
+    return I;
   }
 
   //################################################################################### (X+Y)(X-Y)
@@ -557,8 +560,11 @@ class utils {
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
-
-    int[] perms = permutation(5); // selecting error location in distractors
+    int[] perms = permutation(4);
+    if ((M1.nVariables == 1 && M2.degree == 0) || (M1.degree == 0 && M2.nVariables == 1)) {
+      // also last error is available
+      perms = permutation(5);
+    }
     error E1 = errors.binomialSquareExpandedError(M1, M2, perms[0]);
     error E2 = errors.binomialSquareExpandedError(M1, M2, perms[1]);
     error E3 = errors.binomialSquareExpandedError(M1, M2, perms[2]);

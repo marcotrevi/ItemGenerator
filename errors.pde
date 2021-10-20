@@ -40,6 +40,13 @@ class errors {
         R.degrees[i] = M.degrees[i]*2;
       }
       break;
+    case 3: // half of coefficient (sort of fake error to have at least one available error even when the monomial is the number 1)
+      R.coefficient[0] = 2*M.coefficient[0];
+      R.coefficient[1] = M.coefficient[1];
+      for (int i=0; i<R.nVariables; i++) {
+        R.degrees[i] = M.degrees[i]*2;
+      }
+      break;
     }
     R.setDegree();
     return R;
@@ -245,19 +252,12 @@ class errors {
     error E = new error();
 
     // check possible errors
-    int errorIndex1 = U.permutation(availability(M1, "root"))[0];
-    int errorIndex2 = U.permutation(availability(M2, "root"))[0];
-
+    int[] availability1 = availability(M1, "root");
+    int[] availability2 = availability(M2, "root");
+    int errorIndex1 = U.permutation(availability1)[0];
     monomial errorM1 = rootError(M1, errorIndex1);
+    int errorIndex2 = U.permutation(availability2)[0];
     monomial errorM2 = rootError(M2, errorIndex2);
-    println("error index 1: "+errorIndex1);
-    println("square : "+U.squareMonomial(M1).stringify());
-    println("root   : "+M1.stringify());
-    println("error  : "+errorM1.stringify());
-    println("error index 2: "+errorIndex2);
-    println("square : "+U.squareMonomial(M2).stringify());
-    println("root   : "+M2.stringify());
-    println("error  : "+errorM2.stringify());
 
     monomial[] M = new monomial[3];
     int[] two = {2, 1};
@@ -276,7 +276,7 @@ class errors {
       E.errorType.append(errorIndex2);
       break;
     case 3: // always positive sum
-      // WARNING: error not available is monomials have different signs
+      // WARNING: error not available is monomials have same signs
       if (M1.sign * M2.sign == -1) {
         monomial M1plus = M1;
         monomial M2plus = M2;
@@ -289,14 +289,53 @@ class errors {
         E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]) + ")^2";
         E.errorType.append(-1);
       } else {
-        E.errorName = "monomials have same sign";
+        E.errorName = "0";
         E.errorType.append(-3);
       }
       break;
-    case 4:
-      E.errorName = "0";
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-2);
+    case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification" 
+      monomial monic1 = new monomial(M1.nVariables);
+      monic1.variables = M1.variables;
+      monic1.degrees = M1.degrees;
+      monic1.coefficient[0] = 1;
+      monic1.coefficient[1] = 1;
+      monic1.setDegree();
+
+      monomial monic2 = new monomial(M2.nVariables);
+      monic2.variables = M2.variables;
+      monic2.degrees = M2.degrees;
+      monic2.coefficient[0] = 1;
+      monic2.coefficient[1] = 1;
+      monic2.setDegree();
+      int a = M1.coefficient[0];
+      int b = M1.coefficient[1];
+      int c = M2.coefficient[0];
+      int d = M2.coefficient[1];
+
+      if (M1.degree == 0) {
+        monomial P = U.productMonomial(U.squareMonomial(monic2), U.productMonomial(monic1, monic2));
+        if (M1.sign*M2.sign == -1) {
+          P.coefficient = math.fractionSum(c*c, d*d, -2*a*c, b*d);
+        } else {
+          P.coefficient = math.fractionSum(c*c, d*d, 2*a*c, b*d);
+        }
+        P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+        E.errorName = U.sum(P, U.squareMonomial(M1), 0);
+      } else {
+        monomial P = U.productMonomial(U.squareMonomial(monic1), U.productMonomial(monic1, monic2));
+        if (M1.sign*M2.sign == -1) {
+          P.coefficient = math.fractionSum(a*a, b*b, -2*a*c, b*d);
+        } else {
+          P.coefficient = math.fractionSum(a*a, b*b, 2*a*c, b*d);
+        }
+        P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+        if (P.coefficient[0] == -1 && P.coefficient[1] == 1) {
+          E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0));
+        } else {          
+          E.errorName = U.sum(P, U.squareMonomial(M2), 0);
+        }
+      }
+      E.errorType.append(-5);
       break;
     }
     return E;
@@ -402,7 +441,7 @@ class errors {
       }
       break;
     case "root":
-      for (int i=0; i<2; i++) {
+      for (int i=0; i<4; i++) {
         availableErrors.append(i);
       }
       if (M.coefficient[1] == 1 && M.degree == 0) {
@@ -419,11 +458,12 @@ class errors {
       }
       break;
     }
-
     int[] errors = new int[availableErrors.size()];
+
     for (int i=0; i<availableErrors.size(); i++) {
       errors[i] = availableErrors.get(i);
     }
+
     return errors;
   }
 }
