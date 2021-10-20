@@ -1,5 +1,5 @@
 class errors { 
-
+  // this class contains a database of "atomic" human errors
   errors() {
   }
 
