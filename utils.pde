@@ -341,40 +341,30 @@ class utils {
   }
   //################################################################## methods which return a polynomial
 
-  String multiSum(monomial[] M, int[] perm) {
-    // returns a permutation of the sum of the M's
-    String ans = M[perm[0]].stringify();
-    ans = removePlus(ans); // removing "+" sign from first item
-    for (int i=1; i<M.length; i++) {
-      ans = ans + M[perm[i]].stringify();
-    }
-    return ans;
+  polynomial sum(monomial M1, monomial M2, int perm) {
+    polynomial S = new polynomial();
+    S.terms.add(M1);
+    S.terms.add(M2);
+    return S;
   }
 
-  String sum(monomial M1, monomial M2, int perm) {
-    String ans = "";
-    String m1 = M1.stringify();
-    String m2 = M2.stringify();
-    switch(perm) {
-    case 0: // M1+M2
-      ans = removePlus(m1)+m2;
-      break;
-    case 1: // M2+M1
-      ans = removePlus(m2)+m1;
-      break;
+  polynomial multiSum(monomial[] M, int[] perm) {
+    polynomial S = new polynomial();
+    for (int i=0; i<M.length; i++) {
+      S.terms.add(M[i]);
     }
-    return ans;
+    return S;
   }
 
-  String diff(monomial M1, monomial M2, int perm) {
-    String ans = "";
-    ans = sum(M1, oppositeMonomial(M2), perm);
-    return ans;
+  polynomial diff(monomial M1, monomial M2, int perm) {
+    polynomial P = new polynomial();
+    P = sum(M1, oppositeMonomial(M2), perm);
+    return P;
   }
 
   String sumDiff(monomial M1, monomial M2, int perm) {
     String ans = "";
-    ans = multiply(sum(M1, M2, 0), diff(M1, M2, 0), 0);
+    ans = multiply(sum(M1, M2, 0).stringify(), diff(M1, M2, 0).stringify(), 0);
     return ans;
   }
 
@@ -416,7 +406,7 @@ class utils {
     String stem = sumDiff(M1, M2, floor(random(0, 8)));
     //    String stem = sumDiff(M1, M2, floor(random(0, 8)));
     // answer
-    String answer = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2)));
+    String answer = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -448,9 +438,9 @@ class utils {
 
   item differenceOfSquares(monomial M1, monomial M2) {
     // stem: M1^2 - M2^2 = 
-    String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2)));
+    String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
     // answer
-    String answer = "(" + sum(M1, M2, floor(random(0, 2))) + ")(" + diff(M1, M2, floor(random(0, 2))) + ")";
+    String answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -483,14 +473,14 @@ class utils {
   item binomialSquareCompact(monomial M1, monomial M2) {
     int[] two = {2, 1};
     // stem: (M1 + M2)^2 = 
-    String stem = "("+sum(M1, M2, floor(random(0, 2)))+")^2";
+    String stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
     // answer
     monomial[] M = new monomial[3];
     M[0] = squareMonomial(M1);
     M[1] = squareMonomial(M2);
     M[2] = scalarProduct(productMonomial(M1, M2), two);
 
-    String answer = multiSum(M, U.permutation(3));
+    String answer = multiSum(M, U.permutation(3)).stringify();
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -528,11 +518,11 @@ class utils {
     M[1] = squareMonomial(M2);
     M[2] = scalarProduct(productMonomial(M1, M2), two);
 
-    String stem = multiSum(M, permutation(3));
+    String stem = multiSum(M, permutation(3)).stringify();
     // answer
     String answer = "";
-    String answer1 = "("+sum(M1, M2, permutation(2)[0])+")^2";
-    String answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0])+")^2";
+    String answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
+    String answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
 
     // if both monomials are positive OR both negative, prefer an all-positive-sign answer.
     // preference is expressed in terms of a large probability "p"
