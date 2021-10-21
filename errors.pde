@@ -161,34 +161,34 @@ class errors {
 
     switch(errorType) {
     case 0: // error on M1 square
-      E.errorName = U.multiply(U.sum(errorM1, M2, 0), U.diff(errorM1, M2, 0), 0);
+      E.errorName = U.multiply(U.sum(errorM1, M2, 0).stringify(), U.diff(errorM1, M2, 0).stringify(), 0);
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 square
-      E.errorName = U.multiply(U.sum(M1, errorM2, 0), U.diff(M1, errorM2, 0), 0);
+      E.errorName = U.multiply(U.sum(M1, errorM2, 0).stringify(), U.diff(M1, errorM2, 0).stringify(), 0);
       E.errorType.append(errorIndex2);
       break;
     case 2: // incorrect identification of monomials
-      E.errorName = U.multiply(U.sum(M2, M1, 0), U.diff(M2, M1, 0), 0);
+      E.errorName = U.multiply(U.sum(M2, M1, 0).stringify(), U.diff(M2, M1, 0).stringify(), 0);
       E.errorType.append(-1);
       break;
     case 3: // error on both squares
-      E.errorName = U.multiply(U.sum(errorM1, errorM2, 0), U.diff(errorM1, errorM2, 0), 0);
+      E.errorName = U.multiply(U.sum(errorM1, errorM2, 0).stringify(), U.diff(errorM1, errorM2, 0).stringify(), 0);
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
     case 4: // error on M1 square and incorrect identification
-      E.errorName = U.multiply(U.sum(M2, errorM1, 0), U.diff(M2, errorM1, 0), 0);
+      E.errorName = U.multiply(U.sum(M2, errorM1, 0).stringify(), U.diff(M2, errorM1, 0).stringify(), 0);
       E.errorType.append(errorIndex1);
       E.errorType.append(-1);
       break;
     case 5: // error on M2 square and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, M1, 0), U.diff(errorM2, M1, 0), 0);
+      E.errorName = U.multiply(U.sum(errorM2, M1, 0).stringify(), U.diff(errorM2, M1, 0).stringify(), 0);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
       break;
     case 6: // error on both squares and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, errorM1, 0), U.diff(errorM2, errorM1, 0), 0);
+      E.errorName = U.multiply(U.sum(errorM2, errorM1, 0).stringify(), U.diff(errorM2, errorM1, 0).stringify(), 0);
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
@@ -211,34 +211,34 @@ class errors {
 
     switch(perm) {
     case 0: // error on M1 square
-      E.errorName = U.diff(errorM1, U.squareMonomial(M2), diffPerms[0]);
+      E.errorName = U.diff(errorM1, U.squareMonomial(M2), diffPerms[0]).stringify();
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 square
-      E.errorName = U.diff(U.squareMonomial(M1), errorM2, diffPerms[0]);
+      E.errorName = U.diff(U.squareMonomial(M1), errorM2, diffPerms[0]).stringify();
       E.errorType.append(errorIndex2);
       break;
     case 2: // incorrect identification of monomials
-      E.errorName = U.diff(U.squareMonomial(M2), U.squareMonomial(M1), diffPerms[0]);
+      E.errorName = U.diff(U.squareMonomial(M2), U.squareMonomial(M1), diffPerms[0]).stringify();
       E.errorType.append(-1);
       break;
     case 3: // error on both squares
-      E.errorName = U.diff(errorM1, errorM2, diffPerms[0]);
+      E.errorName = U.diff(errorM1, errorM2, diffPerms[0]).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
     case 4: // error on M1 square and incorrect identification
-      E.errorName = U.diff(U.squareMonomial(M2), errorM1, diffPerms[0]);
+      E.errorName = U.diff(U.squareMonomial(M2), errorM1, diffPerms[0]).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(-1);
       break;
     case 5: // error on M2 square and incorrect identification
-      E.errorName = U.diff(errorM2, U.squareMonomial(M1), diffPerms[0]);
+      E.errorName = U.diff(errorM2, U.squareMonomial(M1), diffPerms[0]).stringify();
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
       break;
     case 6: // error on both squares and incorrect identification
-      E.errorName = U.diff(errorM2, errorM1, diffPerms[0]);
+      E.errorName = U.diff(errorM2, errorM1, diffPerms[0]).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
@@ -263,15 +263,15 @@ class errors {
     int[] two = {2, 1};
     switch(errorType) {
     case 0: // error on M1 root
-      E.errorName = "(" + U.sum(errorM1, M2, U.permutation(2)[0]) + ")^2";
+      E.errorName = "(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + ")^2";
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 root
-      E.errorName = "(" + U.sum(M1, errorM2, U.permutation(2)[0]) + ")^2";
+      E.errorName = "(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
       E.errorType.append(errorIndex2);
       break;
     case 2: // error on both roots
-      E.errorName = "(" + U.sum(errorM1, errorM2, U.permutation(2)[0]) + ")^2";
+      E.errorName = "(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
@@ -286,7 +286,7 @@ class errors {
         if (M1.sign == 1 && M2.sign == -1) {
           M2plus = U.oppositeMonomial(M2);
         }
-        E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]) + ")^2";
+        E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + ")^2";
         E.errorType.append(-1);
       } else {
         E.errorName = "0";
@@ -320,7 +320,7 @@ class errors {
           P.coefficient = math.fractionSum(c*c, d*d, 2*a*c, b*d);
         }
         P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-        E.errorName = U.sum(P, U.squareMonomial(M1), 0);
+        E.errorName = U.sum(P, U.squareMonomial(M1), 0).stringify();
       } else {
         monomial P = U.productMonomial(U.squareMonomial(monic1), U.productMonomial(monic1, monic2));
         if (M1.sign*M2.sign == -1) {
@@ -330,9 +330,9 @@ class errors {
         }
         P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
         if (P.coefficient[0] == -1 && P.coefficient[1] == 1) {
-          E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0));
+          E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0).stringify());
         } else {          
-          E.errorName = U.sum(P, U.squareMonomial(M2), 0);
+          E.errorName = U.sum(P, U.squareMonomial(M2), 0).stringify();
         }
       }
       E.errorType.append(-5);
@@ -361,33 +361,33 @@ class errors {
       M[0] = errorM1;
       M[1] = U.squareMonomial(M2);
       M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3));
+      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 square
       M[0] = U.squareMonomial(M1);
       M[1] = errorM2;
       M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3));
+      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
       E.errorType.append(errorIndex2);
       break;
     case 2: // error on both squares
       M[0] = errorM1;
       M[1] = errorM2;
       M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3));
+      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
     case 3: // sophomore's dream
-      E.errorName = U.sum(U.squareMonomial(M1), U.squareMonomial(M2), 0);
+      E.errorName = U.sum(U.squareMonomial(M1), U.squareMonomial(M2), 0).stringify();
       E.errorType.append(-1);
       break;
     case 4: // wrong double product sign
       M[0] = U.squareMonomial(M1);
       M[1] = U.squareMonomial(M2);
       M[2] = U.oppositeMonomial(U.productMonomial(U.scalarProduct(M1, two), M2));    
-      E.errorName = U.multiSum(M, U.permutation(3));
+      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(-1);
       break;
