@@ -608,9 +608,17 @@ class utils {
     TableRow newRow = table.addRow();
     newRow.setFloat("complexity", complexity);
     newRow.setString("stem", stem);
-    newRow.setString("answer",answer);
-    newRow.setString("distractor1",distractor1);
-    newRow.setString("distractor2",distractor2);
-    newRow.setString("distractor3",distractor3);
+    newRow.setString("answer", answer);
+    newRow.setString("distractor1", distractor1);
+    newRow.setString("distractor2", distractor2);
+    newRow.setString("distractor3", distractor3);
+  }
+
+  void generateCsv(Table table, String itemType, float complexity, int nItems, String name) {
+    for (int i=0; i<nItems; i++) {
+      item I = U.generateItem(itemType, complexity);
+      U.addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+    }
+    saveTable(table, "data/"+ name +".csv");
   }
 }

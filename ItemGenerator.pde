@@ -3,7 +3,7 @@ math math = new math();
 utils U = new utils();
 errors errors = new errors();
 boolean latex = true; // writes latex tags
-Table T;
+Table T = new Table();
 
 void setup() {
   T = new Table();
@@ -13,6 +13,14 @@ void setup() {
   T.addColumn("distractor1"); 
   T.addColumn("distractor2"); 
   T.addColumn("distractor3"); 
+  // this is to faciloitate deleting previous column names
+  TableRow newRow = T.addRow();
+  newRow.setString("complexity", "difficulty");
+  newRow.setString("stem", "choice");
+  newRow.setString("answer", "choice");
+  newRow.setString("distractor1", "choice");
+  newRow.setString("distractor2", "choice");
+  newRow.setString("distractor3", "choice");
 
   monomial m1 = U.generateMonomial(-1);
   monomial m2 = U.generateMonomial(-2);
@@ -32,9 +40,13 @@ void setup() {
    println(U.generateItem("x^2+y^2+2xy",0.5).csv_line());
    println(U.generateItem("(x+y)^2",0.5).csv_line());
    */
+
+  /*
   for (int i=0; i<5; i++) {
-    item I = U.generateItem("x^2-y^2", 0.5);
-    U.addCsvRow(T, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
-  }
-  saveTable(T, "data/test.csv");
+   item I = U.generateItem("x^2-y^2", 0.5);
+   U.addCsvRow(T, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+   }
+   */
+
+  U.generateCsv(T, "(x+y)(x-y)", 0.5, 10, "sum_difference");
 }
