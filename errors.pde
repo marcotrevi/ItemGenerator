@@ -33,7 +33,8 @@ class errors {
       }
       break;
     case 2: // root only of coefficient
-      // WARNING: is correct if coefficient is 1
+      // WARNING: is correct if coefficient is 1 or if degree is 0.
+      R.sign = M.sign;
       R.coefficient[0] = M.coefficient[0];
       R.coefficient[1] = M.coefficient[1];
       for (int i=0; i<R.nVariables; i++) {
@@ -471,6 +472,9 @@ class errors {
       }
       if (M.coefficient[0] == 1 && M.coefficient[1] == 1) {
         availableErrors = U.removeInt(availableErrors, 1);
+      }
+      if (M.degree == 0) {
+        availableErrors = U.removeInt(availableErrors, 2);
       }
       break;
     }
