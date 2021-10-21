@@ -265,7 +265,7 @@ class errors {
     switch(errorType) {
     case 0: // error on M1 root
       if (latex) {
-        E.errorName = "left(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + "right)^2";
+        E.errorName = "\\left(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + "\\right)^2";
       } else {
         E.errorName = "(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + ")^2";
       }
@@ -273,7 +273,7 @@ class errors {
       break;
     case 1: // error on M2 root
       if (latex) {
-        E.errorName = "left(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + "right)^2";
+        E.errorName = "\\left(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + "\\right)^2";
       } else {
         E.errorName = "(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
       }
@@ -281,7 +281,7 @@ class errors {
       break;
     case 2: // error on both roots
       if (latex) {
-        E.errorName = "left(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + "right)^2";
+        E.errorName = "\\left(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + "\\right)^2";
       } else {
         E.errorName = "(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
       }
@@ -300,7 +300,7 @@ class errors {
           M2plus = U.oppositeMonomial(M2);
         }
         if (latex) {
-          E.errorName = "left(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + "right)^2";
+          E.errorName = "\\left(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + "\\right)^2";
         } else {
           E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + ")^2";
         }

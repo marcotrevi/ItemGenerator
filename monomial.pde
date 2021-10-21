@@ -49,7 +49,7 @@ class monomial {
     if (coefficient[1] > 1) {
       // coefficient is a fraction.
       if (latex) {
-        _coefficient = "frac{"+ str(coefficient[0]) + "}{" + str(coefficient[1]) +"}";
+        _coefficient = "\\frac{"+ str(coefficient[0]) + "}{" + str(coefficient[1]) +"}";
       } else{
         _coefficient = str(coefficient[0]) + "/" + str(coefficient[1]);
       }

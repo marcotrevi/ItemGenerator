@@ -266,14 +266,14 @@ class utils {
     switch(perm) {
     case 0:
       if (latex) {
-        ans = "left("+a+"right)left("+b+"right)";
+        ans = "\\left("+a+"\\right)\\left("+b+"\\right)";
       } else {
         ans = "("+a+")("+b+")";
       }
       break;
     case 1:
       if (latex) {
-        ans = "left("+b+"right)left("+a+"right)";
+        ans = "\\left("+b+"\\right)\\left("+a+"\\right)";
       } else {
         ans = "("+b+")("+a+")";
       }
@@ -450,7 +450,7 @@ class utils {
     // answer
     String answer = "";
     if (latex) {
-      answer = "left(" + sum(M1, M2, floor(random(0, 2))).stringify() + "right)left(" + diff(M1, M2, floor(random(0, 2))).stringify() + "right)";
+      answer = "\\left(" + sum(M1, M2, floor(random(0, 2))).stringify() + "\\right)\\left(" + diff(M1, M2, floor(random(0, 2))).stringify() + "\\right)";
     } else {
       answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
     }
@@ -488,7 +488,7 @@ class utils {
     // stem: (M1 + M2)^2 = 
     String stem ="";
     if (latex) {
-      stem = "left("+sum(M1, M2, floor(random(0, 2))).stringify()+"right)^2";
+      stem = "\\left("+sum(M1, M2, floor(random(0, 2))).stringify()+"\\right)^2";
     } else {
       stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
     }
@@ -542,8 +542,8 @@ class utils {
     String answer1 = "";
     String answer2 = "";
     if (latex) {
-      answer1 = "left("+sum(M1, M2, permutation(2)[0]).stringify()+"right)^2";
-      answer2 = "left("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+"right)^2";
+      answer1 = "\\left("+sum(M1, M2, permutation(2)[0]).stringify()+"\\right)^2";
+      answer2 = "\\left("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+"\\right)^2";
     } else {
       answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
       answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
@@ -602,5 +602,15 @@ class utils {
     return I;
   }
 
-  //################################################################################### END CASES
+  //################################################################################### csv table utilities
+
+  void addCsvRow(Table table, float complexity, String stem, String answer, String distractor1, String distractor2, String distractor3) {
+    TableRow newRow = table.addRow();
+    newRow.setFloat("complexity", complexity);
+    newRow.setString("stem", stem);
+    newRow.setString("answer",answer);
+    newRow.setString("distractor1",distractor1);
+    newRow.setString("distractor2",distractor2);
+    newRow.setString("distractor3",distractor3);
+  }
 }
