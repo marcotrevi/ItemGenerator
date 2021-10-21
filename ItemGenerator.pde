@@ -6,21 +6,7 @@ boolean latex = true; // writes latex tags
 Table T = new Table();
 
 void setup() {
-  T = new Table();
-  T.addColumn("complexity");
-  T.addColumn("stem");
-  T.addColumn("answer");  
-  T.addColumn("distractor1"); 
-  T.addColumn("distractor2"); 
-  T.addColumn("distractor3"); 
-  // this is to faciloitate deleting previous column names
-  TableRow newRow = T.addRow();
-  newRow.setString("complexity", "difficulty");
-  newRow.setString("stem", "choice");
-  newRow.setString("answer", "choice");
-  newRow.setString("distractor1", "choice");
-  newRow.setString("distractor2", "choice");
-  newRow.setString("distractor3", "choice");
+  U.init();// creates csv table
 
   monomial m1 = U.generateMonomial(-1);
   monomial m2 = U.generateMonomial(-2);

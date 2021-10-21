@@ -621,4 +621,20 @@ class utils {
     }
     saveTable(table, "data/"+ name +".csv");
   }
+  void init() {
+    T.addColumn("complexity");
+    T.addColumn("stem");
+    T.addColumn("answer");  
+    T.addColumn("distractor1"); 
+    T.addColumn("distractor2"); 
+    T.addColumn("distractor3"); 
+    // this is to facilitate deleting previous column names
+    TableRow newRow = T.addRow();
+    newRow.setString("complexity", "difficulty");
+    newRow.setString("stem", "choice");
+    newRow.setString("answer", "choice");
+    newRow.setString("distractor1", "choice");
+    newRow.setString("distractor2", "choice");
+    newRow.setString("distractor3", "choice");
+  }
 }
