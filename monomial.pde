@@ -48,41 +48,11 @@ class monomial {
     }
     if (coefficient[1] > 1) {
       // coefficient is a fraction.
-      _coefficient = str(coefficient[0]) + "/" + str(coefficient[1]);
-    }
-    for (int i=0; i<nVariables; i++) {
-      if (degrees[i] > 1) {
-        _variables = _variables + U.varNames[variables[i]]+"^"+str(degrees[i]);
-      } else {
-        _variables = _variables + U.varNames[variables[i]];
+      if (latex) {
+        _coefficient = "frac{"+ str(coefficient[0]) + "}{" + str(coefficient[1]) +"}";
+      } else{
+        _coefficient = str(coefficient[0]) + "/" + str(coefficient[1]);
       }
-    }
-    M = _sign + _coefficient + _variables;
-    return M;
-  }
-
-  String latexify() {
-    String M = "";
-    String _sign = "";
-    String _coefficient = "";
-    String _variables = "";
-    if (sign == -1) {
-      _sign = "-";
-    } else {
-      _sign = "+";
-    }
-    // check if coefficient is 1
-    if (coefficient[0] == 1 && coefficient[1] == 1 && degree == 0) {
-      // monomial is unity: +1 or -1
-      _coefficient = str(1);
-    }    
-    if (coefficient[0] != 1 && coefficient[1] == 1) {
-      // coefficient is an integer different from 1
-      _coefficient = str(coefficient[0]);
-    }
-    if (coefficient[1] > 1) {
-      // coefficient is a fraction.
-      _coefficient = "frac{" + str(coefficient[0]) + "}{" + str(coefficient[1]) + "}";
     }
     for (int i=0; i<nVariables; i++) {
       if (degrees[i] > 1) {

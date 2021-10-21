@@ -265,10 +265,18 @@ class utils {
     String ans = "";
     switch(perm) {
     case 0:
-      ans = "("+a+")("+b+")";
+      if (latex) {
+        ans = "left("+a+"right)left("+b+"right)";
+      } else {
+        ans = "("+a+")("+b+")";
+      }
       break;
     case 1:
-      ans = "("+b+")("+a+")";
+      if (latex) {
+        ans = "left("+b+"right)left("+a+"right)";
+      } else {
+        ans = "("+b+")("+a+")";
+      }
       break;
     }
     return ans;
@@ -440,7 +448,12 @@ class utils {
     // stem: M1^2 - M2^2 = 
     String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
     // answer
-    String answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
+    String answer = "";
+    if (latex) {
+      answer = "left(" + sum(M1, M2, floor(random(0, 2))).stringify() + "right)left(" + diff(M1, M2, floor(random(0, 2))).stringify() + "right)";
+    } else {
+      answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
+    }
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -473,7 +486,12 @@ class utils {
   item binomialSquareCompact(monomial M1, monomial M2) {
     int[] two = {2, 1};
     // stem: (M1 + M2)^2 = 
-    String stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
+    String stem ="";
+    if (latex) {
+      stem = "left("+sum(M1, M2, floor(random(0, 2))).stringify()+"right)^2";
+    } else {
+      stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
+    }
     // answer
     monomial[] M = new monomial[3];
     M[0] = squareMonomial(M1);
@@ -521,8 +539,15 @@ class utils {
     String stem = multiSum(M, permutation(3)).stringify();
     // answer
     String answer = "";
-    String answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
-    String answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
+    String answer1 = "";
+    String answer2 = "";
+    if (latex) {
+      answer1 = "left("+sum(M1, M2, permutation(2)[0]).stringify()+"right)^2";
+      answer2 = "left("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+"right)^2";
+    } else {
+      answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
+      answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
+    }
 
     // if both monomials are positive OR both negative, prefer an all-positive-sign answer.
     // preference is expressed in terms of a large probability "p"

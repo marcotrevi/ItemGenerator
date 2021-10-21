@@ -28,7 +28,7 @@ class item {
     println("---------------------------------------------------------------------------------------------");
   }
 
-  String latex() {
+  String csv_line() {
     String l = complexity + "," + stem + "," + answer + "," + distractors[0] + ","+ distractors[1] + ","+ distractors[2];
     return l;
   }

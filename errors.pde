@@ -263,15 +263,27 @@ class errors {
     int[] two = {2, 1};
     switch(errorType) {
     case 0: // error on M1 root
-      E.errorName = "(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + ")^2";
+      if (latex) {
+        E.errorName = "left(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + "right)^2";
+      } else {
+        E.errorName = "(" + U.sum(errorM1, M2, U.permutation(2)[0]).stringify() + ")^2";
+      }
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 root
-      E.errorName = "(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
+      if (latex) {
+        E.errorName = "left(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + "right)^2";
+      } else {
+        E.errorName = "(" + U.sum(M1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
+      }
       E.errorType.append(errorIndex2);
       break;
     case 2: // error on both roots
-      E.errorName = "(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
+      if (latex) {
+        E.errorName = "left(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + "right)^2";
+      } else {
+        E.errorName = "(" + U.sum(errorM1, errorM2, U.permutation(2)[0]).stringify() + ")^2";
+      }
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
@@ -286,7 +298,11 @@ class errors {
         if (M1.sign == 1 && M2.sign == -1) {
           M2plus = U.oppositeMonomial(M2);
         }
-        E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + ")^2";
+        if (latex) {
+          E.errorName = "left(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + "right)^2";
+        } else {
+          E.errorName = "(" + U.sum(M1plus, M2plus, U.permutation(2)[0]).stringify() + ")^2";
+        }
         E.errorType.append(-1);
       } else {
         E.errorName = "0";
