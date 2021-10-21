@@ -41,12 +41,5 @@ void setup() {
    println(U.generateItem("(x+y)^2",0.5).csv_line());
    */
 
-  /*
-  for (int i=0; i<5; i++) {
-   item I = U.generateItem("x^2-y^2", 0.5);
-   U.addCsvRow(T, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
-   }
-   */
-
-  U.generateCsv(T, "(x+y)(x-y)", 0.5, 10, "sum_difference");
+//  U.generateCsv(T, "(x+y)(x-y)", 0.5, 10, "sum_difference");
 }
