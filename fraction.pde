@@ -11,6 +11,12 @@ class fraction {
     println(N+"/"+D);
   }
 
+  String stringify() {
+    String s = "";
+    s = str(N)+"/"+str(D);
+    return s;
+  }
+
   void simplify() {
     int gcd = math.gcd(N, D);
     N = N/gcd;

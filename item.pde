@@ -2,6 +2,7 @@ class item {
   String type, stem, answer;
   String[] distractors;
   String[] errors;
+  errors[] _errors;
   float complexity;
 
   item() {

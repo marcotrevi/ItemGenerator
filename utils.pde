@@ -377,12 +377,6 @@ class utils {
     return ans;
   }
 
-  //################################################################ ITEM GENERATOR
-
-
-  //################################################################################### (X+Y)(X-Y)
-
-
   //################################################################################### csv table utilities
 
   void addCsvRow(Table table, float complexity, String stem, String answer, String distractor1, String distractor2, String distractor3) {

@@ -1,5 +1,11 @@
-class errors { 
+class errors {
+  int nErrors = 100;
+  error[] errorDB = new error[nErrors];
+
   errors() {
+    for (int i=0; i<nErrors; i++) {
+      errorDB[i] = new error();
+    }
   }
 
   //######################################################################################## ERROR DATABASE
@@ -100,6 +106,24 @@ class errors {
   }
 
   //######################################################################################## ERROR: square
+  error square1(fraction f, int n) {
+    boolean isAvailable = true;
+    error E = new error();
+    E.id = 0;
+    E.description = "(a/b)^n => n*a/b [multiplies number by exponent instead of computing the power]";
+    E.exceptions = "exceptions: a=0; n=1; a=2 & b=1 & n=2; ";
+    if (f.N == 0 || n==1 || (f.N==2 && f.D==1 && n==2)) {
+      isAvailable = false;
+    }
+    if (isAvailable) {
+      E.isAvailable = true;
+      E.scalarValue.N = n*f.N;
+      E.scalarValue.D = f.D;
+    } else {
+      E.isAvailable = false;
+    }
+    return E;
+  }
 
   monomial squareError(monomial M, int errorType) {
     // there are 6 errors in this list
@@ -168,7 +192,7 @@ class errors {
     return S;
   }
 
-  // ########################################################################################################################### ERROR CONSTRutilsCTORS
+  // ########################################################################################################################### ERROR CONSTRUCTORS
 
   error differenceOfSquaresError(monomial M1, monomial M2, int errorType) {
     // item type: x^2 - y^2
@@ -210,56 +234,6 @@ class errors {
       break;
     case 6: // error on both squares and incorrect identification
       E.errorName = utils.multiply(utils.sum(errorM2, errorM1, 0).stringify(), utils.diff(errorM2, errorM1, 0).stringify(), 0);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    }
-    return E;
-  }
-
-  error sumDiffError(monomial M1, monomial M2, int perm) {
-    // item type: (x+y)(x-y)
-    error E = new error();
-
-    // check possible errors
-    int errorIndex1 = utils.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = utils.permutation(availability(M2, "square"))[0];
-    monomial errorM1 = squareError(M1, errorIndex1);
-    monomial errorM2 = squareError(M2, errorIndex2);
-
-    int[] diffPerms = utils.permutation(2);
-
-    switch(perm) {
-    case 0: // error on M1 square
-      E.errorName = utils.diff(errorM1, utils.squareMonomial(M2), diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      break;
-    case 1: // error on M2 square
-      E.errorName = utils.diff(utils.squareMonomial(M1), errorM2, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex2);
-      break;
-    case 2: // incorrect identification of monomials
-      E.errorName = utils.diff(utils.squareMonomial(M2), utils.squareMonomial(M1), diffPerms[0]).stringify();
-      E.errorType.append(-1);
-      break;
-    case 3: // error on both squares
-      E.errorName = utils.diff(errorM1, errorM2, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      break;
-    case 4: // error on M1 square and incorrect identification
-      E.errorName = utils.diff(utils.squareMonomial(M2), errorM1, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-1);
-      break;
-    case 5: // error on M2 square and incorrect identification
-      E.errorName = utils.diff(errorM2, utils.squareMonomial(M1), diffPerms[0]).stringify();
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    case 6: // error on both squares and incorrect identification
-      E.errorName = utils.diff(errorM2, errorM1, diffPerms[0]).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
