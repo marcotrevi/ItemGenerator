@@ -17,13 +17,7 @@ class items {
     E[1] = new error();
     E[2] = new error();
 
-    error p1 = errors.pow1(f, n);
-    if (p1.isAvailable) {
-      E[0] = p1;
-      E[0].errorName = E[0].scalarValue.stringify();
-    } else {
-      
-    }
+    E[0].errorName = E[0].scalarValue.stringify();
 
     setPs(distractors, E, errs);
 

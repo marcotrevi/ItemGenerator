@@ -1,6 +1,5 @@
 class error {
   int id = -1;
-  boolean isAvailable = false;
   String errorName = "";
   IntList errorType = new IntList();
   String description = "";
