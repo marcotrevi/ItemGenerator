@@ -1,31 +1,36 @@
 // tool for generating random math excercises
 math math = new math();
-utils U = new utils();
+utils utils = new utils();
 errors errors = new errors();
-boolean latex = true; // writes latex tags
+items items = new items();
+boolean latex = false; // writes latex tags
 Table T = new Table();
 
 void setup() {
-  U.init();// creates csv table
+  fraction F = new fraction(2, 3);
+  error e = errors.pow1(F, 2);
+  e.printme();
 
-  monomial m1 = U.generateMonomial(-1);
-  monomial m2 = U.generateMonomial(-2);
-  monomial m3 = U.generateNonSimilar(m1, 1);
+  utils.init();// creates csv table
+
+  monomial m1 = utils.generateMonomial(-1);
+  monomial m2 = utils.generateMonomial(-2);
+  monomial m3 = utils.generateNonSimilar(m1, 1);
   String _m1 = m1.stringify();
   String _m2 = m2.stringify();
   String _m3 = m3.stringify();
 
-  //U.generateItem("x^2-y^2", 0.5).printme();
-  //U.generateItem("(x+y)(x-y)",0.5).printme();
-  //U.generateItem("x^2+y^2+2xy",0.5).printme();
-  //U.generateItem("(x+y)^2",0.5).printme();
+  items.generateItem("x^2-y^2", 0.5).printme();
+  //items.generateItem("(x+y)(x-y)",0.5).printme(); 
+  //items.generateItem("x^2+y^2+2xy",0.5).printme();
+  //items.generateItem("(x+y)^2",0.5).printme();
 
   /*
-  println(U.generateItem("x^2-y^2", 0.5).csv_line());
-   println(U.generateItem("(x+y)(x-y)",0.5).csv_line());
-   println(U.generateItem("x^2+y^2+2xy",0.5).csv_line());
+  println(items.generateItem("x^2-y^2", 0.5).csv_line());
+   println(items.generateItem("(x+y)(x-y)",0.5).csv_line());
+   println(items.generateItem("x^2+y^2+2xy",0.5).csv_line());
    println(U.generateItem("(x+y)^2",0.5).csv_line());
    */
 
-//  U.generateCsv(T, "(x+y)(x-y)", 0.5, 10, "sum_difference");
+  //  U.generateCsv(T, "(x+y)(x-y)", 0.5, 10, "sum_difference");
 }

@@ -14,4 +14,8 @@ class algebricFraction {
     }
     return F;
   }
+
+  void simplify() {
+  }
+  
 }

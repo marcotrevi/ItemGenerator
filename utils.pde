@@ -32,8 +32,9 @@ class utils {
       num = math.difficultInts[floor(random(math.easyInts.length))];
       den = math.difficultInts[floor(random(math.easyInts.length))];
     }
-    int[] coefficient = math.fractionSimplify(num, den);
-
+    fraction coefficient = new fraction(num, den);
+    coefficient.simplify();
+    
     int nVariables;
 
     if (c_variables < 0.33) {
@@ -71,8 +72,8 @@ class utils {
       // test monomial
       m = new monomial(1);
       m.sign = 1;
-      m.coefficient[0] = 2;
-      m.coefficient[1] = 1;
+      m.coefficient.N = 2;
+      m.coefficient.D = 1;
 
       m.variables[0] = 0;
 
@@ -80,8 +81,8 @@ class utils {
     } else if (complexity == -2) {
       m = new monomial(2);
       m.sign = -1;
-      m.coefficient[0] = 1;
-      m.coefficient[1] = 1;
+      m.coefficient.N = 1;
+      m.coefficient.D = 1;
 
       m.variables[0] = 0;
       m.variables[1] = 1;
@@ -119,9 +120,9 @@ class utils {
     monomial P = new monomial(M.nVariables);
     P.sign = M.sign;
     P.variables = M.variables;
-    P.coefficient[0] = M.coefficient[0]*k[0];
-    P.coefficient[1] = M.coefficient[1]*k[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+    P.coefficient.N = M.coefficient.N*k[0];
+    P.coefficient.D = M.coefficient.D*k[1];
+    P.coefficient.simplify();
 
     for (int i=0; i<P.nVariables; i++) {
       P.degrees[i] = M.degrees[i];
@@ -162,9 +163,9 @@ class utils {
 
     monomial P = new monomial(nVariables);
     P.sign = M1.sign * M2.sign;
-    P.coefficient[0] = M1.coefficient[0]*M2.coefficient[0];
-    P.coefficient[1] = M1.coefficient[1]*M2.coefficient[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+    P.coefficient.N = M1.coefficient.N*M2.coefficient.N;
+    P.coefficient.D = M1.coefficient.D*M2.coefficient.D;
+    P.coefficient.simplify();
 
     for (int i=0; i<nVariables; i++) {
       P.variables[i] = variables.get(i);
@@ -178,8 +179,8 @@ class utils {
     monomial S = new monomial(M.nVariables);
     S.sign = 1;
     S.variables = M.variables;
-    S.coefficient[0] = int(pow(M.coefficient[0], 2));
-    S.coefficient[1] = int(pow(M.coefficient[1], 2));
+    S.coefficient.N = int(pow(M.coefficient.N, 2));
+    S.coefficient.D = int(pow(M.coefficient.D, 2));
     for (int i=0; i<S.nVariables; i++) {
       S.degrees[i] = M.degrees[i]*2;
     }
@@ -191,8 +192,8 @@ class utils {
     monomial S = new monomial(M.nVariables);
     S.variables = M.variables;
     S.sign = -M.sign;
-    S.coefficient[0] = M.coefficient[0];
-    S.coefficient[1] = M.coefficient[1];
+    S.coefficient.N = M.coefficient.N;
+    S.coefficient.D = M.coefficient.D;
     for (int i=0; i<S.nVariables; i++) {
       S.degrees[i] = M.degrees[i];
     }
@@ -378,229 +379,9 @@ class utils {
 
   //################################################################ ITEM GENERATOR
 
-  item generateItem(String type, float complexity) {
-    monomial X, Y;
-    item I = new item();
-    // each item type has its own constructor
-    switch(type) {
-    case "x^2-y^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = differenceOfSquares(X, Y);
-      break;
-    case "(x+y)(x-y)":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = sumDifference(X, Y);
-      break;
-    case "x^2+y^2+2xy":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = binomialSquareExpanded(X, Y);
-      break;
-    case "(x+y)^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
-      I = binomialSquareCompact(X, Y);
-      break;
-    }
-    return I;
-  }
 
   //################################################################################### (X+Y)(X-Y)
 
-  item sumDifference(monomial M1, monomial M2) {
-    // stem: (M1+M2)(M1-M2) = 
-    String stem = sumDiff(M1, M2, floor(random(0, 8)));
-    //    String stem = sumDiff(M1, M2, floor(random(0, 8)));
-    // answer
-    String answer = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(7); // selecting error location in distractors
-    error E1 = errors.sumDiffError(M1, M2, perms[0]);
-    error E2 = errors.sumDiffError(M1, M2, perms[1]);
-    error E3 = errors.sumDiffError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "(x+y)(x-y)";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### X^2 - Y^2
-
-  item differenceOfSquares(monomial M1, monomial M2) {
-    // stem: M1^2 - M2^2 = 
-    String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
-    // answer
-    String answer = "";
-    if (latex) {
-      answer = "\\left(" + sum(M1, M2, floor(random(0, 2))).stringify() + "\\right)\\left(" + diff(M1, M2, floor(random(0, 2))).stringify() + "\\right)";
-    } else {
-      answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
-    }
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(7); // selecting error location in distractors
-    error E1 = errors.differenceOfSquaresError(M1, M2, perms[0]);
-    error E2 = errors.differenceOfSquaresError(M1, M2, perms[1]);
-    error E3 = errors.differenceOfSquaresError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "x^2-y^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### (X+Y)^2
-
-  item binomialSquareCompact(monomial M1, monomial M2) {
-    int[] two = {2, 1};
-    // stem: (M1 + M2)^2 = 
-    String stem ="";
-    if (latex) {
-      stem = "\\left("+sum(M1, M2, floor(random(0, 2))).stringify()+"\\right)^2";
-    } else {
-      stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
-    }
-    // answer
-    monomial[] M = new monomial[3];
-    M[0] = squareMonomial(M1);
-    M[1] = squareMonomial(M2);
-    M[2] = scalarProduct(productMonomial(M1, M2), two);
-
-    String answer = multiSum(M, U.permutation(3)).stringify();
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(5); // selecting error type
-    error E1 = errors.binomialSquareCompactError(M1, M2, perms[0]);
-    error E2 = errors.binomialSquareCompactError(M1, M2, perms[1]);
-    error E3 = errors.binomialSquareCompactError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "(x+y)^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### X^2 + Y^2 + 2XY
-
-  item binomialSquareExpanded(monomial M1, monomial M2) {
-    // stem: M1^2 + M2^2 + 2.M1.M2 = 
-    int[] two = {2, 1};
-    monomial[] M = new monomial[3];
-    M[0] = squareMonomial(M1);
-    M[1] = squareMonomial(M2);
-    M[2] = scalarProduct(productMonomial(M1, M2), two);
-
-    String stem = multiSum(M, permutation(3)).stringify();
-    // answer
-    String answer = "";
-    String answer1 = "";
-    String answer2 = "";
-    if (latex) {
-      answer1 = "\\left("+sum(M1, M2, permutation(2)[0]).stringify()+"\\right)^2";
-      answer2 = "\\left("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+"\\right)^2";
-    } else {
-      answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
-      answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
-    }
-
-    // if both monomials are positive OR both negative, prefer an all-positive-sign answer.
-    // preference is expressed in terms of a large probability "p"
-    float p = random(0, 1);
-    if (M1.sign == -1 && M2.sign == -1) {
-      if (p<0.5) {
-        answer =  answer2;
-      } else {
-        answer = answer1;
-      }
-    } else if (M1.sign == 1 && M2.sign == 1) {
-      if (p<0.8) {
-        answer = answer1;
-      } else {
-        answer = answer2;
-      }
-    } else {
-      if (p<0.5) {
-        answer = answer1;
-      } else {
-        answer = answer2;
-      }
-    }
-
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-    int[] perms = permutation(4);
-    if ((M1.nVariables == 1 && M2.degree == 0) || (M1.degree == 0 && M2.nVariables == 1)) {
-      // also last error is available
-      perms = permutation(5);
-    }
-    error E1 = errors.binomialSquareExpandedError(M1, M2, perms[0]);
-    error E2 = errors.binomialSquareExpandedError(M1, M2, perms[1]);
-    error E3 = errors.binomialSquareExpandedError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "x^2+y^2+2xy";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
 
   //################################################################################### csv table utilities
 
@@ -616,11 +397,12 @@ class utils {
 
   void generateCsv(Table table, String itemType, float complexity, int nItems, String name) {
     for (int i=0; i<nItems; i++) {
-      item I = U.generateItem(itemType, complexity);
-      U.addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+      item I = items.generateItem(itemType, complexity);
+      addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
     }
     saveTable(table, "data/"+ name +".csv");
   }
+
   void init() {
     T.addColumn("complexity");
     T.addColumn("stem");
