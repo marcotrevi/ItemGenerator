@@ -3,9 +3,11 @@ class errors {
   error[] errorDB = new error[nErrors];
 
   errors() {
+    // error database
     for (int i=0; i<nErrors; i++) {
       errorDB[i] = new error();
     }
+    
   }
 
   //######################################################################################## ERROR DATABASE
