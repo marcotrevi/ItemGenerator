@@ -155,41 +155,52 @@ class errors {
     error E = new error();
 
     // check possible errors
+    /*
     int errorIndex1 = U.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = U.permutation(availability(M2, "square"))[0];
-    monomial errorM1 = squareError(M1, errorIndex1);
-    monomial errorM2 = squareError(M2, errorIndex2);
+     int errorIndex2 = U.permutation(availability(M2, "square"))[0];
+     monomial errorM1 = squareError(M1, errorIndex1);
+     monomial errorM2 = squareError(M2, errorIndex2);
+     */
+
+    int errorIndex1 = U.permutation(availability(M1, "root"))[0];
+    int errorIndex2 = U.permutation(availability(M2, "root"))[0];
+    monomial errorM1 = rootError(M1, errorIndex1);
+    monomial errorM2 = rootError(M2, errorIndex2);
+
+    int[] sumPerm = U.permutation(2);
+    int[] diffPerm = U.permutation(2);
+    int[] multPerm = U.permutation(2);
 
     switch(errorType) {
     case 0: // error on M1 square
-      E.errorName = U.multiply(U.sum(errorM1, M2, 0).stringify(), U.diff(errorM1, M2, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(errorM1, M2, sumPerm[0]).stringify(), U.diff(errorM1, M2, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 square
-      E.errorName = U.multiply(U.sum(M1, errorM2, 0).stringify(), U.diff(M1, errorM2, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(M1, errorM2, sumPerm[0]).stringify(), U.diff(M1, errorM2, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex2);
       break;
     case 2: // incorrect identification of monomials
-      E.errorName = U.multiply(U.sum(M2, M1, 0).stringify(), U.diff(M2, M1, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(M2, M1, sumPerm[0]).stringify(), U.diff(M2, M1, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(-1);
       break;
     case 3: // error on both squares
-      E.errorName = U.multiply(U.sum(errorM1, errorM2, 0).stringify(), U.diff(errorM1, errorM2, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(errorM1, errorM2, sumPerm[0]).stringify(), U.diff(errorM1, errorM2, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
     case 4: // error on M1 square and incorrect identification
-      E.errorName = U.multiply(U.sum(M2, errorM1, 0).stringify(), U.diff(M2, errorM1, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(M2, errorM1, sumPerm[0]).stringify(), U.diff(M2, errorM1, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex1);
       E.errorType.append(-1);
       break;
     case 5: // error on M2 square and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, M1, 0).stringify(), U.diff(errorM2, M1, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(errorM2, M1, sumPerm[0]).stringify(), U.diff(errorM2, M1, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);
       break;
     case 6: // error on both squares and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, errorM1, 0).stringify(), U.diff(errorM2, errorM1, 0).stringify(), 0);
+      E.errorName = U.multiply(U.sum(errorM2, errorM1, sumPerm[0]).stringify(), U.diff(errorM2, errorM1, diffPerm[0]).stringify(), multPerm[0]);
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       E.errorType.append(-1);

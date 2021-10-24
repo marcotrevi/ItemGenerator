@@ -351,15 +351,20 @@ class utils {
 
   polynomial sum(monomial M1, monomial M2, int perm) {
     polynomial S = new polynomial();
-    S.terms.add(M1);
-    S.terms.add(M2);
+    if (perm == 0) {
+      S.terms.add(M1);
+      S.terms.add(M2);
+    } else {
+      S.terms.add(M2);
+      S.terms.add(M1);
+    }
     return S;
   }
 
   polynomial multiSum(monomial[] M, int[] perm) {
     polynomial S = new polynomial();
     for (int i=0; i<M.length; i++) {
-      S.terms.add(M[i]);
+      S.terms.add(M[perm[i]]);
     }
     return S;
   }
@@ -449,10 +454,13 @@ class utils {
     String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
     // answer
     String answer = "";
+    int[] permSum = permutation(2);
+    int[] permDiff = permutation(2);
+
     if (latex) {
-      answer = "\\left(" + sum(M1, M2, floor(random(0, 2))).stringify() + "\\right)\\left(" + diff(M1, M2, floor(random(0, 2))).stringify() + "\\right)";
+      answer = "\\left(" + sum(M1, M2, permSum[0]).stringify() + "\\right)\\left(" + diff(M1, M2, permDiff[0]).stringify() + "\\right)";
     } else {
-      answer = "(" + sum(M1, M2, floor(random(0, 2))).stringify() + ")(" + diff(M1, M2, floor(random(0, 2))).stringify() + ")";
+      answer = "(" + sum(M1, M2, permSum[0]).stringify() + ")(" + diff(M1, M2, permDiff[0]).stringify() + ")";
     }
     // distractors
     String[] distractors = new String[3];
@@ -614,12 +622,28 @@ class utils {
     newRow.setString("distractor3", distractor3);
   }
 
+  void initTable() {
+    T.addColumn("complexity");
+    T.addColumn("stem");
+    T.addColumn("answer");  
+    T.addColumn("distractor1"); 
+    T.addColumn("distractor2"); 
+    T.addColumn("distractor3"); 
+    // this is to facilitate deleting previous column names
+    TableRow newRow = T.addRow();
+    newRow.setString("complexity", "difficulty");
+    newRow.setString("stem", "stem");
+    newRow.setString("answer", "choice");
+    newRow.setString("distractor1", "choice");
+    newRow.setString("distractor2", "choice");
+    newRow.setString("distractor3", "choice");
+  }
+
   void generateCsv(Table table, String itemType, float complexity, int nItems, String name) {
     for (int i=0; i<nItems; i++) {
       item I = U.generateItem(itemType, complexity);
       U.addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
     }
-    table.removeRow(0); // keeps true headings
     saveTable(table, "data/"+ name +".csv");
   }
 }
