@@ -1,8 +1,8 @@
-class algebricFraction {
+class algebraicFraction {
   polynomial N = new polynomial();
   polynomial D = new polynomial();
 
-  algebricFraction() {
+  algebraicFraction() {
   }
 
   String stringify() {

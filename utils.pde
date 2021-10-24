@@ -45,7 +45,7 @@ class utils {
     }
 
     monomial m = new monomial(nVariables);
-    if (random(0, 1) < 0.5) {
+    if (random(0, 1) < 0.66) { // slight preference to positive coefficients
       m.sign = 1;
     } else {
       m.sign = -1;
@@ -619,6 +619,7 @@ class utils {
       item I = U.generateItem(itemType, complexity);
       U.addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
     }
+    table.removeRow(0); // keeps true headings
     saveTable(table, "data/"+ name +".csv");
   }
 }
