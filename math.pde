@@ -90,13 +90,11 @@ class math {
     return gcd;
   }
 
-  int[] fractionSum(int a, int b, int c, int d) {
-    // returns the fraction a/b + c/d
-    int[] sumFraction = new int[2]; // numerator and denominator
-    int lcm = lcm(b, d);
-    sumFraction[0] = lcm/b*a + lcm/d*c;
-    sumFraction[1] = lcm;
-    return sumFraction;
+  fraction fractionSum(fraction f1, fraction f2) {
+    // returns the fraction f1 + f2
+    int lcm = lcm(f1.D, f2.D);
+    fraction f = new fraction(lcm/f1.D*f1.N + lcm/f2.D*f2.N,lcm);
+    return f;
   }
 
   int[] fractionSimplify(int a, int b) {

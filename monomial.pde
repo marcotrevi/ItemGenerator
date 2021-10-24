@@ -1,7 +1,7 @@
 class monomial {
   int sign; // +1 or -1
   int nVariables;
-  int[] coefficient = new int[2];
+  fraction coefficient = new fraction(1,1);
   int[] variables;
   int[] degrees;
   int degree = 0;
@@ -21,7 +21,7 @@ class monomial {
 
   boolean isInt() {
     boolean check = false;
-    if (coefficient[1] == 1) {
+    if (coefficient.D == 1) {
       check = true;
     }
     return check;
@@ -38,20 +38,20 @@ class monomial {
       _sign = "+";
     }
     // check if coefficient is 1
-    if (coefficient[0] == 1 && coefficient[1] == 1 && degree == 0) {
+    if (coefficient.N == 1 && coefficient.D == 1 && degree == 0) {
       // monomial is unity: +1 or -1
       _coefficient = str(1);
     }    
-    if (coefficient[0] != 1 && coefficient[1] == 1) {
+    if (coefficient.N != 1 && coefficient.D == 1) {
       // coefficient is an integer different from 1
-      _coefficient = str(coefficient[0]);
+      _coefficient = str(coefficient.N);
     }
-    if (coefficient[1] > 1) {
+    if (coefficient.D > 1) {
       // coefficient is a fraction.
       if (latex) {
-        _coefficient = "\\frac{"+ str(coefficient[0]) + "}{" + str(coefficient[1]) +"}";
+        _coefficient = "\\frac{"+ str(coefficient.N) + "}{" + str(coefficient.D) +"}";
       } else{
-        _coefficient = str(coefficient[0]) + "/" + str(coefficient[1]);
+        _coefficient = str(coefficient.N) + "/" + str(coefficient.D);
       }
     }
     for (int i=0; i<nVariables; i++) {

@@ -18,16 +18,16 @@ class errors {
     switch(errorType) {
     case 0: // root of only numerator
       // WARNING: is correct if coefficient is an integer
-      R.coefficient[0] = M.coefficient[0];
-      R.coefficient[1] = int(pow(M.coefficient[1], 2));
+      R.coefficient.N = M.coefficient.N;
+      R.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<M.nVariables; i++) {
         R.degrees[i] = M.degrees[i]*2;
       }
       break;
     case 1: // root only of variable part
       // WARNING: is correct if coefficient is 1
-      R.coefficient[0] = int(pow(M.coefficient[0], 2));
-      R.coefficient[1] = int(pow(M.coefficient[1], 2));
+      R.coefficient.N = int(pow(M.coefficient.N, 2));
+      R.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<R.nVariables; i++) {
         R.degrees[i] = M.degrees[i];
       }
@@ -35,15 +35,15 @@ class errors {
     case 2: // root only of coefficient
       // WARNING: is correct if coefficient is 1 or if degree is 0.
       R.sign = M.sign;
-      R.coefficient[0] = M.coefficient[0];
-      R.coefficient[1] = M.coefficient[1];
+      R.coefficient.N = M.coefficient.N;
+      R.coefficient.D = M.coefficient.D;
       for (int i=0; i<R.nVariables; i++) {
         R.degrees[i] = M.degrees[i]*2;
       }
       break;
     case 3: // half of coefficient (sort of fake error to have at least one available error even when the monomial is the number 1)
-      R.coefficient[0] = 2*M.coefficient[0];
-      R.coefficient[1] = M.coefficient[1];
+      R.coefficient.N = 2*M.coefficient.N;
+      R.coefficient.D = M.coefficient.D;
       for (int i=0; i<R.nVariables; i++) {
         R.degrees[i] = M.degrees[i]*2;
       }
@@ -61,15 +61,15 @@ class errors {
     DP.sign = 1;
     switch(errorType) {
     case 0: // root of only numerator
-      DP.coefficient[0] = M.coefficient[0];
-      DP.coefficient[1] = int(pow(M.coefficient[1], 2));
+      DP.coefficient.N = M.coefficient.N;
+      DP.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<M.nVariables; i++) {
         DP.degrees[i] = M.degrees[i]*2;
       }
       break;
     case 1: // only variable degree is cut in half
-      DP.coefficient[0] = int(pow(M.coefficient[0], 2));
-      DP.coefficient[1] = int(pow(M.coefficient[1], 2));
+      DP.coefficient.N = int(pow(M.coefficient.N, 2));
+      DP.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<DP.nVariables; i++) {
         DP.degrees[i] = M.degrees[i];
       }
@@ -89,8 +89,8 @@ class errors {
     case 0: // missed square of coefficient in squaring a monomial: (kx)^2 = kx^2
       // WARNING: is correct if coefficient is 1
       S.sign = 1;
-      S.coefficient[0] = M.coefficient[0];
-      S.coefficient[1] = M.coefficient[1];
+      S.coefficient.N = M.coefficient.N;
+      S.coefficient.D = M.coefficient.D;
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
@@ -98,8 +98,8 @@ class errors {
     case 1: // double of coefficient instead of square (kx)^2= 2kx^2
       // WARNING: is correct if coefficient is 2
       S.sign = M.sign;
-      S.coefficient[0] = 2*M.coefficient[0];
-      S.coefficient[1] = M.coefficient[1];
+      S.coefficient.N = 2*M.coefficient.N;
+      S.coefficient.D = M.coefficient.D;
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
@@ -107,8 +107,8 @@ class errors {
     case 2: // double of monomial instead of square: (kx)^2 = 2kx
       // WARNING: is correct if monomial is constant and equal to 2
       S.sign = M.sign;
-      S.coefficient[0] = 2*M.coefficient[0];
-      S.coefficient[1] = M.coefficient[1];
+      S.coefficient.N = 2*M.coefficient.N;
+      S.coefficient.D = M.coefficient.D;
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i];
       }
@@ -116,8 +116,8 @@ class errors {
     case 3: // square of exponent instead of double: (kx^n)^2 = k^2x^(n^2)
       // WARNING: is correct if coefficient is 1 or if exponent is 2
       S.sign = 1;
-      S.coefficient[0] = int(pow(M.coefficient[0], 2));
-      S.coefficient[1] = int(pow(M.coefficient[1], 2));
+      S.coefficient.N = int(pow(M.coefficient.N, 2));
+      S.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = int(pow(M.degrees[i], 2));
       }
@@ -125,11 +125,11 @@ class errors {
     case 4: // doubling coefficient, both numerator and denominator if coefficient is a fraction, while correctly squaring variables
       // WARNING: is correct if coefficient is 2
       S.sign = M.sign;
-      S.coefficient[0] = 2*M.coefficient[0];
-      if (M.coefficient[1] > 1) {
-        S.coefficient[1] = 2*M.coefficient[1];
+      S.coefficient.N = 2*M.coefficient.N;
+      if (M.coefficient.D > 1) {
+        S.coefficient.D = 2*M.coefficient.D;
       } else {
-        S.coefficient[1] = M.coefficient[1];
+        S.coefficient.D = M.coefficient.D;
       }
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = 2*M.degrees[i];
@@ -137,8 +137,8 @@ class errors {
       break;
     case 5: // kept minus sign. Rest is ok. Available error only if M.sign = -1
       S.sign = -1;
-      S.coefficient[0] = int(pow(M.coefficient[0], 2));
-      S.coefficient[1] = int(pow(M.coefficient[1], 2));
+      S.coefficient.N = int(pow(M.coefficient.N, 2));
+      S.coefficient.D = int(pow(M.coefficient.D, 2));
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = 2*M.degrees[i];
       }
@@ -325,39 +325,43 @@ class errors {
       monomial monic1 = new monomial(M1.nVariables);
       monic1.variables = M1.variables;
       monic1.degrees = M1.degrees;
-      monic1.coefficient[0] = 1;
-      monic1.coefficient[1] = 1;
+      monic1.coefficient = new fraction(1, 1);
       monic1.setDegree();
 
       monomial monic2 = new monomial(M2.nVariables);
       monic2.variables = M2.variables;
       monic2.degrees = M2.degrees;
-      monic2.coefficient[0] = 1;
-      monic2.coefficient[1] = 1;
+      monic2.coefficient = new fraction(1, 1);
       monic2.setDegree();
-      int a = M1.coefficient[0];
-      int b = M1.coefficient[1];
-      int c = M2.coefficient[0];
-      int d = M2.coefficient[1];
+      int a = M1.coefficient.N;
+      int b = M1.coefficient.D;
+      int c = M2.coefficient.N;
+      int d = M2.coefficient.D;
 
       if (M1.degree == 0) {
         monomial P = U.productMonomial(U.squareMonomial(monic2), U.productMonomial(monic1, monic2));
+        fraction f1 = new fraction(c*c, d*d);  
         if (M1.sign*M2.sign == -1) {
-          P.coefficient = math.fractionSum(c*c, d*d, -2*a*c, b*d);
+          fraction f2 = new fraction(-2*a*c, b*d);
+          P.coefficient = math.fractionSum(f1, f2);
         } else {
-          P.coefficient = math.fractionSum(c*c, d*d, 2*a*c, b*d);
+          fraction f2 = new fraction(2*a*c, b*d);
+          P.coefficient = math.fractionSum(f1, f2);
         }
-        P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
+        P.coefficient.simplify();
         E.errorName = U.sum(P, U.squareMonomial(M1), 0).stringify();
       } else {
         monomial P = U.productMonomial(U.squareMonomial(monic1), U.productMonomial(monic1, monic2));
+        fraction f1 = new fraction(a*a, b*b);  
         if (M1.sign*M2.sign == -1) {
-          P.coefficient = math.fractionSum(a*a, b*b, -2*a*c, b*d);
+          fraction f2 = new fraction(-2*a*c, b*d);
+          P.coefficient = math.fractionSum(f1, f2);
         } else {
-          P.coefficient = math.fractionSum(a*a, b*b, 2*a*c, b*d);
+          fraction f2 = new fraction(2*a*c, b*d);
+          P.coefficient = math.fractionSum(f1, f2);
         }
-        P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-        if (P.coefficient[0] == -1 && P.coefficient[1] == 1) {
+        P.coefficient.simplify();
+        if (P.coefficient.N == -1 && P.coefficient.D == 1) {
           E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0).stringify());
         } else {          
           E.errorName = U.sum(P, U.squareMonomial(M2), 0).stringify();
@@ -447,8 +451,8 @@ class errors {
       if (M.sign == 1) {
         // if M has positive coefficient, error 5 not available
         availableErrors = U.removeInt(availableErrors, 5);
-        if (M.coefficient[1] == 1) {
-          switch(M.coefficient[0]) {
+        if (M.coefficient.D == 1) {
+          switch(M.coefficient.N) {
           case 1:
             // if M has coefficient 1, error 0 and 3  not available
             availableErrors = U.removeInt(availableErrors, 0);
@@ -472,16 +476,16 @@ class errors {
       for (int i=0; i<4; i++) {
         availableErrors.append(i);
       }
-      if (M.coefficient[1] == 1 && M.degree == 0) {
+      if (M.coefficient.D == 1 && M.degree == 0) {
         // monomial is an integer
         availableErrors = U.removeInt(availableErrors, 0);
-        if (M.coefficient[0] == 1) {
+        if (M.coefficient.N == 1) {
           // monomial is the number 1
           availableErrors = U.removeInt(availableErrors, 1);
           availableErrors = U.removeInt(availableErrors, 2);
         }
       }
-      if (M.coefficient[0] == 1 && M.coefficient[1] == 1) {
+      if (M.coefficient.N == 1 && M.coefficient.D == 1) {
         availableErrors = U.removeInt(availableErrors, 1);
       }
       if (M.degree == 0) {

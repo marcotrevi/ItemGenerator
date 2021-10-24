@@ -32,7 +32,8 @@ class utils {
       num = math.difficultInts[floor(random(math.easyInts.length))];
       den = math.difficultInts[floor(random(math.easyInts.length))];
     }
-    int[] coefficient = math.fractionSimplify(num, den);
+    fraction coefficient = new fraction(num, den);
+    coefficient.simplify();
 
     int nVariables;
 
@@ -71,8 +72,8 @@ class utils {
       // test monomial
       m = new monomial(1);
       m.sign = 1;
-      m.coefficient[0] = 2;
-      m.coefficient[1] = 1;
+      m.coefficient.N = 2;
+      m.coefficient.D = 1;
 
       m.variables[0] = 0;
 
@@ -80,8 +81,8 @@ class utils {
     } else if (complexity == -2) {
       m = new monomial(2);
       m.sign = -1;
-      m.coefficient[0] = 1;
-      m.coefficient[1] = 1;
+      m.coefficient.N = 1;
+      m.coefficient.D = 1;
 
       m.variables[0] = 0;
       m.variables[1] = 1;
@@ -98,7 +99,7 @@ class utils {
     S.variables = M.variables;
     S.degrees = M.degrees;
     S.sign = math.setSign();
-    S.coefficient = math.setCoefficient();
+    S.coefficient = new fraction(1,1);
     return S;
   }
 
@@ -119,10 +120,10 @@ class utils {
     monomial P = new monomial(M.nVariables);
     P.sign = M.sign;
     P.variables = M.variables;
-    P.coefficient[0] = M.coefficient[0]*k[0];
-    P.coefficient[1] = M.coefficient[1]*k[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-
+    P.coefficient.N = M.coefficient.N*k[0];
+    P.coefficient.D = M.coefficient.D*k[1];
+    P.coefficient.simplify();
+    
     for (int i=0; i<P.nVariables; i++) {
       P.degrees[i] = M.degrees[i];
     }
@@ -162,10 +163,9 @@ class utils {
 
     monomial P = new monomial(nVariables);
     P.sign = M1.sign * M2.sign;
-    P.coefficient[0] = M1.coefficient[0]*M2.coefficient[0];
-    P.coefficient[1] = M1.coefficient[1]*M2.coefficient[1];
-    P.coefficient = math.fractionSimplify(P.coefficient[0], P.coefficient[1]);
-
+    P.coefficient = new fraction(M1.coefficient.N*M2.coefficient.N,M1.coefficient.D*M2.coefficient.D);
+    P.coefficient.simplify();
+    
     for (int i=0; i<nVariables; i++) {
       P.variables[i] = variables.get(i);
       P.degrees[i] = degrees.get(i);
@@ -178,8 +178,8 @@ class utils {
     monomial S = new monomial(M.nVariables);
     S.sign = 1;
     S.variables = M.variables;
-    S.coefficient[0] = int(pow(M.coefficient[0], 2));
-    S.coefficient[1] = int(pow(M.coefficient[1], 2));
+    S.coefficient.N = int(pow(M.coefficient.N, 2));
+    S.coefficient.D = int(pow(M.coefficient.D, 2));
     for (int i=0; i<S.nVariables; i++) {
       S.degrees[i] = M.degrees[i]*2;
     }
@@ -191,8 +191,8 @@ class utils {
     monomial S = new monomial(M.nVariables);
     S.variables = M.variables;
     S.sign = -M.sign;
-    S.coefficient[0] = M.coefficient[0];
-    S.coefficient[1] = M.coefficient[1];
+    S.coefficient.N = M.coefficient.N;
+    S.coefficient.D = M.coefficient.D;
     for (int i=0; i<S.nVariables; i++) {
       S.degrees[i] = M.degrees[i];
     }
