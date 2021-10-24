@@ -242,54 +242,6 @@ class errors {
 
   // ########################################################################################################################### ERROR CONSTRUCTORS
 
-  error differenceOfSquaresError(monomial M1, monomial M2, int errorType) {
-    // item type: x^2 - y^2
-    error E = new error();
-
-    // check possible errors
-    int errorIndex1 = utils.permutation(availability(M1, "root"))[0];
-    int errorIndex2 = utils.permutation(availability(M2, "root"))[0];
-    monomial errorM1 = rootError(M1, errorIndex1);
-    monomial errorM2 = rootError(M2, errorIndex2);
-
-    switch(errorType) {
-    case 0: // error on M1 square
-      E.errorName = utils.multiply(utils.sum(errorM1, M2, 0).stringify(), utils.diff(errorM1, M2, 0).stringify(), 0);
-      E.errorType.append(errorIndex1);
-      break;
-    case 1: // error on M2 square
-      E.errorName = utils.multiply(utils.sum(M1, errorM2, 0).stringify(), utils.diff(M1, errorM2, 0).stringify(), 0);
-      E.errorType.append(errorIndex2);
-      break;
-    case 2: // incorrect identification of monomials
-      E.errorName = utils.multiply(utils.sum(M2, M1, 0).stringify(), utils.diff(M2, M1, 0).stringify(), 0);
-      E.errorType.append(-1);
-      break;
-    case 3: // error on both squares
-      E.errorName = utils.multiply(utils.sum(errorM1, errorM2, 0).stringify(), utils.diff(errorM1, errorM2, 0).stringify(), 0);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      break;
-    case 4: // error on M1 square and incorrect identification
-      E.errorName = utils.multiply(utils.sum(M2, errorM1, 0).stringify(), utils.diff(M2, errorM1, 0).stringify(), 0);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-1);
-      break;
-    case 5: // error on M2 square and incorrect identification
-      E.errorName = utils.multiply(utils.sum(errorM2, M1, 0).stringify(), utils.diff(errorM2, M1, 0).stringify(), 0);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    case 6: // error on both squares and incorrect identification
-      E.errorName = utils.multiply(utils.sum(errorM2, errorM1, 0).stringify(), utils.diff(errorM2, errorM1, 0).stringify(), 0);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    }
-    return E;
-  }
-
   error binomialSquareExpandedError(monomial M1, monomial M2, int errorType) {
     // item type: x^2 + y^2 + 2xy
     error E = new error();
