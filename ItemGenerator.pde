@@ -8,10 +8,7 @@ Table T = new Table();
 
 void setup() {
 
-  utils.init();// creates csv table
-
-  fraction F = new fraction(2, 1);
-  items.scalarPower(F,2).printme();
+//  utils.init();// creates csv table
 
   monomial m1 = utils.generateMonomial(-1);
   monomial m2 = utils.generateMonomial(-2);
@@ -21,7 +18,7 @@ void setup() {
   String _m3 = m3.stringify();
 
   //items.generateItem("x^2-y^2", 0.5).printme();
-  //items.generateItem("(x+y)(x-y)",0.5).printme(); 
+  items.generateItem("(x+y)(x-y)",0.5).printme(); 
   //items.generateItem("x^2+y^2+2xy",0.5).printme();
   //items.generateItem("(x+y)^2",0.5).printme();
 

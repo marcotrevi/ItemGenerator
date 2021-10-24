@@ -247,10 +247,10 @@ class errors {
     error E = new error();
 
     // check possible errors
-    int errorIndex1 = utils.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = utils.permutation(availability(M2, "square"))[0];
-    monomial errorM1 = squareError(M1, errorIndex1);
-    monomial errorM2 = squareError(M2, errorIndex2);
+    int errorIndex1 = utils.permutation(availability(M1, "root"))[0];
+    int errorIndex2 = utils.permutation(availability(M2, "root"))[0];
+    monomial errorM1 = rootError(M1, errorIndex1);
+    monomial errorM2 = rootError(M2, errorIndex2);
 
     switch(errorType) {
     case 0: // error on M1 square

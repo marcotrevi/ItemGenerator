@@ -35,11 +35,11 @@ class items {
 
   item sumDifference(monomial X, monomial Y) {
     // stem: (x+y)(x-y) = 
-    String stem = utils.sumDiff(X, Y, floor(random(0, 8)));
+    String stem = utils.sumDiff(X, Y, 0);
     // answer
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
-    String answer = utils.diff(X2, Y2, floor(random(0, 2))).stringify();
+    String answer = utils.diff(X2, Y2, utils.permutation(2)[0]).stringify();
     // distractors - each distractor can contain multiple errors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -49,41 +49,57 @@ class items {
     E[2] = new error();
 
     int[] perms = utils.permutation(7); // selecting error location in distractors
+    int[] X_availability, Y_availability;
+    monomial X2_error, Y2_error;
+    int X_errorIndex, Y_errorIndex;
+
     for (int i=0; i<3; i++) {
       // selecting errors
+      // check available errors on X
+      X_availability = errors.availability(X, "square");
+      // randomly selects error from available errors
+      X_errorIndex = utils.permutation(X_availability)[0];
+      X2_error = errors.squareError(X, X_errorIndex);
+
+      // check available errors on Y
+      Y_availability = errors.availability(Y, "square");
+      // randomly selects error from available errors
+      Y_errorIndex = utils.permutation(Y_availability)[0];
+      Y2_error = errors.squareError(Y, Y_errorIndex);
+
       switch(perms[i]) {
       case 0: // error on X square
-        E[i].errorName = utils.diff(errors.squareError(X, 0), Y2, 0).stringify();
-        E[i].errorType.append(0);
+        E[i].errorName = utils.diff(X2_error, Y2, 0).stringify();
+        E[i].errorType.append(X_errorIndex);
         break;
       case 1: // error on Y square
-        E[i].errorName = utils.diff(X2, errors.squareError(Y, 0), 0).stringify();
-        E[i].errorType.append(0);
+        E[i].errorName = utils.diff(X2, Y2_error, 0).stringify();
+        E[i].errorType.append(Y_errorIndex);
         break;
       case 2: // incorrect identification of monomials
         E[i].errorName = utils.diff(Y2, X2, 0).stringify();
-        E[i].errorType.append(-1);
+        E[i].errorType.append(50);
         break;
       case 3: // error on both squares
-        E[i].errorName = utils.diff(errors.squareError(X, 0), errors.squareError(Y, 0), 0).stringify();
-        E[i].errorType.append(0);
-        E[i].errorType.append(0);
+        E[i].errorName = utils.diff(X2_error, Y2_error, 0).stringify();
+        E[i].errorType.append(X_errorIndex);
+        E[i].errorType.append(Y_errorIndex);
         break;
       case 4: // error on X square and incorrect identification
-        E[i].errorName = utils.diff(Y2, errors.squareError(X, 0), 0).stringify();
-        E[i].errorType.append(0);
-        E[i].errorType.append(-1);
+        E[i].errorName = utils.diff(Y2, X2_error, 0).stringify();
+        E[i].errorType.append(X_errorIndex);
+        E[i].errorType.append(50);
         break;
       case 5: // error on Y square and incorrect identification
-        E[i].errorName = utils.diff(errors.squareError(Y, 0), X2, 0).stringify();
-        E[i].errorType.append(0);
-        E[i].errorType.append(-1);
+        E[i].errorName = utils.diff(Y2_error, X2, 0).stringify();
+        E[i].errorType.append(Y_errorIndex);
+        E[i].errorType.append(50);
         break;
       case 6: // error on both squares and incorrect identification
-        E[i].errorName = utils.diff(errors.squareError(Y, 0), errors.squareError(X, 0), 0).stringify();
-        E[i].errorType.append(0);
-        E[i].errorType.append(0);
-        E[i].errorType.append(-1);
+        E[i].errorName = utils.diff(Y2_error, X2_error, 0).stringify();
+        E[i].errorType.append(X_errorIndex);
+        E[i].errorType.append(Y_errorIndex);
+        E[i].errorType.append(50);
         break;
       }
     }

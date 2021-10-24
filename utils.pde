@@ -116,6 +116,7 @@ class utils {
     }
     return NS;
   }
+  
   monomial scalarProduct(monomial M, int[] k) {
     monomial P = new monomial(M.nVariables);
     P.sign = M.sign;
@@ -360,7 +361,7 @@ class utils {
   polynomial multiSum(monomial[] M, int[] perm) {
     polynomial S = new polynomial();
     for (int i=0; i<M.length; i++) {
-      S.terms.add(M[i]);
+      S.terms.add(M[perm[i]]);
     }
     return S;
   }
@@ -373,7 +374,11 @@ class utils {
 
   String sumDiff(monomial M1, monomial M2, int perm) {
     String ans = "";
-    ans = multiply(sum(M1, M2, 0).stringify(), diff(M1, M2, 0).stringify(), 0);
+    int[] sumPerm = permutation(2);
+    int[] diffPerm = permutation(2);
+    int[] multPerm = permutation(2);
+
+    ans = multiply(sum(M1, M2, sumPerm[0]).stringify(), diff(M1, M2, diffPerm[0]).stringify(), multPerm[0]);
     return ans;
   }
 
