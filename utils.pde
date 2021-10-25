@@ -6,89 +6,102 @@ class utils {
 
   //###################################################################### methods which return a monomial 
 
-  monomial generateMonomial(float complexity) {
-    float[] r = new float[3];
-    r[0] = random(0, complexity);
-    r[1] = random(0, complexity - r[0]);
-    r[2] = random(0, complexity - r[0] - r[1]);
-    int[] perm = permutation(3);
-    float c_coefficient = random(0, complexity);
-    float c_variables = random(0, complexity);
-    float c_degree = random(0, complexity);
-
-    int num, den;
-
-    if (c_coefficient < 0.25) {
-      // coefficient is an easy int
+  monomial generateMonomial(int[] complexity) {
+    // monomial complexity is a discrete 3D vector: (coefficient, number of variables, max degree)
+    int num = 1;
+    int den = 1;
+    int nVariables = 1;
+    fraction coefficient;
+    int sign = 1;
+    switch(complexity[0]) {
+      /*
+   coefficient complexity:
+       0 - coefficient is 1
+       1 - coefficient is an integer
+       2 - coefficient is a fraction
+       */
+    case 0:
+      num = 1;
+      den = 1;
+      break;
+    case 1:
       num = math.easyInts[floor(random(math.easyInts.length))];
       den = 1;
-    } else if (0.25 <= c_coefficient && c_coefficient < 0.5) {
+      break;
+    case 2:
       num = math.easyInts[floor(random(math.easyInts.length))];
-      den = math.easyInts[floor(random(math.easyInts.length))];
-    } else if (0.5<= c_coefficient && c_coefficient < 0.75) {
-      num = math.mediumInts[floor(random(math.easyInts.length))];
-      den = math.mediumInts[floor(random(math.easyInts.length))];
-    } else {
-      num = math.difficultInts[floor(random(math.easyInts.length))];
-      den = math.difficultInts[floor(random(math.easyInts.length))];
+      den = math.easyInts[floor(random(math.easyInts.length))];    
+      break;
+    default:
+      num = math.primes[floor(random(math.primes.length))];
+      den = math.primes[floor(random(math.primes.length))];    
+      break;
     }
-    fraction coefficient = new fraction(num, den);
+    coefficient = new fraction(num, den);
     coefficient.simplify();
-
-    int nVariables;
-
-    if (c_variables < 0.33) {
-      nVariables = 0;
-    } else if (0.33<= c_variables && c_variables < 0.66) {
+    switch(complexity[1]) {
+      /*
+      n. variables complexity:
+       0 - 1 variable
+       1 - 2 variables
+       2 - 3 variables
+       */
+    case 0:
       nVariables = 1;
-    } else {
-      nVariables = floor(random(1, 3));
+      break;
+    case 1:
+      nVariables = 2;
+      break;
+    case 2:
+      nVariables = 3;
+      break;
+    default:
+      nVariables = floor(random(3, 5));
+      break;
     }
-
+    if (complexity[0] == 0) {
+      sign = 1;
+    } else {
+      if (random(0, 1) < 0.66) { // slight preference to positive coefficients
+        sign = 1;
+      } else {
+        sign = -1;
+      }
+    }
     monomial m = new monomial(nVariables);
-    if (random(0, 1) < 0.66) { // slight preference to positive coefficients
-      m.sign = 1;
-    } else {
-      m.sign = -1;
-    }
-
     m.coefficient = coefficient;
-
+    m.sign = sign;
     int[] p = permutation(varNames.length);
     for (int i=0; i<m.nVariables; i++) {
       m.variables[i] = p[i];
     }
-    if (c_degree < 0.5) {
+    switch(complexity[2]) {
+      /*
+    degree complexity:
+       0 - max degree is 1
+       1 - max degree is 2 
+       2 - max degree is 3
+       */
+    case 0:
       for (int i=0; i<nVariables; i++) {
         m.degrees[i] = 1;
       }
-    } else {
+      break;
+    case 1:
       for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(2, 4));
+        m.degrees[i] = floor(random(1, 3));
       }
-    }
-
-    if (complexity == -1) {
-      // test monomial
-      m = new monomial(1);
-      m.sign = 1;
-      m.coefficient.N = 2;
-      m.coefficient.D = 1;
-
-      m.variables[0] = 0;
-
-      m.degrees[0] = 1;
-    } else if (complexity == -2) {
-      m = new monomial(2);
-      m.sign = -1;
-      m.coefficient.N = 1;
-      m.coefficient.D = 1;
-
-      m.variables[0] = 0;
-      m.variables[1] = 1;
-
-      m.degrees[0] = 1;
-      m.degrees[1] = 2;
+      break;
+    case 2:
+      for (int i=0; i<nVariables; i++) {
+        m.degrees[i] = floor(random(1, 4));
+      }
+      break;
+    default:
+      for (int i=0; i<nVariables; i++) {
+        m.degrees[i] = floor(random(1, 10));
+      }
+      break;
     }
     m.setDegree();
     return m;
@@ -99,11 +112,11 @@ class utils {
     S.variables = M.variables;
     S.degrees = M.degrees;
     S.sign = math.setSign();
-    S.coefficient = new fraction(1,1);
+    S.coefficient = new fraction(1, 1);
     return S;
   }
 
-  monomial generateNonSimilar(monomial M, float complexity) {
+  monomial generateNonSimilar(monomial M, int[] complexity) {
     int i = 0;
     boolean OK = false;
     monomial NS = generateMonomial(complexity);
@@ -123,7 +136,7 @@ class utils {
     P.coefficient.N = M.coefficient.N*k[0];
     P.coefficient.D = M.coefficient.D*k[1];
     P.coefficient.simplify();
-    
+
     for (int i=0; i<P.nVariables; i++) {
       P.degrees[i] = M.degrees[i];
     }
@@ -163,9 +176,9 @@ class utils {
 
     monomial P = new monomial(nVariables);
     P.sign = M1.sign * M2.sign;
-    P.coefficient = new fraction(M1.coefficient.N*M2.coefficient.N,M1.coefficient.D*M2.coefficient.D);
+    P.coefficient = new fraction(M1.coefficient.N*M2.coefficient.N, M1.coefficient.D*M2.coefficient.D);
     P.coefficient.simplify();
-    
+
     for (int i=0; i<nVariables; i++) {
       P.variables[i] = variables.get(i);
       P.degrees[i] = degrees.get(i);
@@ -260,6 +273,27 @@ class utils {
     }
     return perm;
   }
+
+  int[] step(int[] position, int direction, int stepSize) {
+    int[] newPosition = position;
+    newPosition[direction] = newPosition[direction] + stepSize;
+    return newPosition;
+  }
+
+  int[] smoothStep(int[] position) {
+    // updates position vector one step at a time increasing the smallest coordinate
+    int[] newPosition = position;
+    int minIndex = 0;
+    int minCoord = position[0];
+    for (int i=1; i<position.length; i++) {
+      if (minCoord > position[i]) {
+        minCoord = position[i];
+        minIndex = i;
+      }
+    }
+    newPosition[minIndex] = newPosition[minIndex] + 1;
+    return newPosition;
+  } 
 
   String multiply(String a, String b, int perm) {
     String ans = "";
@@ -383,7 +417,7 @@ class utils {
 
   //################################################################ ITEM GENERATOR
 
-  item generateItem(String type, float complexity) {
+  item generateItem(String type, int[] complexity) {
     monomial X, Y;
     item I = new item();
     // each item type has its own constructor
@@ -639,7 +673,7 @@ class utils {
     newRow.setString("distractor3", "choice");
   }
 
-  void generateCsv(Table table, String itemType, float complexity, int nItems, String name) {
+  void generateCsv(Table table, String itemType, int[] complexity, int nItems, String name) {
     for (int i=0; i<nItems; i++) {
       item I = U.generateItem(itemType, complexity);
       U.addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
