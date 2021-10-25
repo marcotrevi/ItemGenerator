@@ -161,21 +161,25 @@ class items {
         E[i].errorType.append(50);
         break;
       case 3: // error on both squares
+      // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(X_error, Y_error, 0).stringify(), utils.diff(X_error, Y_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
         break;
       case 4: // error on M1 square and incorrect identification
+      // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y, X_error, 0).stringify(), utils.diff(Y, X_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(50);
         break;
       case 5: // error on M2 square and incorrect identification
+      // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y_error, X, 0).stringify(), utils.diff(Y_error, X, 0).stringify(), 0);
         E[i].errorType.append(Y_errorIndex);
         E[i].errorType.append(50);
         break;
       case 6: // error on both squares and incorrect identification
+      // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y_error, X_error, 0).stringify(), utils.diff(Y_error, X_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
