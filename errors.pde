@@ -264,60 +264,6 @@ class errors {
     return E;
   }
 
-  error binomialSquareCompactError(monomial M1, monomial M2, int errorType) {
-    // item type: (x+y)^2
-    error E = new error();
-
-    // check possible errors
-    int errorIndex1 = utils.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = utils.permutation(availability(M2, "square"))[0];
-    int errorIndex3 = utils.permutation(availability(M2, "double product"))[0];
-
-    monomial errorM1 = squareError(M1, errorIndex1);
-    monomial errorM2 = squareError(M2, errorIndex2);
-    monomial errorM1M2 = doubleProductError(M1, M2, errorIndex3);
-
-    monomial[] M = new monomial[3];
-    int[] two = {2, 1};
-    switch(errorType) {
-    case 0: // error on M1 square
-      M[0] = errorM1;
-      M[1] = utils.squareMonomial(M2);
-      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
-      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-      E.errorType.append(errorIndex1);
-      break;
-    case 1: // error on M2 square
-      M[0] = utils.squareMonomial(M1);
-      M[1] = errorM2;
-      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
-      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-      E.errorType.append(errorIndex2);
-      break;
-    case 2: // error on both squares
-      M[0] = errorM1;
-      M[1] = errorM2;
-      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
-      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      break;
-    case 3: // sophomore's dream
-      E.errorName = utils.sum(utils.squareMonomial(M1), utils.squareMonomial(M2), 0).stringify();
-      E.errorType.append(-1);
-      break;
-    case 4: // wrong double product sign
-      M[0] = utils.squareMonomial(M1);
-      M[1] = utils.squareMonomial(M2);
-      M[2] = utils.oppositeMonomial(utils.productMonomial(utils.scalarProduct(M1, two), M2));    
-      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-1);
-      break;
-    }
-    return E;
-  }
-
   //############################################################################ END ERRORS
 
   int[] availability(monomial M, String type) {

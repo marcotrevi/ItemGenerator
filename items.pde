@@ -150,7 +150,7 @@ class items {
         E[i].errorName = utils.multiply(utils.sum(X_error, Y, 0).stringify(), utils.diff(X_error, Y, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         break;
-      case 1: // error on M2 square
+      case 1: // error on Y square
         E[i].errorName = utils.multiply(utils.sum(X, Y_error, 0).stringify(), utils.diff(X, Y_error, 0).stringify(), 0);
         E[i].errorType.append(Y_errorIndex);
         break;
@@ -159,25 +159,25 @@ class items {
         E[i].errorType.append(50);
         break;
       case 3: // error on both squares
-      // WARNING! errors cancel if:
+        // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(X_error, Y_error, 0).stringify(), utils.diff(X_error, Y_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
         break;
-      case 4: // error on M1 square and incorrect identification
-      // WARNING! errors cancel if:
+      case 4: // error on X square and incorrect identification
+        // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y, X_error, 0).stringify(), utils.diff(Y, X_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(50);
         break;
-      case 5: // error on M2 square and incorrect identification
-      // WARNING! errors cancel if:
+      case 5: // error on Y square and incorrect identification
+        // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y_error, X, 0).stringify(), utils.diff(Y_error, X, 0).stringify(), 0);
         E[i].errorType.append(Y_errorIndex);
         E[i].errorType.append(50);
         break;
       case 6: // error on both squares and incorrect identification
-      // WARNING! errors cancel if:
+        // WARNING! errors cancel if:
         E[i].errorName = utils.multiply(utils.sum(Y_error, X_error, 0).stringify(), utils.diff(Y_error, X_error, 0).stringify(), 0);
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
@@ -222,11 +222,57 @@ class items {
     String[] distractors = new String[3];
     String[] errs = new String[3];
     error[] E = new error[3];
-    int[] perms = utils.permutation(5); // selecting error type
-    E[0] = errors.binomialSquareCompactError(X, Y, perms[0]);
-    E[1] = errors.binomialSquareCompactError(X, Y, perms[1]);
-    E[2] = errors.binomialSquareCompactError(X, Y, perms[2]);
 
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    // check possible errors
+    int errorIndex1 = utils.permutation(errors.availability(X, "square"))[0];
+    int errorIndex2 = utils.permutation(errors.availability(Y, "square"))[0];
+    monomial X_error = errors.squareError(X, errorIndex1);
+    monomial Y_error = errors.squareError(Y, errorIndex2);
+
+    int[] perms = utils.permutation(5); // selecting error type
+
+    for (int i=0; i<3; i++) {
+      switch(perms[i]) {
+      case 0: // error on X square
+        M[0] = X_error;
+        M[1] = utils.squareMonomial(Y);
+        M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
+        E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
+        E[i].errorType.append(errorIndex1);
+        break;
+      case 1: // error on Y square
+        M[0] = utils.squareMonomial(X);
+        M[1] = Y_error;
+        M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
+        E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
+        E[i].errorType.append(errorIndex2);
+        break;
+      case 2: // error on both squares
+        M[0] = X_error;
+        M[1] = Y_error;
+        M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
+        E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
+        E[i].errorType.append(errorIndex1);
+        E[i].errorType.append(errorIndex2);
+        break;
+      case 3: // sophomore's dream
+        E[i].errorName = utils.sum(utils.squareMonomial(X), utils.squareMonomial(Y), 0).stringify();
+        E[i].errorType.append(-1);
+        break;
+      case 4: // wrong double product sign
+        M[0] = utils.squareMonomial(X);
+        M[1] = utils.squareMonomial(Y);
+        M[2] = utils.oppositeMonomial(utils.productMonomial(utils.scalarProduct(X, two), Y));    
+        E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
+        E[i].errorType.append(errorIndex1);
+        E[i].errorType.append(-1);
+        break;
+      }
+    }
     setParams(distractors, E, errs);
 
     item I = new item();
@@ -329,5 +375,4 @@ class items {
     errs[1] = E[1].errorType.toString();
     errs[2] = E[2].errorType.toString();
   }
-
 }
