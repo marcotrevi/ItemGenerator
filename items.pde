@@ -31,7 +31,7 @@ class items {
 
   //################################################################################### (x+y)(x-y)
 
-  item sumDifference(monomial X, monomial Y) {
+  item sumDifference(monomial X, monomial Y, int[] complexity) {
     // stem: (x+y)(x-y) = 
     String stem = utils.sumDiff(X, Y, 0);
     // answer
@@ -330,34 +330,4 @@ class items {
     errs[2] = E[2].errorType.toString();
   }
 
-  //######################################################################################## ITEM GENERATOR
-
-  item generateItem(String type, int[] complexity) {
-    monomial X, Y;
-    item I = new item();
-    // each item type has its own constructor
-    switch(type) {
-    case "x^2-y^2":
-      X = utils.generateMonomial(complexity);
-      Y = utils.generateNonSimilar(X, complexity);
-      I = differenceOfSquares(X, Y);
-      break;
-    case "(x+y)(x-y)":
-      X = utils.generateMonomial(complexity);
-      Y = utils.generateNonSimilar(X, complexity);
-      I = sumDifference(X, Y);
-      break;
-    case "x^2+y^2+2xy":
-      X = utils.generateMonomial(complexity);
-      Y = utils.generateNonSimilar(X, complexity);
-      I = binomialSquareExpanded(X, Y);
-      break;
-    case "(x+y)^2":
-      X = utils.generateMonomial(complexity);
-      Y = utils.generateNonSimilar(X, complexity);
-      I = binomialSquareCompact(X, Y);
-      break;
-    }
-    return I;
-  }
 }

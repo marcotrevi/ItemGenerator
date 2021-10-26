@@ -427,221 +427,24 @@ class utils {
     case "x^2-y^2":
       X = generateMonomial(complexity);
       Y = generateNonSimilar(X, complexity);
-      I = differenceOfSquares(X, Y);
+      I = items.differenceOfSquares(X, Y);
       break;
     case "(x+y)(x-y)":
       X = generateMonomial(complexity);
       Y = generateNonSimilar(X, complexity);
-      I = sumDifference(X, Y, complexity);
+      I = items.sumDifference(X, Y, complexity);
       break;
     case "x^2+y^2+2xy":
       X = generateMonomial(complexity);
       Y = generateNonSimilar(X, complexity);
-      I = binomialSquareExpanded(X, Y);
+      I = items.binomialSquareExpanded(X, Y);
       break;
     case "(x+y)^2":
       X = generateMonomial(complexity);
       Y = generateNonSimilar(X, complexity);
-      I = binomialSquareCompact(X, Y);
+      I = items.binomialSquareCompact(X, Y);
       break;
     }
-    return I;
-  }
-
-  //################################################################################### (X+Y)(X-Y)
-
-  item sumDifference(monomial M1, monomial M2, int[] complexity) {
-    // stem: (M1+M2)(M1-M2) = 
-    String stem = sumDiff(M1, M2, floor(random(0, 8)));
-    // answer
-    String answer = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(7); // selecting error location in distractors
-    error E1 = errors.sumDiffError(M1, M2, perms[0]);
-    error E2 = errors.sumDiffError(M1, M2, perms[1]);
-    error E3 = errors.sumDiffError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "(x+y)(x-y)";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### X^2 - Y^2
-
-  item differenceOfSquares(monomial M1, monomial M2) {
-    // stem: M1^2 - M2^2 = 
-    String stem = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
-    // answer
-    String answer = "";
-    int[] permSum = permutation(2);
-    int[] permDiff = permutation(2);
-
-    if (latex) {
-      answer = "\\left(" + sum(M1, M2, permSum[0]).stringify() + "\\right)\\left(" + diff(M1, M2, permDiff[0]).stringify() + "\\right)";
-    } else {
-      answer = "(" + sum(M1, M2, permSum[0]).stringify() + ")(" + diff(M1, M2, permDiff[0]).stringify() + ")";
-    }
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(7); // selecting error location in distractors
-    error E1 = errors.differenceOfSquaresError(M1, M2, perms[0]);
-    error E2 = errors.differenceOfSquaresError(M1, M2, perms[1]);
-    error E3 = errors.differenceOfSquaresError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "x^2-y^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### (X+Y)^2
-
-  item binomialSquareCompact(monomial M1, monomial M2) {
-    int[] two = {2, 1};
-    // stem: (M1 + M2)^2 = 
-    String stem ="";
-    if (latex) {
-      stem = "\\left("+sum(M1, M2, floor(random(0, 2))).stringify()+"\\right)^2";
-    } else {
-      stem = "("+sum(M1, M2, floor(random(0, 2))).stringify()+")^2";
-    }
-    // answer
-    monomial[] M = new monomial[3];
-    M[0] = squareMonomial(M1);
-    M[1] = squareMonomial(M2);
-    M[2] = scalarProduct(productMonomial(M1, M2), two);
-
-    String answer = multiSum(M, U.permutation(3)).stringify();
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-
-    int[] perms = permutation(5); // selecting error type
-    error E1 = errors.binomialSquareCompactError(M1, M2, perms[0]);
-    error E2 = errors.binomialSquareCompactError(M1, M2, perms[1]);
-    error E3 = errors.binomialSquareCompactError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "(x+y)^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
-    return I;
-  }
-
-  //################################################################################### X^2 + Y^2 + 2XY
-
-  item binomialSquareExpanded(monomial M1, monomial M2) {
-    // stem: M1^2 + M2^2 + 2.M1.M2 = 
-    int[] two = {2, 1};
-    monomial[] M = new monomial[3];
-    M[0] = squareMonomial(M1);
-    M[1] = squareMonomial(M2);
-    M[2] = scalarProduct(productMonomial(M1, M2), two);
-
-    String stem = multiSum(M, permutation(3)).stringify();
-    // answer
-    String answer = "";
-    String answer1 = "";
-    String answer2 = "";
-    if (latex) {
-      answer1 = "\\left("+sum(M1, M2, permutation(2)[0]).stringify()+"\\right)^2";
-      answer2 = "\\left("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+"\\right)^2";
-    } else {
-      answer1 = "("+sum(M1, M2, permutation(2)[0]).stringify()+")^2";
-      answer2 = "("+sum(oppositeMonomial(M1), oppositeMonomial(M2), permutation(2)[0]).stringify()+")^2";
-    }
-
-    // if both monomials are positive OR both negative, prefer an all-positive-sign answer.
-    // preference is expressed in terms of a large probability "p"
-    float p = random(0, 1);
-    if (M1.sign == -1 && M2.sign == -1) {
-      if (p<0.5) {
-        answer =  answer2;
-      } else {
-        answer = answer1;
-      }
-    } else if (M1.sign == 1 && M2.sign == 1) {
-      if (p<0.8) {
-        answer = answer1;
-      } else {
-        answer = answer2;
-      }
-    } else {
-      if (p<0.5) {
-        answer = answer1;
-      } else {
-        answer = answer2;
-      }
-    }
-
-    // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
-    int[] perms = permutation(4);
-    if ((M1.nVariables == 1 && M2.degree == 0) || (M1.degree == 0 && M2.nVariables == 1)) {
-      // also last error is available
-      perms = permutation(5);
-    }
-    error E1 = errors.binomialSquareExpandedError(M1, M2, perms[0]);
-    error E2 = errors.binomialSquareExpandedError(M1, M2, perms[1]);
-    error E3 = errors.binomialSquareExpandedError(M1, M2, perms[2]);
-
-    distractors[0] = E1.errorName;
-    distractors[1] = E2.errorName;
-    distractors[2] = E3.errorName;
-
-    errs[0] = E1.errorType.toString();
-    errs[1] = E2.errorType.toString();
-    errs[2] = E3.errorType.toString();
-
-    item I = new item();
-    I.type = "x^2+y^2+2xy";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
     return I;
   }
 
@@ -676,7 +479,7 @@ class utils {
 
   void generateCsv(Table table, String itemType, int[] complexity, int nItems, String name) {
     for (int i=0; i<nItems; i++) {
-      item I = items.generateItem(itemType, complexity);
+      item I = generateItem(itemType, complexity);
       addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
     }
     saveTable(table, "data/"+ name +".csv");
