@@ -13,6 +13,28 @@ class utils {
     int nVariables = 1;
     fraction coefficient;
     int sign = 1;
+    switch(complexity[1]) {
+      /*
+      n. variables complexity:
+       0 - 0 or 1 variable
+       1 - 2 variables
+       2 - 3 variables
+       */
+    case 0:
+      nVariables = floor(random(0, 2));
+      break;
+    case 1:
+      nVariables = 2;
+      break;
+    case 2:
+      nVariables = 3;
+      break;
+    default:
+      nVariables = floor(random(3, 5));
+      break;
+    }
+
+
     switch(complexity[0]) {
       /*
    coefficient complexity:
@@ -21,8 +43,13 @@ class utils {
        2 - coefficient is a fraction
        */
     case 0:
-      num = 1;
-      den = 1;
+      if (nVariables == 1) {
+        num = 1;
+        den = 1;
+      } else {
+        num = math.easyInts[floor(random(math.easyInts.length))];
+        den = 1;
+      }
       break;
     case 1:
       num = math.easyInts[floor(random(math.easyInts.length))];
@@ -39,26 +66,7 @@ class utils {
     }
     coefficient = new fraction(num, den);
     coefficient.simplify();
-    switch(complexity[1]) {
-      /*
-      n. variables complexity:
-       0 - 1 variable
-       1 - 2 variables
-       2 - 3 variables
-       */
-    case 0:
-      nVariables = 1;
-      break;
-    case 1:
-      nVariables = 2;
-      break;
-    case 2:
-      nVariables = 3;
-      break;
-    default:
-      nVariables = floor(random(3, 5));
-      break;
-    }
+
     if (complexity[0] == 0) {
       sign = 1;
     } else {

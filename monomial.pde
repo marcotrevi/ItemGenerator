@@ -1,7 +1,7 @@
 class monomial {
   int sign; // +1 or -1
   int nVariables;
-  fraction coefficient = new fraction(1,1);
+  fraction coefficient = new fraction(1, 1);
   int[] variables;
   int[] degrees;
   int degree = 0;
@@ -21,6 +21,22 @@ class monomial {
   boolean isInt() {
     boolean check = false;
     if (coefficient.D == 1) {
+      check = true;
+    }
+    return check;
+  }
+
+  boolean isMonic() {
+    boolean check = false;
+    if (coefficient.N == 1 && coefficient.D == 1) {
+      check = true;
+    }
+    return check;
+  }
+
+  boolean isOne() {
+    boolean check = false;
+    if (coefficient.N == 1 && coefficient.D == 1 && degree == 0) {
       check = true;
     }
     return check;
@@ -49,7 +65,7 @@ class monomial {
       // coefficient is a fraction.
       if (latex) {
         _coefficient = "\\frac{"+ str(coefficient.N) + "}{" + str(coefficient.D) +"}";
-      } else{
+      } else {
         _coefficient = str(coefficient.N) + "/" + str(coefficient.D);
       }
     }

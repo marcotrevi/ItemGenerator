@@ -26,10 +26,10 @@ void setup() {
   //String _m2 = m2.stringify();
   //String _m3 = m3.stringify();
 
-  utils.generateItem("x^2-y^2", c).printme();
-  utils.generateItem("(x+y)(x-y)", c).printme();
+  //utils.generateItem("x^2-y^2", c).printme();
+  //utils.generateItem("(x+y)(x-y)", c).printme();
   utils.generateItem("x^2+y^2+2xy", c).printme();
-  utils.generateItem("(x+y)^2", c).printme();
+  //utils.generateItem("(x+y)^2", c).printme();
 
   //utils.generateCsv(T, "(x+y)^2", 0.5, 10, "binomial_square_compact");
 }

@@ -199,13 +199,13 @@ class errors {
       if (M.coefficient.D == 1 && M.degree == 0) {
         // monomial is an integer
         availableErrors = utils.removeInt(availableErrors, 0);
-        if (M.coefficient.N == 1) {
+        if (M.isOne()) {
           // monomial is the number 1
           availableErrors = utils.removeInt(availableErrors, 1);
           availableErrors = utils.removeInt(availableErrors, 2);
         }
       }
-      if (M.coefficient.N == 1 && M.coefficient.D == 1) {
+      if (M.isMonic()) {
         availableErrors = utils.removeInt(availableErrors, 1);
       }
       if (M.degree == 0) {
@@ -214,11 +214,9 @@ class errors {
       break;
     }
     int[] errors = new int[availableErrors.size()];
-
     for (int i=0; i<availableErrors.size(); i++) {
       errors[i] = availableErrors.get(i);
     }
-
     return errors;
   }
 }

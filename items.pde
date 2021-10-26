@@ -47,8 +47,8 @@ class items {
     int[] perms = utils.permutation(7); // selecting error location in distractors
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[i];
-      Y_errorIndex = Y_availability[i];
+      X_errorIndex = X_availability[min(i,X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
       X2_error = errors.squareError(X, X_errorIndex);
       Y2_error = errors.squareError(Y, Y_errorIndex);
 
@@ -125,8 +125,8 @@ class items {
     int[] perms = utils.permutation(7); // selecting error location in distractors
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[i];
-      Y_errorIndex = Y_availability[i];
+      X_errorIndex = X_availability[min(i,X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
       X_error = errors.rootError(X, X_errorIndex);
       Y_error = errors.rootError(Y, Y_errorIndex);
       switch(perms[i]) {
@@ -212,8 +212,8 @@ class items {
     int[] perms = utils.permutation(5); // selecting error type
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[i];
-      Y_errorIndex = Y_availability[i];
+      X_errorIndex = X_availability[min(i,X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
       X_error = errors.squareError(X, X_errorIndex);
       Y_error = errors.squareError(Y, Y_errorIndex);
 
@@ -263,7 +263,7 @@ class items {
   //################################################################################### x^2 + y^2 + 2xy
 
   item binomialSquareExpanded(monomial X, monomial Y, int[] complexity) {
-    // stem: X^2 + Y^2 + 2.X.Y = 
+    // stem: X^2 + Y^2 + 2SXY = 
     int[] two = {2, 1};
     monomial[] M = new monomial[3];
     monomial X2 = utils.squareMonomial(X);
@@ -327,8 +327,8 @@ class items {
     }
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[i];
-      Y_errorIndex = Y_availability[i];
+      X_errorIndex = X_availability[min(i,X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
       X_error = errors.rootError(X, X_errorIndex);
       Y_error = errors.rootError(Y, Y_errorIndex);
 
@@ -381,6 +381,7 @@ class items {
         }
         break;
       case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification":
+      // e.g. (5x^3 + 6)^2 = 25x^6 + 60x^3 + 36 ---> 85x^9 + 36
         monomial monic1 = new monomial(X.nVariables);
         monic1.variables = X.variables;
         monic1.degrees = X.degrees;
