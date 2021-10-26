@@ -189,9 +189,9 @@ class errors {
       break;
     case 1: // double of coefficient instead of square (kx)^2= 2kx^2
       // WARNING: is correct if coefficient is 2
+      error e = pow1(M.coefficient, 2);
       S.sign = M.sign;
-      S.coefficient.N = 2*M.coefficient.N;
-      S.coefficient.D = M.coefficient.D;
+      S.coefficient = e.scalarValue;
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
@@ -241,115 +241,6 @@ class errors {
   }
 
   // ########################################################################################################################### ERROR CONSTRUCTORS
-
-  error differenceOfSquaresError(monomial M1, monomial M2, int errorType) {
-    // item type: x^2 - y^2
-    error E = new error();
-
-    // check possible errors
-    /*
-    int errorIndex1 = U.permutation(availability(M1, "square"))[0];
-     int errorIndex2 = U.permutation(availability(M2, "square"))[0];
-     monomial errorM1 = squareError(M1, errorIndex1);
-     monomial errorM2 = squareError(M2, errorIndex2);
-     */
-
-    int errorIndex1 = U.permutation(availability(M1, "root"))[0];
-    int errorIndex2 = U.permutation(availability(M2, "root"))[0];
-    monomial errorM1 = rootError(M1, errorIndex1);
-    monomial errorM2 = rootError(M2, errorIndex2);
-
-    int[] sumPerm = U.permutation(2);
-    int[] diffPerm = U.permutation(2);
-    int[] multPerm = U.permutation(2);
-
-    switch(errorType) {
-    case 0: // error on M1 square
-      E.errorName = U.multiply(U.sum(errorM1, M2, sumPerm[0]).stringify(), U.diff(errorM1, M2, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex1);
-      break;
-    case 1: // error on M2 square
-      E.errorName = U.multiply(U.sum(M1, errorM2, sumPerm[0]).stringify(), U.diff(M1, errorM2, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex2);
-      break;
-    case 2: // incorrect identification of monomials
-      E.errorName = U.multiply(U.sum(M2, M1, sumPerm[0]).stringify(), U.diff(M2, M1, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(-1);
-      break;
-    case 3: // error on both squares
-      E.errorName = U.multiply(U.sum(errorM1, errorM2, sumPerm[0]).stringify(), U.diff(errorM1, errorM2, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      break;
-    case 4: // error on M1 square and incorrect identification
-      E.errorName = U.multiply(U.sum(M2, errorM1, sumPerm[0]).stringify(), U.diff(M2, errorM1, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-1);
-      break;
-    case 5: // error on M2 square and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, M1, sumPerm[0]).stringify(), U.diff(errorM2, M1, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    case 6: // error on both squares and incorrect identification
-      E.errorName = U.multiply(U.sum(errorM2, errorM1, sumPerm[0]).stringify(), U.diff(errorM2, errorM1, diffPerm[0]).stringify(), multPerm[0]);
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    }
-    return E;
-  }
-
-  error sumDiffError(monomial M1, monomial M2, int perm) {
-    // item type: (x+y)(x-y)
-    error E = new error();
-
-    // check possible errors
-    int errorIndex1 = U.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = U.permutation(availability(M2, "square"))[0];
-    monomial errorM1 = squareError(M1, errorIndex1);
-    monomial errorM2 = squareError(M2, errorIndex2);
-
-    int[] diffPerms = U.permutation(2);
-
-    switch(perm) {
-    case 0: // error on M1 square
-      E.errorName = U.diff(errorM1, U.squareMonomial(M2), diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      break;
-    case 1: // error on M2 square
-      E.errorName = U.diff(U.squareMonomial(M1), errorM2, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex2);
-      break;
-    case 2: // incorrect identification of monomials
-      E.errorName = U.diff(U.squareMonomial(M2), U.squareMonomial(M1), diffPerms[0]).stringify();
-      E.errorType.append(-1);
-      break;
-    case 3: // error on both squares
-      E.errorName = U.diff(errorM1, errorM2, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      break;
-    case 4: // error on M1 square and incorrect identification
-      E.errorName = U.diff(U.squareMonomial(M2), errorM1, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(-1);
-      break;
-    case 5: // error on M2 square and incorrect identification
-      E.errorName = U.diff(errorM2, U.squareMonomial(M1), diffPerms[0]).stringify();
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    case 6: // error on both squares and incorrect identification
-      E.errorName = U.diff(errorM2, errorM1, diffPerms[0]).stringify();
-      E.errorType.append(errorIndex1);
-      E.errorType.append(errorIndex2);
-      E.errorType.append(-1);
-      break;
-    }
-    return E;
-  }
 
   error binomialSquareExpandedError(monomial M1, monomial M2, int errorType) {
     // item type: x^2 + y^2 + 2xy
@@ -417,44 +308,13 @@ class errors {
       monomial monic1 = new monomial(M1.nVariables);
       monic1.variables = M1.variables;
       monic1.degrees = M1.degrees;
-      monic1.coefficient = new fraction(1, 1);
+      monic1.coefficient.N = 1;
+      monic1.coefficient.D = 1;
       monic1.setDegree();
 
       monomial monic2 = new monomial(M2.nVariables);
       monic2.variables = M2.variables;
       monic2.degrees = M2.degrees;
-      monic2.coefficient = new fraction(1, 1);
-      monic2.setDegree();
-      int a = M1.coefficient.N;
-      int b = M1.coefficient.D;
-      int c = M2.coefficient.N;
-      int d = M2.coefficient.D;
-
-      if (M1.degree == 0) {
-        monomial P = U.productMonomial(U.squareMonomial(monic2), U.productMonomial(monic1, monic2));
-        fraction f1 = new fraction(c*c, d*d);  
-        if (M1.sign*M2.sign == -1) {
-          fraction f2 = new fraction(-2*a*c, b*d);
-          P.coefficient = math.fractionSum(f1, f2);
-        } else {
-          fraction f2 = new fraction(2*a*c, b*d);
-          P.coefficient = math.fractionSum(f1, f2);
-        }
-        P.coefficient.simplify();
-        E.errorName = U.sum(P, U.squareMonomial(M1), 0).stringify();
-      } else {
-        monomial P = U.productMonomial(U.squareMonomial(monic1), U.productMonomial(monic1, monic2));
-        fraction f1 = new fraction(a*a, b*b);  
-        if (M1.sign*M2.sign == -1) {
-          fraction f2 = new fraction(-2*a*c, b*d);
-          P.coefficient = math.fractionSum(f1, f2);
-        } else {
-          fraction f2 = new fraction(2*a*c, b*d);
-          P.coefficient = math.fractionSum(f1, f2);
-        }
-        P.coefficient.simplify();
-        if (P.coefficient.N == -1 && P.coefficient.D == 1) {
-          E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0).stringify());
       monic2.coefficient.N = 1;
       monic2.coefficient.D = 1;
       monic2.setDegree();
@@ -622,6 +482,7 @@ class errors {
     for (int i=0; i<availableErrors.size(); i++) {
       errors[i] = availableErrors.get(i);
     }
+
     return errors;
   }
 }
