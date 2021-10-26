@@ -11,9 +11,22 @@ class fraction {
     println(N+"/"+D);
   }
 
+<<<<<<< HEAD
+=======
+  String stringify() {
+    String s = "";
+    s = str(N)+"/"+str(D);
+    return s;
+  }
+
+>>>>>>> restructure_errors
   void simplify() {
     int gcd = math.gcd(N, D);
     N = N/gcd;
     D = D/gcd;
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> restructure_errors
 }
