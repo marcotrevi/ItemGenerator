@@ -455,7 +455,6 @@ class errors {
         P.coefficient.simplify();
         if (P.coefficient.N == -1 && P.coefficient.D == 1) {
           E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0).stringify());
-=======
       monic2.coefficient.N = 1;
       monic2.coefficient.D = 1;
       monic2.setDegree();
@@ -488,7 +487,6 @@ class errors {
         P.coefficient.simplify();
         if (P.coefficient.N == -1 && P.coefficient.D == 1) {
           E.errorName = utils.removePlus(utils.sum(P, utils.squareMonomial(M2), 0).stringify());
->>>>>>> restructure_errors
         } else {          
           E.errorName = utils.sum(P, utils.squareMonomial(M2), 0).stringify();
         }
@@ -576,11 +574,7 @@ class errors {
       }
       if (M.sign == 1) {
         // if M has positive coefficient, error 5 not available
-<<<<<<< HEAD
-        availableErrors = U.removeInt(availableErrors, 5);
-=======
         availableErrors = utils.removeInt(availableErrors, 5);
->>>>>>> restructure_errors
         if (M.coefficient.D == 1) {
           switch(M.coefficient.N) {
           case 1:
@@ -608,11 +602,7 @@ class errors {
       }
       if (M.coefficient.D == 1 && M.degree == 0) {
         // monomial is an integer
-<<<<<<< HEAD
-        availableErrors = U.removeInt(availableErrors, 0);
-=======
         availableErrors = utils.removeInt(availableErrors, 0);
->>>>>>> restructure_errors
         if (M.coefficient.N == 1) {
           // monomial is the number 1
           availableErrors = utils.removeInt(availableErrors, 1);
@@ -620,11 +610,7 @@ class errors {
         }
       }
       if (M.coefficient.N == 1 && M.coefficient.D == 1) {
-<<<<<<< HEAD
-        availableErrors = U.removeInt(availableErrors, 1);
-=======
         availableErrors = utils.removeInt(availableErrors, 1);
->>>>>>> restructure_errors
       }
       if (M.degree == 0) {
         availableErrors = utils.removeInt(availableErrors, 2);
@@ -636,7 +622,6 @@ class errors {
     for (int i=0; i<availableErrors.size(); i++) {
       errors[i] = availableErrors.get(i);
     }
-
     return errors;
   }
 }
