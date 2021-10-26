@@ -470,9 +470,9 @@ class errors {
     error E = new error();
 
     // check possible errors
-    int errorIndex1 = U.permutation(availability(M1, "square"))[0];
-    int errorIndex2 = U.permutation(availability(M2, "square"))[0];
-    int errorIndex3 = U.permutation(availability(M2, "double product"))[0];
+    int errorIndex1 = utils.permutation(availability(M1, "square"))[0];
+    int errorIndex2 = utils.permutation(availability(M2, "square"))[0];
+    int errorIndex3 = utils.permutation(availability(M2, "double product"))[0];
 
     monomial errorM1 = squareError(M1, errorIndex1);
     monomial errorM2 = squareError(M2, errorIndex2);
@@ -483,35 +483,35 @@ class errors {
     switch(errorType) {
     case 0: // error on M1 square
       M[0] = errorM1;
-      M[1] = U.squareMonomial(M2);
-      M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
+      M[1] = utils.squareMonomial(M2);
+      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
+      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       break;
     case 1: // error on M2 square
-      M[0] = U.squareMonomial(M1);
+      M[0] = utils.squareMonomial(M1);
       M[1] = errorM2;
-      M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
+      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
+      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
       E.errorType.append(errorIndex2);
       break;
     case 2: // error on both squares
       M[0] = errorM1;
       M[1] = errorM2;
-      M[2] = U.productMonomial(U.scalarProduct(M1, two), M2);
-      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
+      M[2] = utils.productMonomial(utils.scalarProduct(M1, two), M2);
+      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(errorIndex2);
       break;
     case 3: // sophomore's dream
-      E.errorName = U.sum(U.squareMonomial(M1), U.squareMonomial(M2), 0).stringify();
+      E.errorName = utils.sum(utils.squareMonomial(M1), utils.squareMonomial(M2), 0).stringify();
       E.errorType.append(-1);
       break;
     case 4: // wrong double product sign
-      M[0] = U.squareMonomial(M1);
-      M[1] = U.squareMonomial(M2);
-      M[2] = U.oppositeMonomial(U.productMonomial(U.scalarProduct(M1, two), M2));    
-      E.errorName = U.multiSum(M, U.permutation(3)).stringify();
+      M[0] = utils.squareMonomial(M1);
+      M[1] = utils.squareMonomial(M2);
+      M[2] = utils.oppositeMonomial(utils.productMonomial(utils.scalarProduct(M1, two), M2));    
+      E.errorName = utils.multiSum(M, utils.permutation(3)).stringify();
       E.errorType.append(errorIndex1);
       E.errorType.append(-1);
       break;
@@ -538,22 +538,26 @@ class errors {
       }
       if (allSquare) {
         // if all degrees are equal to 2, error 3 not available
-        availableErrors = U.removeInt(availableErrors, 3);
+        availableErrors = utils.removeInt(availableErrors, 3);
       }
       if (M.sign == 1) {
         // if M has positive coefficient, error 5 not available
+<<<<<<< HEAD
         availableErrors = U.removeInt(availableErrors, 5);
+=======
+        availableErrors = utils.removeInt(availableErrors, 5);
+>>>>>>> restructure_errors
         if (M.coefficient.D == 1) {
           switch(M.coefficient.N) {
           case 1:
             // if M has coefficient 1, error 0 and 3  not available
-            availableErrors = U.removeInt(availableErrors, 0);
-            availableErrors = U.removeInt(availableErrors, 3);
+            availableErrors = utils.removeInt(availableErrors, 0);
+            availableErrors = utils.removeInt(availableErrors, 3);
             break;
           case 2:
             // if M has coefficient 2, error 1 and 4 not available
-            availableErrors = U.removeInt(availableErrors, 1);
-            availableErrors = U.removeInt(availableErrors, 4);
+            availableErrors = utils.removeInt(availableErrors, 1);
+            availableErrors = utils.removeInt(availableErrors, 4);
             break;
           }
         }
