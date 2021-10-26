@@ -55,9 +55,9 @@ class monomial {
     }
     for (int i=0; i<nVariables; i++) {
       if (degrees[i] > 1) {
-        _variables = _variables + U.varNames[variables[i]]+"^"+str(degrees[i]);
+        _variables = _variables + utils.varNames[variables[i]]+"^"+str(degrees[i]);
       } else {
-        _variables = _variables + U.varNames[variables[i]];
+        _variables = _variables + utils.varNames[variables[i]];
       }
     }
     M = _sign + _coefficient + _variables;
