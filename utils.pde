@@ -47,6 +47,14 @@ class utils {
        2 - 3 variables
        */
     case 0:
+    fraction coefficient = new fraction(num, den);
+    coefficient.simplify();
+    
+    int nVariables;
+
+    if (c_variables < 0.33) {
+      nVariables = 0;
+    } else if (0.33<= c_variables && c_variables < 0.66) {
       nVariables = 1;
       break;
     case 1:
