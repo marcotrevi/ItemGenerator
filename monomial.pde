@@ -12,7 +12,6 @@ class monomial {
     degrees = new int[nVariables];
   }
 
-
   void setDegree() {
     for (int i=0; i<nVariables; i++) {
       degree = degree + degrees[i];

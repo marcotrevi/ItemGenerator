@@ -165,6 +165,7 @@ class utils {
         degrees.append(M1.degrees[i]);
       }
     }
+    
     for (int i=0; i<M2.nVariables; i++) {
       if (!foundVariable(M2.variables[i], M1)) {
         variables.append(M2.variables[i]);
@@ -430,7 +431,7 @@ class utils {
     case "(x+y)(x-y)":
       X = U.generateMonomial(complexity);
       Y = U.generateNonSimilar(X, complexity);
-      I = sumDifference(X, Y);
+      I = sumDifference(X, Y, complexity);
       break;
     case "x^2+y^2+2xy":
       X = U.generateMonomial(complexity);
@@ -448,10 +449,9 @@ class utils {
 
   //################################################################################### (X+Y)(X-Y)
 
-  item sumDifference(monomial M1, monomial M2) {
+  item sumDifference(monomial M1, monomial M2, int[] complexity) {
     // stem: (M1+M2)(M1-M2) = 
     String stem = sumDiff(M1, M2, floor(random(0, 8)));
-    //    String stem = sumDiff(M1, M2, floor(random(0, 8)));
     // answer
     String answer = diff(squareMonomial(M1), squareMonomial(M2), floor(random(0, 2))).stringify();
     // distractors
