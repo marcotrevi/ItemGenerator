@@ -1,7 +1,7 @@
 class item {
   String type, stem, answer;
-  String[] distractors;
-  String[] errors;
+  String[] distractors = new String[3];
+  String[] errors = new String[3];
   int[] complexity;
   float difficulty = 0.5;
 

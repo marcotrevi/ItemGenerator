@@ -10,19 +10,14 @@ class items {
     // answer
     String answer = math.fractionPow(f, n).stringify();
     // distractors - each distractor can contain multiple errors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
     E[2] = new error();
 
-    setPs(distractors, E, errs);
-
-
     item I = new item();
     int[] complexity = new int[3];
-    setItemParams(I, "a^n", complexity, answer, stem, distractors, errs, E);
+    setItemParams(I, "a^n", complexity, answer, stem, E);
     return I;
   }
 
@@ -35,9 +30,8 @@ class items {
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
     String answer = utils.diff(X2, Y2, utils.permutation(2)[0]).stringify();
+
     // distractors - each distractor can contain multiple errors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
@@ -100,7 +94,7 @@ class items {
     }
 
     item I = new item();
-    setItemParams(I, "(x+y)(x-y)", complexity, answer, stem, distractors, errs, E);
+    setItemParams(I, "(x+y)(x-y)", complexity, answer, stem, E);
 
     return I;
   }
@@ -122,8 +116,6 @@ class items {
     }
 
     // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
@@ -179,7 +171,7 @@ class items {
       }
     }
     item I = new item();
-    setItemParams(I, "x^2-y^2", complexity, answer, stem, distractors, errs, E);
+    setItemParams(I, "x^2-y^2", complexity, answer, stem, E);
 
     return I;
   }
@@ -206,8 +198,6 @@ class items {
 
     String answer = utils.multiSum(M, utils.permutation(3)).stringify();
     // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
     error[] E = new error[3];
 
     E[0] = new error();
@@ -260,11 +250,9 @@ class items {
         break;
       }
     }
-    setParams(distractors, E, errs);
 
     item I = new item();
-    setItemParams(I, "(x+y)^2", complexity, answer, stem, distractors, errs, E);
-
+    setItemParams(I, "(x+y)^2", complexity, answer, stem, E);
     return I;
   }
 
@@ -317,8 +305,6 @@ class items {
     }
 
     // distractors
-    String[] distractors = new String[3];
-    String[] errs = new String[3];
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
@@ -438,43 +424,25 @@ class items {
     }
 
     item I = new item();
-    setItemParams(I, "x^2+y^2+2xy", complexity, answer, stem, distractors, errs, E );
+    setItemParams(I, "x^2+y^2+2xy", complexity, answer, stem, E );
 
     return I;
   }
 
-  void setItemParams(item I, String type, int[] complexity, String answer, String stem, String[] distractors, String[] errors, error[] E) {
-    distractors[0] = E[0].errorName;
-    distractors[1] = E[1].errorName;
-    distractors[2] = E[2].errorName;
-
-    errors[0] = E[0].errorType.toString();
-    errors[1] = E[1].errorType.toString();
-    errors[2] = E[2].errorType.toString();
+  void setItemParams(item I, String type, int[] complexity, String answer, String stem, error[] E) {
 
     I.type = type;
     I.complexity = complexity;
     I.answer = answer;
     I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errors;
+    
+    I.distractors[0] = E[0].errorName;
+    I.distractors[1] = E[1].errorName;
+    I.distractors[2] = E[2].errorName;
+
+    I.errors[0] = E[0].errorType.toString();
+    I.errors[1] = E[1].errorType.toString();
+    I.errors[2] = E[2].errorType.toString();
   }
 
-
-  void setPs(String[] distractors, error[] errors, String[] errs) {
-    for (int i=0; i<distractors.length; i++) {
-      distractors[i] = errors[i].errorName;
-      errs[i] = errors[i].errorType.toString();
-    }
-  }
-
-  void setParams(String[] distractors, error[] E, String[] errs) {
-    distractors[0] = E[0].errorName;
-    distractors[1] = E[1].errorName;
-    distractors[2] = E[2].errorName;
-
-    errs[0] = E[0].errorType.toString();
-    errs[1] = E[1].errorType.toString();
-    errs[2] = E[2].errorType.toString();
-  }
 }
