@@ -111,6 +111,29 @@ class utils {
       }
       break;
     }
+
+    if (complexity == -1) {
+      // test monomial
+      m = new monomial(1);
+      m.sign = 1;
+      m.coefficient.N = 2;
+      m.coefficient.D = 1;
+
+      m.variables[0] = 0;
+
+      m.degrees[0] = 1;
+    } else if (complexity == -2) {
+      m = new monomial(2);
+      m.sign = -1;
+      m.coefficient.N = 1;
+      m.coefficient.D = 1;
+
+      m.variables[0] = 0;
+      m.variables[1] = 1;
+
+      m.degrees[0] = 1;
+      m.degrees[1] = 2;
+    }
     m.setDegree();
     return m;
   }
