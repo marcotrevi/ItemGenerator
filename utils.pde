@@ -4,7 +4,7 @@ class utils {
   utils() {
   }
 
-  //###################################################################### methods which return a monomial 
+  //###################################################################### methods which return a nice monomial 
 
   monomial generateMonomial(float complexity) {
     float[] r = new float[3];
