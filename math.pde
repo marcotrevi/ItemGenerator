@@ -95,14 +95,28 @@ class math {
     int lcm = lcm(f1.D, f2.D);
     fraction f = new fraction(lcm/f1.D*f1.N + lcm/f2.D*f2.N,lcm);
     return f;
+  fraction fractionSum(fraction a, fraction b) {
+    // returns the fraction a+b 
+    int lcm = lcm(a.D, b.D);
+    fraction F = new fraction(lcm/a.D*a.N + lcm/b.D*b.N, lcm);
+    return F;
   }
 
-  int[] fractionSimplify(int a, int b) {
-    int[] simplifiedFraction = new int[2];
-    int gcd = gcd(a, b);
-    simplifiedFraction[0] = a/gcd;
-    simplifiedFraction[1] = b/gcd;
-    return simplifiedFraction;
+  fraction fractionMult(fraction a, fraction b) {
+    // returns the fraction a*b 
+    fraction F = new fraction(a.N*b.N, a.D*b.D);
+    return F;
+  }
+
+  fraction fractionPow(fraction f, int n) {
+    // returns the fraction a^n 
+    fraction F = new fraction(int(pow(f.N,n)),int(pow(f.D,n)));
+    return F;
+  }
+
+  fraction setCoefficient() {
+    fraction c = new fraction(1, 1);
+    return c;
   }
 
   int setSign() {
@@ -111,12 +125,5 @@ class math {
       s = -1;
     }
     return s;
-  }
-
-  int[] setCoefficient() {
-    int[] c = new int[2];
-    c[0] = 1;
-    c[1] = 1;
-    return c;
   }
 }

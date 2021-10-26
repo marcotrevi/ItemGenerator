@@ -160,6 +160,7 @@ class utils {
     }
     return NS;
   }
+  
   monomial scalarProduct(monomial M, int[] k) {
     monomial P = new monomial(M.nVariables);
     P.sign = M.sign;
