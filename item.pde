@@ -2,7 +2,8 @@ class item {
   String type, stem, answer;
   String[] distractors;
   String[] errors;
-  float complexity;
+  int[] complexity;
+  float difficulty = 0.5;
 
   item() {
   }
@@ -29,7 +30,7 @@ class item {
   }
 
   String csv_line() {
-    String l = complexity + "," + stem + "," + answer + "," + distractors[0] + ","+ distractors[1] + ","+ distractors[2];
+    String l = difficulty + "," + stem + "," + answer + "," + distractors[0] + ","+ distractors[1] + ","+ distractors[2];
     return l;
   }
 }

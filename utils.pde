@@ -421,28 +421,22 @@ class utils {
 
   item generateItem(String type, int[] complexity) {
     monomial X, Y;
+    X = generateMonomial(complexity);
+    Y = generateNonSimilar(X, complexity);
     item I = new item();
     // each item type has its own constructor
     switch(type) {
     case "x^2-y^2":
-      X = generateMonomial(complexity);
-      Y = generateNonSimilar(X, complexity);
-      I = items.differenceOfSquares(X, Y);
+      I = items.differenceOfSquares(X, Y, complexity);
       break;
     case "(x+y)(x-y)":
-      X = generateMonomial(complexity);
-      Y = generateNonSimilar(X, complexity);
       I = items.sumDifference(X, Y, complexity);
       break;
     case "x^2+y^2+2xy":
-      X = generateMonomial(complexity);
-      Y = generateNonSimilar(X, complexity);
-      I = items.binomialSquareExpanded(X, Y);
+      I = items.binomialSquareExpanded(X, Y, complexity);
       break;
     case "(x+y)^2":
-      X = generateMonomial(complexity);
-      Y = generateNonSimilar(X, complexity);
-      I = items.binomialSquareCompact(X, Y);
+      I = items.binomialSquareCompact(X, Y, complexity);
       break;
     }
     return I;
@@ -480,7 +474,7 @@ class utils {
   void generateCsv(Table table, String itemType, int[] complexity, int nItems, String name) {
     for (int i=0; i<nItems; i++) {
       item I = generateItem(itemType, complexity);
-      addCsvRow(table, I.complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+      addCsvRow(table, I.difficulty, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
     }
     saveTable(table, "data/"+ name +".csv");
   }

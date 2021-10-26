@@ -19,13 +19,10 @@ class items {
 
     setPs(distractors, E, errs);
 
+
     item I = new item();
-    I.type = "a^n";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
+    int[] complexity = new int[3];
+    setItemParams(I, "a^n", complexity, answer, stem, distractors, errs, E);
     return I;
   }
 
@@ -101,21 +98,16 @@ class items {
         break;
       }
     }
-    setParams(distractors, E, errs);
 
     item I = new item();
-    I.type = "(x+y)(x-y)";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
+    setItemParams(I, "(x+y)(x-y)", complexity, answer, stem, distractors, errs, E);
+
     return I;
   }
 
   //################################################################################### x^2 - y^2
 
-  item differenceOfSquares(monomial X, monomial Y) {
+  item differenceOfSquares(monomial X, monomial Y, int[] complexity) {
     // stem: x^2 - y^2 = 
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
@@ -186,21 +178,15 @@ class items {
         break;
       }
     }
-    setParams(distractors, E, errs);
-
     item I = new item();
-    I.type = "x^2-y^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
+    setItemParams(I, "x^2-y^2", complexity, answer, stem, distractors, errs, E);
+
     return I;
   }
 
   //################################################################################### (x+y)^2
 
-  item binomialSquareCompact(monomial X, monomial Y) {
+  item binomialSquareCompact(monomial X, monomial Y, int[] complexity) {
     int[] two = {2, 1};
     // stem: (X + Y)^2 = 
     String stem ="";
@@ -277,18 +263,14 @@ class items {
     setParams(distractors, E, errs);
 
     item I = new item();
-    I.type = "(x+y)^2";
-    I.complexity = 0.5;
-    I.answer = answer;
-    I.stem = stem;
-    I.distractors = distractors;
-    I.errors = errs;
+    setItemParams(I, "(x+y)^2", complexity, answer, stem, distractors, errs, E);
+
     return I;
   }
 
   //################################################################################### x^2 + y^2 + 2xy
 
-  item binomialSquareExpanded(monomial X, monomial Y) {
+  item binomialSquareExpanded(monomial X, monomial Y, int[] complexity) {
     // stem: X^2 + Y^2 + 2.X.Y = 
     int[] two = {2, 1};
     monomial[] M = new monomial[3];
@@ -333,7 +315,7 @@ class items {
         answer = answer2;
       }
     }
-    
+
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -455,16 +437,27 @@ class items {
       }
     }
 
-    setParams(distractors, E, errs);
-
     item I = new item();
-    I.type = "x^2+y^2+2xy";
-    I.complexity = 0.5;
+    setItemParams(I, "x^2+y^2+2xy", complexity, answer, stem, distractors, errs, E );
+
+    return I;
+  }
+
+  void setItemParams(item I, String type, int[] complexity, String answer, String stem, String[] distractors, String[] errors, error[] E) {
+    distractors[0] = E[0].errorName;
+    distractors[1] = E[1].errorName;
+    distractors[2] = E[2].errorName;
+
+    errors[0] = E[0].errorType.toString();
+    errors[1] = E[1].errorType.toString();
+    errors[2] = E[2].errorType.toString();
+
+    I.type = type;
+    I.complexity = complexity;
     I.answer = answer;
     I.stem = stem;
     I.distractors = distractors;
-    I.errors = errs;
-    return I;
+    I.errors = errors;
   }
 
 
