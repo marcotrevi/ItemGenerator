@@ -37,23 +37,19 @@ class items {
     E[1] = new error();
     E[2] = new error();
 
-    int[] perms = utils.permutation(7); // selecting error location in distractors
-    int[] X_availability, Y_availability;
     monomial X2_error, Y2_error;
+    // check available errors on X
+    int[] X_availability = utils.permutation(errors.availability(X, "square"));
+    // check available errors on Y
+    int[] Y_availability = utils.permutation(errors.availability(Y, "square"));
     int X_errorIndex, Y_errorIndex;
 
-    for (int i=0; i<3; i++) {
-      // selecting errors
-      // check available errors on X
-      X_availability = errors.availability(X, "square");
-      // randomly selects error from available errors
-      X_errorIndex = utils.permutation(X_availability)[0];
-      X2_error = errors.squareError(X, X_errorIndex);
+    int[] perms = utils.permutation(7); // selecting error location in distractors
 
-      // check available errors on Y
-      Y_availability = errors.availability(Y, "square");
-      // randomly selects error from available errors
-      Y_errorIndex = utils.permutation(Y_availability)[0];
+    for (int i=0; i<3; i++) {
+      X_errorIndex = X_availability[i];
+      Y_errorIndex = Y_availability[i];
+      X2_error = errors.squareError(X, X_errorIndex);
       Y2_error = errors.squareError(Y, Y_errorIndex);
 
       switch(perms[i]) {
@@ -121,15 +117,18 @@ class items {
     E[1] = new error();
     E[2] = new error();
 
-    // check possible errors
-    int X_errorIndex = utils.permutation(errors.availability(X, "root"))[0];
-    int Y_errorIndex = utils.permutation(errors.availability(Y, "root"))[0];
-    monomial X_error = errors.rootError(X, X_errorIndex);
-    monomial Y_error = errors.rootError(Y, Y_errorIndex);
+    monomial X_error, Y_error;
+    int[] X_availability = utils.permutation(errors.availability(X, "root"));
+    int[] Y_availability = utils.permutation(errors.availability(Y, "root"));
+    int X_errorIndex, Y_errorIndex;
 
     int[] perms = utils.permutation(7); // selecting error location in distractors
 
     for (int i=0; i<3; i++) {
+      X_errorIndex = X_availability[i];
+      Y_errorIndex = Y_availability[i];
+      X_error = errors.rootError(X, X_errorIndex);
+      Y_error = errors.rootError(Y, Y_errorIndex);
       switch(perms[i]) {
       case 0: // error on X square
         E[i].errorName = utils.multiply(utils.sum(X_error, Y, 0).stringify(), utils.diff(X_error, Y, 0).stringify(), 0);
@@ -205,14 +204,19 @@ class items {
     E[2] = new error();
 
     // check possible errors
-    int X_errorIndex = utils.permutation(errors.availability(X, "square"))[0];
-    int Y_errorIndex = utils.permutation(errors.availability(Y, "square"))[0];
-    monomial X_error = errors.squareError(X, X_errorIndex);
-    monomial Y_error = errors.squareError(Y, Y_errorIndex);
+    int[] X_availability = utils.permutation(errors.availability(X, "square"));
+    int[] Y_availability = utils.permutation(errors.availability(Y, "square"));
+    int X_errorIndex, Y_errorIndex;
+    monomial X_error, Y_error;
 
     int[] perms = utils.permutation(5); // selecting error type
 
     for (int i=0; i<3; i++) {
+      X_errorIndex = X_availability[i];
+      Y_errorIndex = Y_availability[i];
+      X_error = errors.squareError(X, X_errorIndex);
+      Y_error = errors.squareError(Y, Y_errorIndex);
+
       switch(perms[i]) {
       case 0: // error on X square
         M[0] = X_error;
@@ -311,10 +315,10 @@ class items {
     E[2] = new error();
 
     // check possible errors
-    int X_errorIndex = utils.permutation(errors.availability(X, "root"))[0];
-    int Y_errorIndex = utils.permutation(errors.availability(Y, "root"))[0];
-    monomial X_error = errors.rootError(X, X_errorIndex);
-    monomial Y_error = errors.rootError(Y, Y_errorIndex);
+    int[] X_availability = utils.permutation(errors.availability(X, "root"));
+    int[] Y_availability = utils.permutation(errors.availability(Y, "root"));
+    int X_errorIndex, Y_errorIndex;
+    monomial X_error, Y_error;
 
     int[] perms = utils.permutation(4);
     if ((X.nVariables == 1 && Y.degree == 0) || (X.degree == 0 && Y.nVariables == 1)) {
@@ -323,6 +327,11 @@ class items {
     }
 
     for (int i=0; i<3; i++) {
+      X_errorIndex = X_availability[i];
+      Y_errorIndex = Y_availability[i];
+      X_error = errors.rootError(X, X_errorIndex);
+      Y_error = errors.rootError(Y, Y_errorIndex);
+
       switch(perms[i]) {
       case 0: // error on X root
         if (latex) {
@@ -371,7 +380,7 @@ class items {
           E[i].errorType.append(-3);
         }
         break;
-      case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification" 
+      case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification":
         monomial monic1 = new monomial(X.nVariables);
         monic1.variables = X.variables;
         monic1.degrees = X.degrees;
@@ -435,7 +444,7 @@ class items {
     I.complexity = complexity;
     I.answer = answer;
     I.stem = stem;
-    
+
     I.distractors[0] = E[0].errorName;
     I.distractors[1] = E[1].errorName;
     I.distractors[2] = E[2].errorName;
@@ -444,5 +453,4 @@ class items {
     I.errors[1] = E[1].errorType.toString();
     I.errors[2] = E[2].errorType.toString();
   }
-
 }
