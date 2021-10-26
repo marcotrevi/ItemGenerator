@@ -95,11 +95,6 @@ class math {
     int lcm = lcm(f1.D, f2.D);
     fraction f = new fraction(lcm/f1.D*f1.N + lcm/f2.D*f2.N,lcm);
     return f;
-  fraction fractionSum(fraction a, fraction b) {
-    // returns the fraction a+b 
-    int lcm = lcm(a.D, b.D);
-    fraction F = new fraction(lcm/a.D*a.N + lcm/b.D*b.N, lcm);
-    return F;
   }
 
   fraction fractionMult(fraction a, fraction b) {
