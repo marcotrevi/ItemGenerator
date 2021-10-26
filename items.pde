@@ -47,8 +47,8 @@ class items {
     int[] perms = utils.permutation(7); // selecting error location in distractors
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[min(i,X_availability.length-1)];
-      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
+      X_errorIndex = X_availability[min(i, X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i, Y_availability.length-1)];
       X2_error = errors.squareError(X, X_errorIndex);
       Y2_error = errors.squareError(Y, Y_errorIndex);
 
@@ -125,8 +125,8 @@ class items {
     int[] perms = utils.permutation(7); // selecting error location in distractors
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[min(i,X_availability.length-1)];
-      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
+      X_errorIndex = X_availability[min(i, X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i, Y_availability.length-1)];
       X_error = errors.rootError(X, X_errorIndex);
       Y_error = errors.rootError(Y, Y_errorIndex);
       switch(perms[i]) {
@@ -212,8 +212,8 @@ class items {
     int[] perms = utils.permutation(5); // selecting error type
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[min(i,X_availability.length-1)];
-      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
+      X_errorIndex = X_availability[min(i, X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i, Y_availability.length-1)];
       X_error = errors.squareError(X, X_errorIndex);
       Y_error = errors.squareError(Y, Y_errorIndex);
 
@@ -327,11 +327,11 @@ class items {
     }
 
     for (int i=0; i<3; i++) {
-      X_errorIndex = X_availability[min(i,X_availability.length-1)];
-      Y_errorIndex = Y_availability[min(i,Y_availability.length-1)];
+      X_errorIndex = X_availability[min(i, X_availability.length-1)];
+      Y_errorIndex = Y_availability[min(i, Y_availability.length-1)];
       X_error = errors.rootError(X, X_errorIndex);
       Y_error = errors.rootError(Y, Y_errorIndex);
-
+      print(" ok: "+perms[i]+" ");
       switch(perms[i]) {
       case 0: // error on X root
         if (latex) {
@@ -381,7 +381,7 @@ class items {
         }
         break;
       case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification":
-      // e.g. (5x^3 + 6)^2 = 25x^6 + 60x^3 + 36 ---> 85x^9 + 36
+        // e.g. (5x^3 + 6)^2 = 25x^6 + 60x^3 + 36 ---> 85x^9 + 36
         monomial monic1 = new monomial(X.nVariables);
         monic1.variables = X.variables;
         monic1.degrees = X.degrees;
@@ -395,11 +395,12 @@ class items {
         monic2.coefficient.N = 1;
         monic2.coefficient.D = 1;
         monic2.setDegree();
-
+                
         fraction f1 = new fraction(X.coefficient.N, X.coefficient.D);
         fraction f2 = new fraction(Y.coefficient.N, Y.coefficient.D);
 
         if (X.degree == 0) {
+                  print(" here1 ");
           monomial P = utils.productMonomial(utils.squareMonomial(monic2), utils.productMonomial(monic1, monic2));
           fraction a = new fraction(f2.N*f2.N, f2.D*f2.D);
           if (X.sign*Y.sign == -1) {
@@ -412,6 +413,8 @@ class items {
           P.coefficient.simplify();
           E[i].errorName = utils.sum(P, utils.squareMonomial(X), 0).stringify();
         } else {
+                  print(" here2 ");
+
           fraction a = new fraction(f1.N*f1.N, f1.D*f1.D);
           monomial P = utils.productMonomial(utils.squareMonomial(monic1), utils.productMonomial(monic1, monic2));
           if (X.sign*Y.sign == -1) {

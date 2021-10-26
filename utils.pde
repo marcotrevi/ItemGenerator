@@ -156,7 +156,6 @@ class utils {
   monomial productMonomial(monomial M1, monomial M2) {
     IntList variables = new IntList();
     IntList degrees = new IntList();
-
     // check common variables
     for (int i=0; i<M1.nVariables; i++) {
       for (int j=0; j<M2.nVariables; j++) {
@@ -167,28 +166,23 @@ class utils {
         }
       }
     }
-
     for (int i=0; i<M1.nVariables; i++) {
       if (!foundVariable(M1.variables[i], M2)) {
         variables.append(M1.variables[i]);
         degrees.append(M1.degrees[i]);
       }
     }
-
     for (int i=0; i<M2.nVariables; i++) {
       if (!foundVariable(M2.variables[i], M1)) {
         variables.append(M2.variables[i]);
         degrees.append(M2.degrees[i]);
       }
     }
-
     int nVariables = variables.size();
-
     monomial P = new monomial(nVariables);
     P.sign = M1.sign * M2.sign;
     P.coefficient = new fraction(M1.coefficient.N*M2.coefficient.N, M1.coefficient.D*M2.coefficient.D);
     P.coefficient.simplify();
-
     for (int i=0; i<nVariables; i++) {
       P.variables[i] = variables.get(i);
       P.degrees[i] = degrees.get(i);
@@ -223,8 +217,6 @@ class utils {
     return S;
   }
 
-  //################################################################################################# methods which operate on monomials
-
   boolean areSimilar(monomial M1, monomial M2) {
     boolean check = true;
     boolean check_variables = true;
@@ -240,7 +232,6 @@ class utils {
         i = M2.nVariables;
       }
     }
-
     if (check_variables) {
       for (int i=0; i<M1.nVariables; i++) {
         for (int j=0; j<M2.nVariables; j++) {
@@ -267,7 +258,7 @@ class utils {
     }
     return perm;
   }
-
+  
   int[] permutation(int n) {
     // returns a random permutation of integers 0...n-1
     IntList list = new IntList();
@@ -283,13 +274,13 @@ class utils {
     }
     return perm;
   }
-
+  
   int[] step(int[] position, int direction, int stepSize) {
     int[] newPosition = position;
     newPosition[direction] = newPosition[direction] + stepSize;
     return newPosition;
   }
-
+  
   int[] smoothStep(int[] position) {
     // updates position vector one step at a time increasing the smallest coordinate
     int[] newPosition = position;
@@ -502,5 +493,5 @@ class utils {
     newRow.setString("distractor1", "choice");
     newRow.setString("distractor2", "choice");
     newRow.setString("distractor3", "choice");
-  }
+  } 
 }
