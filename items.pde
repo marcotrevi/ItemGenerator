@@ -128,6 +128,7 @@ class items {
     } else {
       answer = "(" + utils.sum(X, Y, floor(random(0, 2))).stringify() + ")(" + utils.diff(X, Y, floor(random(0, 2))).stringify() + ")";
     }
+
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
@@ -228,10 +229,10 @@ class items {
     E[2] = new error();
 
     // check possible errors
-    int errorIndex1 = utils.permutation(errors.availability(X, "square"))[0];
-    int errorIndex2 = utils.permutation(errors.availability(Y, "square"))[0];
-    monomial X_error = errors.squareError(X, errorIndex1);
-    monomial Y_error = errors.squareError(Y, errorIndex2);
+    int X_errorIndex = utils.permutation(errors.availability(X, "square"))[0];
+    int Y_errorIndex = utils.permutation(errors.availability(Y, "square"))[0];
+    monomial X_error = errors.squareError(X, X_errorIndex);
+    monomial Y_error = errors.squareError(Y, Y_errorIndex);
 
     int[] perms = utils.permutation(5); // selecting error type
 
@@ -242,22 +243,22 @@ class items {
         M[1] = utils.squareMonomial(Y);
         M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
         E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-        E[i].errorType.append(errorIndex1);
+        E[i].errorType.append(X_errorIndex);
         break;
       case 1: // error on Y square
         M[0] = utils.squareMonomial(X);
         M[1] = Y_error;
         M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
         E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-        E[i].errorType.append(errorIndex2);
+        E[i].errorType.append(Y_errorIndex);
         break;
       case 2: // error on both squares
         M[0] = X_error;
         M[1] = Y_error;
         M[2] = utils.productMonomial(utils.scalarProduct(X, two), Y);
         E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-        E[i].errorType.append(errorIndex1);
-        E[i].errorType.append(errorIndex2);
+        E[i].errorType.append(X_errorIndex);
+        E[i].errorType.append(Y_errorIndex);
         break;
       case 3: // sophomore's dream
         E[i].errorName = utils.sum(utils.squareMonomial(X), utils.squareMonomial(Y), 0).stringify();
@@ -268,7 +269,7 @@ class items {
         M[1] = utils.squareMonomial(Y);
         M[2] = utils.oppositeMonomial(utils.productMonomial(utils.scalarProduct(X, two), Y));    
         E[i].errorName = utils.multiSum(M, utils.permutation(3)).stringify();
-        E[i].errorType.append(errorIndex1);
+        E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(-1);
         break;
       }
@@ -332,19 +333,127 @@ class items {
         answer = answer2;
       }
     }
-
+    
     // distractors
     String[] distractors = new String[3];
     String[] errs = new String[3];
     error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    // check possible errors
+    int X_errorIndex = utils.permutation(errors.availability(X, "root"))[0];
+    int Y_errorIndex = utils.permutation(errors.availability(Y, "root"))[0];
+    monomial X_error = errors.rootError(X, X_errorIndex);
+    monomial Y_error = errors.rootError(Y, Y_errorIndex);
+
     int[] perms = utils.permutation(4);
     if ((X.nVariables == 1 && Y.degree == 0) || (X.degree == 0 && Y.nVariables == 1)) {
       // also last error is available
       perms = utils.permutation(5);
     }
-    E[0] = errors.binomialSquareExpandedError(X, Y, perms[0]);
-    E[1] = errors.binomialSquareExpandedError(X, Y, perms[1]);
-    E[2] = errors.binomialSquareExpandedError(X, Y, perms[2]);
+
+    for (int i=0; i<3; i++) {
+      switch(perms[i]) {
+      case 0: // error on X root
+        if (latex) {
+          E[i].errorName = "\\left(" + utils.sum(X_error, Y, utils.permutation(2)[0]).stringify() + "\\right)^2";
+        } else {
+          E[i].errorName = "(" + utils.sum(X_error, Y, utils.permutation(2)[0]).stringify() + ")^2";
+        }
+        E[i].errorType.append(X_errorIndex);
+        break;
+      case 1: // error on Y root
+        if (latex) {
+          E[i].errorName = "\\left(" + utils.sum(X, Y_error, utils.permutation(2)[0]).stringify() + "\\right)^2";
+        } else {
+          E[i].errorName = "(" + utils.sum(X, Y_error, utils.permutation(2)[0]).stringify() + ")^2";
+        }
+        E[i].errorType.append(Y_errorIndex);
+        break;
+      case 2: // error on both roots
+        if (latex) {
+          E[i].errorName = "\\left(" + utils.sum(X_error, Y_error, utils.permutation(2)[0]).stringify() + "\\right)^2";
+        } else {
+          E[i].errorName = "(" + utils.sum(X_error, Y_error, utils.permutation(2)[0]).stringify() + ")^2";
+        }
+        E[i].errorType.append(X_errorIndex);
+        E[i].errorType.append(Y_errorIndex);
+        break;
+      case 3: // always positive sum
+        // WARNING: error not available is monomials have same signs
+        if (X.sign * Y.sign == -1) {
+          monomial Xplus = X;
+          monomial Yplus = Y;
+          if (X.sign == -1 && Y.sign == 1) {
+            Xplus = utils.oppositeMonomial(X);
+          }
+          if (X.sign == 1 && Y.sign == -1) {
+            Yplus = utils.oppositeMonomial(Y);
+          }
+          if (latex) {
+            E[i].errorName = "\\left(" + utils.sum(Xplus, Yplus, utils.permutation(2)[0]).stringify() + "\\right)^2";
+          } else {
+            E[i].errorName = "(" + utils.sum(Xplus, Yplus, utils.permutation(2)[0]).stringify() + ")^2";
+          }
+          E[i].errorType.append(-1);
+        } else {
+          E[i].errorName = "0";
+          E[i].errorType.append(-3);
+        }
+        break;
+      case 4: // if one of the monomials has only one variable and the other is a scalar, one error is the "compactification" 
+        monomial monic1 = new monomial(X.nVariables);
+        monic1.variables = X.variables;
+        monic1.degrees = X.degrees;
+        monic1.coefficient.N = 1;
+        monic1.coefficient.D = 1;
+        monic1.setDegree();
+
+        monomial monic2 = new monomial(Y.nVariables);
+        monic2.variables = Y.variables;
+        monic2.degrees = Y.degrees;
+        monic2.coefficient.N = 1;
+        monic2.coefficient.D = 1;
+        monic2.setDegree();
+
+        fraction f1 = new fraction(X.coefficient.N, X.coefficient.D);
+        fraction f2 = new fraction(Y.coefficient.N, Y.coefficient.D);
+
+        if (X.degree == 0) {
+          monomial P = utils.productMonomial(utils.squareMonomial(monic2), utils.productMonomial(monic1, monic2));
+          fraction a = new fraction(f2.N*f2.N, f2.D*f2.D);
+          if (X.sign*Y.sign == -1) {
+            fraction b = new fraction(-2*f1.N*f2.N, f1.D*f2.D);
+            P.coefficient = math.fractionSum(a, b);
+          } else {
+            fraction b = new fraction(2*f1.N*f2.N, f1.D*f2.D);
+            P.coefficient = math.fractionSum(a, b);
+          }
+          P.coefficient.simplify();
+          E[i].errorName = utils.sum(P, utils.squareMonomial(X), 0).stringify();
+        } else {
+          fraction a = new fraction(f1.N*f1.N, f1.D*f1.D);
+          monomial P = utils.productMonomial(utils.squareMonomial(monic1), utils.productMonomial(monic1, monic2));
+          if (X.sign*Y.sign == -1) {
+            fraction b = new fraction(-2*f1.N*f2.N, f1.D*f2.D);
+            P.coefficient = math.fractionSum(a, b);
+          } else {
+            fraction b = new fraction(2*f1.N*f2.N, f1.D*f2.D);
+            P.coefficient = math.fractionSum(a, b);
+          }
+          P.coefficient.simplify();
+          if (P.coefficient.N == -1 && P.coefficient.D == 1) {
+            E[i].errorName = utils.removePlus(utils.sum(P, utils.squareMonomial(Y), 0).stringify());
+          } else {          
+            E[i].errorName = utils.sum(P, utils.squareMonomial(Y), 0).stringify();
+          }
+        }
+        E[i].errorType.append(-5);
+        break;
+      }
+    }
 
     setParams(distractors, E, errs);
 
