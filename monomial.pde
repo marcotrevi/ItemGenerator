@@ -26,6 +26,14 @@ class monomial {
     return check;
   }
 
+  boolean isScalar() {
+    boolean check = false;
+    if (degree == 0) {
+      check = true;
+    }
+    return check;
+  }
+
   boolean isMonic() {
     boolean check = false;
     if (coefficient.N == 1 && coefficient.D == 1) {

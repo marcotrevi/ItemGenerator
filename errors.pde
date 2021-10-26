@@ -208,7 +208,7 @@ class errors {
       if (M.isMonic()) {
         availableErrors = utils.removeInt(availableErrors, 1);
       }
-      if (M.degree == 0) {
+      if (M.isScalar()) {
         availableErrors = utils.removeInt(availableErrors, 2);
       }
       break;
