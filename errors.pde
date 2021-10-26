@@ -455,8 +455,42 @@ class errors {
         P.coefficient.simplify();
         if (P.coefficient.N == -1 && P.coefficient.D == 1) {
           E.errorName = U.removePlus(U.sum(P, U.squareMonomial(M2), 0).stringify());
+=======
+      monic2.coefficient.N = 1;
+      monic2.coefficient.D = 1;
+      monic2.setDegree();
+
+      fraction f1 = new fraction(M1.coefficient.N, M1.coefficient.D);
+      fraction f2 = new fraction(M2.coefficient.N, M2.coefficient.D);
+
+      if (M1.degree == 0) {
+        monomial P = utils.productMonomial(utils.squareMonomial(monic2), utils.productMonomial(monic1, monic2));
+        fraction a = new fraction(f2.N*f2.N, f2.D*f2.D);
+        if (M1.sign*M2.sign == -1) {
+          fraction b = new fraction(-2*f1.N*f2.N, f1.D*f2.D);
+          P.coefficient = math.fractionSum(a, b);
+        } else {
+          fraction b = new fraction(2*f1.N*f2.N, f1.D*f2.D);
+          P.coefficient = math.fractionSum(a, b);
+        }
+        P.coefficient.simplify();
+        E.errorName = utils.sum(P, utils.squareMonomial(M1), 0).stringify();
+      } else {
+        fraction a = new fraction(f1.N*f1.N, f1.D*f1.D);
+        monomial P = utils.productMonomial(utils.squareMonomial(monic1), utils.productMonomial(monic1, monic2));
+        if (M1.sign*M2.sign == -1) {
+          fraction b = new fraction(-2*f1.N*f2.N, f1.D*f2.D);
+          P.coefficient = math.fractionSum(a, b);
+        } else {
+          fraction b = new fraction(2*f1.N*f2.N, f1.D*f2.D);
+          P.coefficient = math.fractionSum(a, b);
+        }
+        P.coefficient.simplify();
+        if (P.coefficient.N == -1 && P.coefficient.D == 1) {
+          E.errorName = utils.removePlus(utils.sum(P, utils.squareMonomial(M2), 0).stringify());
+>>>>>>> restructure_errors
         } else {          
-          E.errorName = U.sum(P, U.squareMonomial(M2), 0).stringify();
+          E.errorName = utils.sum(P, utils.squareMonomial(M2), 0).stringify();
         }
       }
       E.errorType.append(-5);
@@ -574,18 +608,26 @@ class errors {
       }
       if (M.coefficient.D == 1 && M.degree == 0) {
         // monomial is an integer
+<<<<<<< HEAD
         availableErrors = U.removeInt(availableErrors, 0);
+=======
+        availableErrors = utils.removeInt(availableErrors, 0);
+>>>>>>> restructure_errors
         if (M.coefficient.N == 1) {
           // monomial is the number 1
-          availableErrors = U.removeInt(availableErrors, 1);
-          availableErrors = U.removeInt(availableErrors, 2);
+          availableErrors = utils.removeInt(availableErrors, 1);
+          availableErrors = utils.removeInt(availableErrors, 2);
         }
       }
       if (M.coefficient.N == 1 && M.coefficient.D == 1) {
+<<<<<<< HEAD
         availableErrors = U.removeInt(availableErrors, 1);
+=======
+        availableErrors = utils.removeInt(availableErrors, 1);
+>>>>>>> restructure_errors
       }
       if (M.degree == 0) {
-        availableErrors = U.removeInt(availableErrors, 2);
+        availableErrors = utils.removeInt(availableErrors, 2);
       }
       break;
     }
