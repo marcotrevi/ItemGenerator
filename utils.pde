@@ -47,14 +47,6 @@ class utils {
        2 - 3 variables
        */
     case 0:
-    fraction coefficient = new fraction(num, den);
-    coefficient.simplify();
-    
-    int nVariables;
-
-    if (c_variables < 0.33) {
-      nVariables = 0;
-    } else if (0.33<= c_variables && c_variables < 0.66) {
       nVariables = 1;
       break;
     case 1:
@@ -111,29 +103,6 @@ class utils {
       }
       break;
     }
-
-    if (complexity == -1) {
-      // test monomial
-      m = new monomial(1);
-      m.sign = 1;
-      m.coefficient.N = 2;
-      m.coefficient.D = 1;
-
-      m.variables[0] = 0;
-
-      m.degrees[0] = 1;
-    } else if (complexity == -2) {
-      m = new monomial(2);
-      m.sign = -1;
-      m.coefficient.N = 1;
-      m.coefficient.D = 1;
-
-      m.variables[0] = 0;
-      m.variables[1] = 1;
-
-      m.degrees[0] = 1;
-      m.degrees[1] = 2;
-    }
     m.setDegree();
     return m;
   }
@@ -160,7 +129,7 @@ class utils {
     }
     return NS;
   }
-  
+
   monomial scalarProduct(monomial M, int[] k) {
     monomial P = new monomial(M.nVariables);
     P.sign = M.sign;
@@ -197,7 +166,7 @@ class utils {
         degrees.append(M1.degrees[i]);
       }
     }
-    
+
     for (int i=0; i<M2.nVariables; i++) {
       if (!foundVariable(M2.variables[i], M1)) {
         variables.append(M2.variables[i]);
@@ -456,23 +425,23 @@ class utils {
     // each item type has its own constructor
     switch(type) {
     case "x^2-y^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
+      X = generateMonomial(complexity);
+      Y = generateNonSimilar(X, complexity);
       I = differenceOfSquares(X, Y);
       break;
     case "(x+y)(x-y)":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
+      X = generateMonomial(complexity);
+      Y = generateNonSimilar(X, complexity);
       I = sumDifference(X, Y, complexity);
       break;
     case "x^2+y^2+2xy":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
+      X = generateMonomial(complexity);
+      Y = generateNonSimilar(X, complexity);
       I = binomialSquareExpanded(X, Y);
       break;
     case "(x+y)^2":
-      X = U.generateMonomial(complexity);
-      Y = U.generateNonSimilar(X, complexity);
+      X = generateMonomial(complexity);
+      Y = generateNonSimilar(X, complexity);
       I = binomialSquareCompact(X, Y);
       break;
     }

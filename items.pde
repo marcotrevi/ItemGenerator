@@ -17,8 +17,6 @@ class items {
     E[1] = new error();
     E[2] = new error();
 
-    E[0].errorName = E[0].scalarValue.stringify();
-
     setPs(distractors, E, errs);
 
     item I = new item();
@@ -334,7 +332,7 @@ class items {
 
   //######################################################################################## ITEM GENERATOR
 
-  item generateItem(String type, float complexity) {
+  item generateItem(String type, int[] complexity) {
     monomial X, Y;
     item I = new item();
     // each item type has its own constructor

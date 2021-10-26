@@ -3,98 +3,6 @@ class errors {
   }
 
   //######################################################################################## ERROR DATABASE
-
-  error pow1(fraction f, int n) {
-    boolean isAvailable = true;
-    error E = new error();
-    E.id = 0;
-    E.description = "(a/b)^n => n.a/b [base multiplied by exponent instead of raised to the n-th power]";
-    E.exceptions = "exceptions: a=0; n=1; a=2 & b=1 & n=2";
-    if (f.N == 0 || n==1 || (f.N==2 && f.D==1 && n==2)) {
-      isAvailable = false;
-    }
-    if (isAvailable) {
-      E.scalarValue.N = n*f.N;
-      E.scalarValue.D = f.D;
-    } else {
-    }
-    return E;
-  }
-
-  error power2(monomial M, int errorType) {
-    // there are 6 possible errors in this list
-    boolean isAvailable = true;
-    error E = new error();
-    monomial S = new monomial(0);
-    switch(errorType) {
-    case 0:
-      E.id = 0;
-      E.description = "(a.M(x))^2 => a.M(x)^2 [coefficient not squared, only the literal part M(x)]";
-      E.exceptions = "exceptions: a=0; a=1";
-      E.monomialValue = new monomial(M.nVariables);
-      E.monomialValue.variables = M.variables;
-      E.monomialValue.coefficient = M.coefficient;
-
-      S.sign = 1;
-      S.coefficient.N = M.coefficient.N;
-      S.coefficient.D = M.coefficient.D;
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = M.degrees[i]*2;
-      }
-      break;
-    case 1: // double of coefficient instead of square (kx)^2= 2kx^2
-      // WARNING: is correct if coefficient is 2
-      error e = pow1(M.coefficient, 2);
-      S.sign = M.sign;
-      S.coefficient = e.scalarValue;
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = M.degrees[i]*2;
-      }
-      break;
-    case 2: // double of monomial instead of square: (kx)^2 = 2kx
-      // WARNING: is correct if monomial is constant and equal to 2
-      S.sign = M.sign;
-      S.coefficient.N = 2*M.coefficient.N;
-      S.coefficient.D = M.coefficient.D;
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = M.degrees[i];
-      }
-      break;
-    case 3: // square of exponent instead of double: (kx^n)^2 = k^2x^(n^2)
-      // WARNING: is correct if coefficient is 1 or if exponent is 2
-      S.sign = 1;
-      S.coefficient.N = int(pow(M.coefficient.N, 2));
-      S.coefficient.D = int(pow(M.coefficient.D, 2));
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = int(pow(M.degrees[i], 2));
-      }
-      break;
-    case 4: // doubling coefficient, both numerator and denominator if coefficient is a fraction, while correctly squaring variables
-      // WARNING: is correct if coefficient is 2
-      S.sign = M.sign;
-      S.coefficient.N = 2*M.coefficient.N;
-      if (M.coefficient.D > 1) {
-        S.coefficient.D = 2*M.coefficient.D;
-      } else {
-        S.coefficient.D = M.coefficient.D;
-      }
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = 2*M.degrees[i];
-      }
-      break;
-    case 5: // kept minus sign. Rest is ok. Available error only if M.sign = -1
-      S.sign = -1;
-      S.coefficient.N = int(pow(M.coefficient.N, 2));
-      S.coefficient.D = int(pow(M.coefficient.D, 2));
-      for (int i=0; i<S.nVariables; i++) {
-        S.degrees[i] = 2*M.degrees[i];
-      }
-      break;
-    }
-    S.setDegree();
-    return E;
-  }
-
   //######################################################################################## ERROR: square root
 
   monomial rootError(monomial M, int errorType) {
@@ -189,9 +97,8 @@ class errors {
       break;
     case 1: // double of coefficient instead of square (kx)^2= 2kx^2
       // WARNING: is correct if coefficient is 2
-      error e = pow1(M.coefficient, 2);
       S.sign = M.sign;
-      S.coefficient = e.scalarValue;
+      S.coefficient = new fraction(1,1);
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
