@@ -331,7 +331,6 @@ class items {
       Y_errorIndex = Y_availability[min(i, Y_availability.length-1)];
       X_error = errors.rootError(X, X_errorIndex);
       Y_error = errors.rootError(Y, Y_errorIndex);
-      print(" ok: "+perms[i]+" ");
       switch(perms[i]) {
       case 0: // error on X root
         if (latex) {
@@ -400,7 +399,6 @@ class items {
         fraction f2 = new fraction(Y.coefficient.N, Y.coefficient.D);
 
         if (X.degree == 0) {
-                  print(" here1 ");
           monomial P = utils.productMonomial(utils.squareMonomial(monic2), utils.productMonomial(monic1, monic2));
           fraction a = new fraction(f2.N*f2.N, f2.D*f2.D);
           if (X.sign*Y.sign == -1) {
@@ -413,8 +411,6 @@ class items {
           P.coefficient.simplify();
           E[i].errorName = utils.sum(P, utils.squareMonomial(X), 0).stringify();
         } else {
-                  print(" here2 ");
-
           fraction a = new fraction(f1.N*f1.N, f1.D*f1.D);
           monomial P = utils.productMonomial(utils.squareMonomial(monic1), utils.productMonomial(monic1, monic2));
           if (X.sign*Y.sign == -1) {
