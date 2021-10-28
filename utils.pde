@@ -4,7 +4,7 @@ class utils {
   utils() {
   }
 
-  //###################################################################### methods which return a monomial 
+  //###################################################################### methods which return a nice monomial 
 
   monomial generateMonomial(int[] complexity) {
     // monomial complexity is a discrete 3D vector: (coefficient, number of variables, max degree)
