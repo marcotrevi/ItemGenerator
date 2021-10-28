@@ -85,13 +85,14 @@ void draw() {
 
 void displayHistory() {
   noStroke();
+  float l = 20;
   for (int i=0; i<history[0].size(); i++) {
     fill(255, 50, 50);
-    ellipse(10+i*5, H-5*history[0].get(i)-10, 5, 5);
+    ellipse(20+i*l, H-l*history[0].get(i)-l, l, l);
     fill(50, 255, 50);
-    ellipse(10+i*5, H-5*history[1].get(i)-10, 4, 4);
+    ellipse(20+i*l, H-l*history[1].get(i)-l, l*0.75, l*0.75);
     fill(100, 100, 255);
-    ellipse(10+i*5, H-5*history[2].get(i)-10, 3, 3);
+    ellipse(20+i*l, H-l*history[2].get(i)-l, l*0.5, l*0.5);
   }
 }
 
@@ -140,7 +141,7 @@ void getAnswer() {
 
 void getNewItem(int[] complexity) {
   correct = false;
-  I = utils.generateItem("x^2+y^2+2xy", complexity);
+  I = utils.generateItem("x^2-y^2", complexity);
   choices = shuffleChoices(I);
   getAnswer();
   history[0].append(complexity[0]);

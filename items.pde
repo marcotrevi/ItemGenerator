@@ -97,18 +97,64 @@ class items {
 
   //################################################################################### x^2 - y^2
 
-  item differenceOfSquares(monomial X, monomial Y, int[] complexity) {
+  item differenceOfSquares(monomial M1, monomial M2, int[] complexity) {
+    // complexity vector depends on the particular permutation.
+    // complexity vector has 2 components: stem complexity and choice complexity.
+    monomial X, Y;
+    if (random(0, 1)<0.5) {
+      X = M1;
+      Y = M2;
+    } else {
+      X = M2;
+      Y = M1;
+    }
     // stem: x^2 - y^2 = 
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
+    String stem = "";
 
-    String stem = utils.diff(X2, Y2, floor(random(0, 2))).stringify();
+    switch(complexity[0]) { // managing stem complexity
+    case 0:
+      // x^2-y^2
+      stem = utils.diff(X2, Y2, 0).stringify();
+      break;
+    case 1:
+      // random switch between x^2-y^2 and -y^2+x^2, with preference towards easy permutation
+      if (random(0, 1) < 0.8) {
+        stem = utils.diff(X2, Y2, 0).stringify();
+      } else {
+        stem = utils.diff(X2, Y2, 1).stringify();
+      }
+      break;
+    default:
+      // random permutation
+      stem = utils.diff(X2, Y2, floor(random(0, 2))).stringify();
+      break;
+    }
+
     // answer
     String answer = "";
+    String factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();
+    String factor2 = utils.diff(X, Y, floor(random(0, 2))).stringify();
+    switch(complexity[1]) {
+    case 0:
+      // (x+y)(x-y)
+      factor1 = utils.sum(X, Y, 0).stringify();
+      factor2 = utils.diff(X, Y, 0).stringify();
+      break;
+    case 1:
+      factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();
+      factor2 = utils.diff(X, Y, floor(random(0, 2))).stringify();
+      break;
+    default:
+      factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();
+      factor2 = utils.diff(X, Y, floor(random(0, 2))).stringify();
+      break;
+    }
     if (latex) {
-      answer = "\\left(" + utils.sum(X, Y, floor(random(0, 2))).stringify() + "\\right)\\left(" + utils.diff(X, Y, floor(random(0, 2))).stringify() + "\\right)";
+      answer = "\\left(" + factor1 + "\\right)\\left(" + factor2 + "\\right)";
     } else {
-      answer = "(" + utils.sum(X, Y, floor(random(0, 2))).stringify() + ")(" + utils.diff(X, Y, floor(random(0, 2))).stringify() + ")";
+      answer = "(" + factor1 + ")(" + factor2 + ")";
     }
 
     // distractors
@@ -170,6 +216,11 @@ class items {
       }
     }
     item I = new item();
+    IntList c = new IntList();
+    c.append(X.complexity);
+    c.append(Y.complexity);
+    c.append(complexity);
+    I.complexity = c;
     setItemParams(I, "x^2-y^2", complexity, answer, stem, E);
 
     return I;
@@ -394,7 +445,7 @@ class items {
         monic2.coefficient.N = 1;
         monic2.coefficient.D = 1;
         monic2.setDegree();
-                
+
         fraction f1 = new fraction(X.coefficient.N, X.coefficient.D);
         fraction f2 = new fraction(Y.coefficient.N, Y.coefficient.D);
 
@@ -441,7 +492,7 @@ class items {
   void setItemParams(item I, String type, int[] complexity, String answer, String stem, error[] E) {
 
     I.type = type;
-    I.complexity = complexity;
+    //    I.complexity = complexity;
     I.answer = answer;
     I.stem = stem;
 

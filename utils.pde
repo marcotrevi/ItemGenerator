@@ -8,6 +8,7 @@ class utils {
 
   monomial generateMonomial(int[] complexity) {
     // monomial complexity is a discrete 3D vector: (coefficient, number of variables, max degree)
+    // (0,0,0) is the scalar 1
     int num = 1;
     int den = 1;
     int nVariables = 1;
@@ -16,24 +17,23 @@ class utils {
     switch(complexity[1]) {
       /*
       n. variables complexity:
-       0 - 0 or 1 variable
+       0 - 0 variables (is a scalar)
        1 - 2 variables
        2 - 3 variables
        */
     case 0:
-      nVariables = floor(random(0, 2));
+      nVariables = 0;
       break;
     case 1:
-      nVariables = 2;
+      nVariables = 1;
       break;
     case 2:
-      nVariables = 3;
+      nVariables = 2;
       break;
     default:
       nVariables = floor(random(3, 5));
       break;
     }
-
 
     switch(complexity[0]) {
       /*
@@ -86,32 +86,35 @@ class utils {
     switch(complexity[2]) {
       /*
     degree complexity:
-       0 - max degree is 1
-       1 - max degree is 2 
-       2 - max degree is 3
+       0 - degree is 0
+       1 - max degree is 1 
+       2 - max degree is 2
        */
     case 0:
       for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = 1;
+        m.degrees[i] = 0;
       }
       break;
     case 1:
       for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(1, 3));
+        m.degrees[i] = 1;
       }
       break;
     case 2:
       for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(1, 4));
+        m.degrees[i] = floor(random(1, 2));
       }
       break;
     default:
       for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(1, 10));
+        m.degrees[i] = floor(random(2, 10));
       }
       break;
     }
     m.setDegree();
+    m.complexity[0] = complexity[0];
+    m.complexity[1] = complexity[1];
+    m.complexity[2] = complexity[2];
     return m;
   }
 
@@ -125,14 +128,22 @@ class utils {
   }
 
   monomial generateNonSimilar(monomial M, int[] complexity) {
-    int i = 0;
-    boolean OK = false;
-    monomial NS = generateMonomial(complexity);
-    while (!OK && i<500) {
-      i++;
+    monomial NS;
+    if (M.isScalar() && complexity[2]==0) {
+      // request is not possible.
+      // must return a monomial with one variable
+      int[] newComplexity = {complexity[0],1,1};
+      NS = generateMonomial(newComplexity);
+    } else {
+      int i = 0;
+      boolean OK = false;
       NS = generateMonomial(complexity);
-      if (!areSimilar(M, NS)) {
-        OK = true;
+      while (!OK && i<500) {
+        i++;
+        NS = generateMonomial(complexity);
+        if (!areSimilar(M, NS)) {
+          OK = true;
+        }
       }
     }
     return NS;
@@ -258,7 +269,7 @@ class utils {
     }
     return perm;
   }
-  
+
   int[] permutation(int n) {
     // returns a random permutation of integers 0...n-1
     IntList list = new IntList();
@@ -274,13 +285,13 @@ class utils {
     }
     return perm;
   }
-  
+
   int[] step(int[] position, int direction, int stepSize) {
     int[] newPosition = position;
     newPosition[direction] = newPosition[direction] + stepSize;
     return newPosition;
   }
-  
+
   int[] smoothStep(int[] position) {
     // updates position vector one step at a time increasing the smallest coordinate
     int[] newPosition = position;
@@ -426,7 +437,8 @@ class utils {
     // each item type has its own constructor
     switch(type) {
     case "x^2-y^2":
-      I = items.differenceOfSquares(X, Y, complexity);
+      int[] itemComplexity = {0, 0};
+      I = items.differenceOfSquares(X, Y, itemComplexity);
       break;
     case "(x+y)(x-y)":
       I = items.sumDifference(X, Y, complexity);
@@ -493,5 +505,5 @@ class utils {
     newRow.setString("distractor1", "choice");
     newRow.setString("distractor2", "choice");
     newRow.setString("distractor3", "choice");
-  } 
+  }
 }

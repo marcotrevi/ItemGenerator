@@ -5,6 +5,7 @@ class monomial {
   int[] variables;
   int[] degrees;
   int degree = 0;
+  int[] complexity = new int[3];
 
   monomial(int nVariables) {
     this.nVariables = nVariables;
