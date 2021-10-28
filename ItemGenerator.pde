@@ -116,7 +116,7 @@ void togglePause() {
 
 String[] shuffleChoices(item I) {
   String[] choices = new String[4];
-  choices[0] = I.answer+" (*)";
+  choices[0] = I.answer+"(*)"; // add (*) to cheat
   choices[1] = I.distractors[0];
   choices[2] = I.distractors[1];
   choices[3] = I.distractors[2];
