@@ -4,22 +4,21 @@ errors errors = new errors();
 items items = new items();
 boolean latex = false; // writes latex tags
 Table T = new Table();
-int startTime = 0;
-int stopTime = 0;
-float time = 0;
-float timeOld = 0;
-int elapsedTime = 0;
+float time, timeOld, resetTime, timePauseStart, timePauseStop, pauseTime, elapsedTime = 0;
+float maxTime = 5*1000;
 item I;
 String[] choices = new String[4];
 int W = 400; 
 int H = 400;
-boolean start = false;
-float maxTime = 5*1000;
 float h = 50;
 color c1, c2, c3, c4;
 int[] perms = new int[4];
 int indexPressed = -1;
 int indexAnswer = -1;
+boolean getNewItem = true;
+boolean answered = false;
+boolean start = false;
+boolean pause = false;
 
 void setup() {
   size(400, 400);
@@ -51,37 +50,50 @@ void setup() {
   I = utils.generateItem("x^2+y^2+2xy", c);
   choices = shuffleChoices(I);
   getAnswer();
+  startTimer();
   //utils.generateItem("(x+y)^2", c).printme();
 
   //utils.generateCsv(T, "(x+y)^2", 0.5, 10, "binomial_square_compact");
 }
 
 void draw() {
-  background(0);
-  // buttons
-  stroke(0);
-  fill(c1);
-  rect(0, 120, W, 50);
-  fill(c2);
-  rect(0, 120+h, W, 50);
-  fill(c3);
-  rect(0, 120+2*h, W, 50);
-  fill(c4);
-  rect(0, 120+3*h, W, 50);
-
-  time = millis() % maxTime;
-  if (time - timeOld < 0) {
-    timeIsUp();
+  // start timer
+  if (!pause) {
+    time = (millis() - pauseTime - resetTime) % maxTime;
   }
-  fill(255);
-  textSize(24);
-  text(I.stem, 100, 80);
-  displayChoices(choices);
-  noStroke();
-  fill(255, 0, 0);
-  rect(0, 0, time/maxTime*400.0, 20);
-  //  println(time);
+
+  elapsedTime = time-timeOld;
+  background(0);
+  buttons();  
+  displayItem();
+  progressBar();
+
+  if (elapsedTime < 0) {
+    // cycle is complete
+    timeIsUp();
+    getNewItem = true;
+    answered = false;
+  }
   timeOld = time;
+}
+
+void startTimer() {
+  start = true;
+}
+
+void resetTimer() {
+  resetTime = millis();
+  pauseTime = 0;
+}
+
+void togglePause() {
+  pause = !pause;
+  if (pause) {
+    timePauseStart = millis();
+  } else {
+    timePauseStop = millis();
+    pauseTime = pauseTime + (timePauseStop - timePauseStart);
+  }
 }
 
 String[] shuffleChoices(item I) {
@@ -113,6 +125,7 @@ void displayChoices(String[] choices) {
   text(choices[1], 100, 200);
   text(choices[2], 100, 250);
   text(choices[3], 100, 300);
+  text("pausa", 100, 350);
 }
 
 void getNewItem(int[] complexity) {
@@ -130,35 +143,67 @@ void timeIsUp() {
   c4 = color(50);
 }
 
-void getTime() {
-  println(time);
-}
-
 void mousePressed() {
   if (120 < mouseY && mouseY < 120+h) {
     indexPressed = 0;
     if (indexPressed == indexAnswer) {
       c1 = color(0, 100, 0);
-      timeIsUp();
-    }
+    }  
+    answered = true;
   } else if (120+h < mouseY && mouseY < 120+2*h) {
     indexPressed = 1;
     if (indexPressed == indexAnswer) {
       c2 = color(0, 100, 0);
-      timeIsUp();
-    }
+    }  
+    answered = true;
   } else if (120+2*h < mouseY && mouseY < 120+3*h) {
     indexPressed = 2;
     if (indexPressed == indexAnswer) {
       c3 = color(0, 100, 0);
-      timeIsUp();
-    }
+    }  
+    answered = true;
   } else if (120+3*h < mouseY && mouseY < 120+4*h) {
     indexPressed = 3;
     if (indexPressed == indexAnswer) {
       c4 = color(0, 100, 0);
-      timeIsUp();
-    }
+    }  
+    answered = true;
+  } else if (120+4*h < mouseY && mouseY < 120+5*h) {
+    togglePause();
   }
-  getTime();
+  if (answered) {
+    resetTimer();
+  }
+}
+
+void displayItem() {
+  fill(255);
+  textSize(24);
+  text(I.stem, 100, 80);
+  displayChoices(choices);
+}
+
+void progressBar() {
+  noStroke();
+  fill(255, 0, 0);
+  rect(0, 0, time/maxTime*400.0, 20);
+}
+
+void buttons() {
+  // buttons
+  stroke(0);
+  fill(c1);
+  rect(0, 120, W, 50);
+  fill(c2);
+  rect(0, 120+h, W, 50);
+  fill(c3);
+  rect(0, 120+2*h, W, 50);
+  fill(c4);
+  rect(0, 120+3*h, W, 50);
+  if (pause) {
+    fill(150);
+  } else {
+    fill(100);
+  }
+  rect(0, 120+4*h, W, 50);
 }
