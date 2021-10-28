@@ -30,7 +30,7 @@ void setup() {
   c2 = color(50, 50, 50);
   c3 = color(50, 50, 50);
   c4 = color(50, 50, 50);
-  
+
   history[0] = new IntList();
   history[1] = new IntList();
   history[2] = new IntList();
@@ -84,15 +84,15 @@ void draw() {
 }
 
 void displayHistory() {
-    noStroke();
+  noStroke();
   for (int i=0; i<history[0].size(); i++) {
-    fill(255,50,50);
+    fill(255, 50, 50);
     ellipse(10+i*5, H-5*history[0].get(i)-10, 5, 5);
-    fill(50,255,50);
+    fill(50, 255, 50);
     ellipse(10+i*5, H-5*history[1].get(i)-10, 4, 4);
-    fill(100,100,255);
+    fill(100, 100, 255);
     ellipse(10+i*5, H-5*history[2].get(i)-10, 3, 3);
-}
+  }
 }
 
 void startTimer() {
