@@ -108,9 +108,17 @@ class items {
       X = M2;
       Y = M1;
     }
+    
+    // positive signs (EASY MODE)
+    X.sign = 1;
+    Y.sign = 1;
+    
     // stem: x^2 - y^2 = 
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
+//    println(X.stringify() +" degree: "+ X.degree + " square: " + X2.stringify());
+//    println(Y.stringify() +" degree: "+ Y.degree + " square: " + Y2.stringify());
+
     String stem = "";
 
     switch(complexity[0]) { // managing stem complexity
@@ -143,8 +151,9 @@ class items {
       factor2 = utils.diff(X, Y, 0).stringify();
       break;
     case 1:
-      factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();
-      factor2 = utils.diff(X, Y, floor(random(0, 2))).stringify();
+      // (x-y)(x+y)
+      factor2 = utils.sum(X, Y, 0).stringify();
+      factor1 = utils.diff(X, Y, 0).stringify();
       break;
     default:
       factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();

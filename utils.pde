@@ -11,7 +11,7 @@ class utils {
     // (0,0,0) is the scalar 1
     int num = 1;
     int den = 1;
-    int nVariables = 1;
+    int nVariables;
     fraction coefficient;
     int sign = 1;
     switch(complexity[1]) {
@@ -38,7 +38,7 @@ class utils {
     switch(complexity[0]) {
       /*
    coefficient complexity:
-       0 - coefficient is 1
+       0 - coefficient is 1 or an easy integer if monomial is a scalar
        1 - coefficient is an integer
        2 - coefficient is a fraction
        */
@@ -83,38 +83,44 @@ class utils {
     for (int i=0; i<m.nVariables; i++) {
       m.variables[i] = p[i];
     }
-    switch(complexity[2]) {
-      /*
+
+    // n variables check: if monomial is a scalar, do not do this
+    if (nVariables > 0) {
+      switch(complexity[2]) {
+        /*
     degree complexity:
-       0 - degree is 0
-       1 - max degree is 1 
-       2 - max degree is 2
-       */
-    case 0:
-      for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = 0;
+         0 - degree is 1
+         1 - max degree is 2 
+         2 - max degree is 3
+         */
+      case 0:
+        for (int i=0; i<nVariables; i++) {
+          m.degrees[i] = 1;
+        }
+        break;
+      case 1:
+        for (int i=0; i<nVariables; i++) {
+          m.degrees[i] = 2;
+        }
+        break;
+      case 2:
+        for (int i=0; i<nVariables; i++) {
+          m.degrees[i] = floor(random(2, 4));
+        }
+        break;
+      default:
+        for (int i=0; i<nVariables; i++) {
+          m.degrees[i] = floor(random(3, 10));
+        }
+        break;
       }
-      break;
-    case 1:
-      for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = 1;
-      }
-      break;
-    case 2:
-      for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(1, 2));
-      }
-      break;
-    default:
-      for (int i=0; i<nVariables; i++) {
-        m.degrees[i] = floor(random(2, 10));
-      }
-      break;
     }
     m.setDegree();
     m.complexity[0] = complexity[0];
     m.complexity[1] = complexity[1];
     m.complexity[2] = complexity[2];
+    if (nVariables > 0) {
+    }
     return m;
   }
 
@@ -129,14 +135,13 @@ class utils {
 
   monomial generateNonSimilar(monomial M, int[] complexity) {
     monomial NS;
-    if (M.isScalar() && complexity[2]==0) {
-      // request is not possible.
-      // must return a monomial with one variable
-      int[] newComplexity = {complexity[0],1,1};
-      NS = generateMonomial(newComplexity);
+    int i = 0;
+    boolean OK = false;
+    // if M is a scalar, generate a monic monomial of degree 1 with 1 variable
+    if (M.isScalar()) {
+      int[] newC = {0,1,0};
+      NS = generateMonomial(newC);
     } else {
-      int i = 0;
-      boolean OK = false;
       NS = generateMonomial(complexity);
       while (!OK && i<500) {
         i++;
