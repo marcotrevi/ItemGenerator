@@ -97,7 +97,7 @@ class errors {
     case 1: // double of coefficient instead of square (kx)^2= 2kx^2
       // WARNING: is correct if coefficient is 2
       S.sign = M.sign;
-      S.coefficient = new fraction(1,1);
+      S.coefficient = new fraction(1, 1);
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
@@ -163,6 +163,10 @@ class errors {
           allSquare = false;
           i = M.nVariables;
         }
+      }
+      if (M.isTwo()) {
+        // if monomial is the scalar 2, error 2 not available
+        availableErrors = utils.removeInt(availableErrors, 2);
       }
       if (allSquare) {
         // if all degrees are equal to 2, error 3 not available

@@ -24,12 +24,12 @@ class items {
   //################################################################################### (x+y)(x-y)
 
   item sumDifference(monomial X, monomial Y, int[] complexity) {
+    // complexity[0]: stem complexity
+    // complexity[1]: answer complexity
+    // complexity[2]: other choice complexity
+
     // stem: (x+y)(x-y) = 
-    int[] comp = new int[3];
-    comp[0] = 0;
-    comp[1] = 0;
-    comp[2] = 0;
-    String stem = utils.sumDiff(X, Y, comp);
+    String stem = utils.sumDiff(X, Y, 0, 0, 0);
     // answer
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
@@ -112,16 +112,12 @@ class items {
       X = M2;
       Y = M1;
     }
-    
-    // positive signs (EASY MODE)
-    X.sign = 1;
-    Y.sign = 1;
-    
+
     // stem: x^2 - y^2 = 
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
-//    println(X.stringify() +" degree: "+ X.degree + " square: " + X2.stringify());
-//    println(Y.stringify() +" degree: "+ Y.degree + " square: " + Y2.stringify());
+    //    println(X.stringify() +" degree: "+ X.degree + " square: " + X2.stringify());
+    //    println(Y.stringify() +" degree: "+ Y.degree + " square: " + Y2.stringify());
 
     String stem = "";
 

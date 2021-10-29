@@ -18,9 +18,9 @@ int indexAnswer = -1;
 boolean getNewItem = true;
 boolean answered = false;
 boolean start = false;
-boolean pause = false;
+boolean pause = true;
 IntList[] history = new IntList[3];
-int[] c = {0, 0, 0};
+int[] c = new int[3];
 boolean correct = false;
 
 void setup() {
@@ -34,31 +34,12 @@ void setup() {
   history[0] = new IntList();
   history[1] = new IntList();
   history[2] = new IntList();
-
-  for (int i=0; i<1; i++) {
-    monomial m1 = utils.generateMonomial(c);
-    //  monomial m2 = utils.generateMonomial(-2);
-    //monomial m3 = utils.generateNonSimilar(m1, 1);
-    String _m1 = m1.stringify();
-    //    println("complexity ("+c[0]+","+c[1]+","+c[2]+"): "+_m1);
-    //    c = utils.smoothStep(c);
-    //    c = utils.step(c, floor(random(0, 3)), floor(random(0,2)));
-  }
-  //String _m2 = m2.stringify();
-  //String _m3 = m3.stringify();
-
+  c[0] = 1;
+  c[1] = 0;
+  c[2] = 0;
   //utils.generateItem("x^2-y^2", c).printme();
-  //utils.generateItem("(x+y)(x-y)", c).printme();
+  utils.generateItem("(x+y)(x-y)", c).printme();
   getNewItem(c);
-  /*
-  I = utils.generateItem("x^2+y^2+2xy", c);
-   choices = shuffleChoices(I);
-   getAnswer();
-   startTimer();
-   */
-  //utils.generateItem("(x+y)^2", c).printme();
-
-  //utils.generateCsv(T, "(x+y)^2", 0.5, 10, "binomial_square_compact");
 }
 
 void draw() {

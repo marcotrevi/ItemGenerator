@@ -51,6 +51,14 @@ class monomial {
     return check;
   }
 
+  boolean isTwo() {
+    boolean check = false;
+    if (coefficient.N == 2 && coefficient.D == 1 && degree == 0) {
+      check = true;
+    }
+    return check;
+  }
+
   String stringify() {
     String M = "";
     String _sign = "";

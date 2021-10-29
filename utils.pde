@@ -400,35 +400,14 @@ class utils {
   }
   //################################################################## methods which return a polynomial
 
-  polynomial sum(monomial M1, monomial M2, int complexity) {
+  polynomial sum(monomial M1, monomial M2, int perm) {
     polynomial S = new polynomial();
-    monomial X = M1; // "positive" monomial, if any
-    monomial Y = M2; // "negative" monomial, if any
-    if (M1.sign*M2.sign == -1) {
-      // monomials have differens signs
-      if (M1.sign == 1) {
-        // M1 is the positive one, M2 is the negative one
-        X = M1;
-        Y = M2;
-      } else {
-        // M1 is the negative one, M2 is the positive one
-        X = M2;
-        Y = M1;
-      }
-    }
-    if (complexity == 0) {
-      // 
-      S.terms.add(X);
-      S.terms.add(Y);
+    if (perm == 0) {
+      S.terms.add(M1);
+      S.terms.add(M2);
     } else {
-      // randomly choose the order
-      if (random(0, 1)<0.5) {
-        S.terms.add(M2);
-        S.terms.add(M1);
-      } else {
-        S.terms.add(M1);
-        S.terms.add(M2);
-      }
+      S.terms.add(M2);
+      S.terms.add(M1);
     }
     return S;
   }
@@ -447,9 +426,9 @@ class utils {
     return P;
   }
 
-  String sumDiff(monomial M1, monomial M2, int[] complexity) {
+  String sumDiff(monomial M1, monomial M2, int cMult, int cSum, int cDiff) {
     String ans = "";
-    ans = multiply(sum(M1, M2, complexity[0]).stringify(), diff(M1, M2, complexity[1]).stringify(), complexity[2]);
+    ans = multiply(sum(M1, M2, cSum).stringify(), diff(M1, M2, cDiff).stringify(), cMult);
     return ans;
   }
 
@@ -459,15 +438,24 @@ class utils {
     monomial X, Y;
     X = generateMonomial(complexity);
     Y = generateNonSimilar(X, complexity);
+    println("X: "+X.stringify());
+    println("Y: "+Y.stringify());
     item I = new item();
+    int[] itemComplexity;
     // each item type has its own constructor
     switch(type) {
     case "x^2-y^2":
-      int[] itemComplexity = {0, 0};
+      itemComplexity = new int[2];
+      itemComplexity[0] = 0;
+      itemComplexity[1  ] = 0;
       I = items.differenceOfSquares(X, Y, itemComplexity);
       break;
     case "(x+y)(x-y)":
-      I = items.sumDifference(X, Y, complexity);
+      itemComplexity = new int[3];
+      itemComplexity[0] = 0;
+      itemComplexity[1] = 0;
+      itemComplexity[2] = 0;
+      I = items.sumDifference(X, Y, itemComplexity);
       break;
     case "x^2+y^2+2xy":
       I = items.binomialSquareExpanded(X, Y, complexity);
