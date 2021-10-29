@@ -5,7 +5,7 @@ items items = new items();
 boolean latex = false; // writes latex tags
 Table T = new Table();
 float time, timeOld, resetTime, timePauseStart, timePauseStop, pauseTime, elapsedTime = 0;
-float maxTime = 5*1000;
+float maxTime = 10*1000;
 item I;
 String[] choices = new String[4];
 int W = 1000; 

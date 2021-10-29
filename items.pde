@@ -25,7 +25,11 @@ class items {
 
   item sumDifference(monomial X, monomial Y, int[] complexity) {
     // stem: (x+y)(x-y) = 
-    String stem = utils.sumDiff(X, Y, 0);
+    int[] comp = new int[3];
+    comp[0] = 0;
+    comp[1] = 0;
+    comp[2] = 0;
+    String stem = utils.sumDiff(X, Y, comp);
     // answer
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);

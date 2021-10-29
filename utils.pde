@@ -139,7 +139,7 @@ class utils {
     boolean OK = false;
     // if M is a scalar, generate a monic monomial of degree 1 with 1 variable
     if (M.isScalar()) {
-      int[] newC = {0,1,0};
+      int[] newC = {0, 1, 0};
       NS = generateMonomial(newC);
     } else {
       NS = generateMonomial(complexity);
@@ -400,14 +400,35 @@ class utils {
   }
   //################################################################## methods which return a polynomial
 
-  polynomial sum(monomial M1, monomial M2, int perm) {
+  polynomial sum(monomial M1, monomial M2, int complexity) {
     polynomial S = new polynomial();
-    if (perm == 0) {
-      S.terms.add(M1);
-      S.terms.add(M2);
+    monomial X = M1; // "positive" monomial, if any
+    monomial Y = M2; // "negative" monomial, if any
+    if (M1.sign*M2.sign == -1) {
+      // monomials have differens signs
+      if (M1.sign == 1) {
+        // M1 is the positive one, M2 is the negative one
+        X = M1;
+        Y = M2;
+      } else {
+        // M1 is the negative one, M2 is the positive one
+        X = M2;
+        Y = M1;
+      }
+    }
+    if (complexity == 0) {
+      // 
+      S.terms.add(X);
+      S.terms.add(Y);
     } else {
-      S.terms.add(M2);
-      S.terms.add(M1);
+      // randomly choose the order
+      if (random(0, 1)<0.5) {
+        S.terms.add(M2);
+        S.terms.add(M1);
+      } else {
+        S.terms.add(M1);
+        S.terms.add(M2);
+      }
     }
     return S;
   }
@@ -420,15 +441,15 @@ class utils {
     return S;
   }
 
-  polynomial diff(monomial M1, monomial M2, int perm) {
+  polynomial diff(monomial M1, monomial M2, int complexity) {
     polynomial P = new polynomial();
-    P = sum(M1, oppositeMonomial(M2), perm);
+    P = sum(M1, oppositeMonomial(M2), complexity);
     return P;
   }
 
-  String sumDiff(monomial M1, monomial M2, int perm) {
+  String sumDiff(monomial M1, monomial M2, int[] complexity) {
     String ans = "";
-    ans = multiply(sum(M1, M2, 0).stringify(), diff(M1, M2, 0).stringify(), 0);
+    ans = multiply(sum(M1, M2, complexity[0]).stringify(), diff(M1, M2, complexity[1]).stringify(), complexity[2]);
     return ans;
   }
 
