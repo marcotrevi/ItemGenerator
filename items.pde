@@ -29,8 +29,26 @@ class items {
     // complexity[2]: other choice complexity
 
     // stem: (x+y)(x-y) = 
-    String stem = utils.sumDiff(X, Y, 0, 0, 0);
-
+    String stem = "";
+    if (complexity[0] == 0) {
+      // easiest version.
+      if (X.sign*Y.sign == 1) {
+        // monomials have same sign. Keep order
+        stem = utils.sumDiff(X, Y, 0, 0, 0);
+      } else {
+        // monomials have opposite sign. 
+        if (X.sign == 1) {
+          stem = utils.sumDiff(X, Y, 0, 0, 0);
+        } else {
+          // X has a negative coefficient.
+          // Item (X+Y)(X-Y) with X = -3x and Y = 5y would result in something like this: (-3x+5y)(-3x-5y) with a lot of minus signs.
+          // simplest form is this: (3x+5y)(3x-5y) which is (-X+Y)(-X-Y) 
+          stem = utils.sumDiff(utils.oppositeMonomial(X), Y, 0, 0, 0);
+        }
+      }
+    } else {
+      stem = utils.sumDiff(X, Y, 0, 0, 0);
+    }
     // answer
     String answer = "";
     monomial X2 = utils.squareMonomial(X);

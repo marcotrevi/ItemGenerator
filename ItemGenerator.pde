@@ -35,7 +35,7 @@ void setup() {
   history[1] = new IntList();
   history[2] = new IntList();
   c[0] = 1;
-  c[1] = 0;
+  c[1] = 1;
   c[2] = 0;
   //utils.generateItem("x^2-y^2", c).printme();
   utils.generateItem("(x+y)(x-y)", c).printme();
