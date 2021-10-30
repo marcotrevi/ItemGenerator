@@ -30,11 +30,16 @@ class items {
 
     // stem: (x+y)(x-y) = 
     String stem = utils.sumDiff(X, Y, 0, 0, 0);
+
     // answer
+    String answer = "";
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
-    String answer = utils.diff(X2, Y2, utils.permutation(2)[0]).stringify();
-
+    if (complexity[1] == 0) {
+      answer = utils.diff(X2, Y2, 0).stringify();
+    } else {
+      answer = utils.diff(X2, Y2, 1).stringify();
+    }
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
     E[0] = new error();
