@@ -72,6 +72,7 @@ class items {
     int X_errorIndex, Y_errorIndex;
 
     int[] perms = utils.permutation(7); // selecting error location in distractors
+    int perm = 0;
 
     for (int i=0; i<3; i++) {
       X_errorIndex = X_availability[min(i, X_availability.length-1)];
@@ -79,36 +80,40 @@ class items {
       X2_error = errors.squareError(X, X_errorIndex);
       Y2_error = errors.squareError(Y, Y_errorIndex);
 
+      if (complexity[2] > 0) {
+        perm = floor(random(0, 2));
+      }
+
       switch(perms[i]) {
       case 0: // error on X square
-        E[i].errorName = utils.diff(X2_error, Y2, 0).stringify();
+        E[i].errorName = utils.diff(X2_error, Y2, perm).stringify();
         E[i].errorType.append(X_errorIndex);
         break;
       case 1: // error on Y square
-        E[i].errorName = utils.diff(X2, Y2_error, 0).stringify();
+        E[i].errorName = utils.diff(X2, Y2_error, perm).stringify();
         E[i].errorType.append(Y_errorIndex);
         break;
       case 2: // incorrect identification of monomials
-        E[i].errorName = utils.diff(Y2, X2, 0).stringify();
+        E[i].errorName = utils.diff(Y2, X2, perm).stringify();
         E[i].errorType.append(50);
         break;
       case 3: // error on both squares
-        E[i].errorName = utils.diff(X2_error, Y2_error, 0).stringify();
+        E[i].errorName = utils.diff(X2_error, Y2_error, perm).stringify();
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
         break;
       case 4: // error on X square and incorrect identification
-        E[i].errorName = utils.diff(Y2, X2_error, 0).stringify();
+        E[i].errorName = utils.diff(Y2, X2_error, perm).stringify();
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(50);
         break;
       case 5: // error on Y square and incorrect identification
-        E[i].errorName = utils.diff(Y2_error, X2, 0).stringify();
+        E[i].errorName = utils.diff(Y2_error, X2, perm).stringify();
         E[i].errorType.append(Y_errorIndex);
         E[i].errorType.append(50);
         break;
       case 6: // error on both squares and incorrect identification
-        E[i].errorName = utils.diff(Y2_error, X2_error, 0).stringify();
+        E[i].errorName = utils.diff(Y2_error, X2_error, perm).stringify();
         E[i].errorType.append(X_errorIndex);
         E[i].errorType.append(Y_errorIndex);
         E[i].errorType.append(50);
