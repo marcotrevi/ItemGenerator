@@ -420,9 +420,9 @@ class utils {
     return S;
   }
 
-  polynomial diff(monomial M1, monomial M2, int complexity) {
+  polynomial diff(monomial M1, monomial M2, int perm) {
     polynomial P = new polynomial();
-    P = sum(M1, oppositeMonomial(M2), complexity);
+    P = sum(M1, oppositeMonomial(M2), perm);
     return P;
   }
 

@@ -97,7 +97,8 @@ class errors {
     case 1: // double of coefficient instead of square (kx)^2= 2kx^2
       // WARNING: is correct if coefficient is 2
       S.sign = M.sign;
-      S.coefficient = new fraction(1, 1);
+      S.coefficient.N = 2*M.coefficient.N;
+      S.coefficient.D = M.coefficient.D;
       for (int i=0; i<S.nVariables; i++) {
         S.degrees[i] = M.degrees[i]*2;
       }
