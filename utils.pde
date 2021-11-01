@@ -452,9 +452,9 @@ class utils {
       break;
     case "(x+y)(x-y)":
       itemComplexity = new int[3];
-      itemComplexity[0] = 0;
-      itemComplexity[1] = 0;
-      itemComplexity[2] = 0;
+      itemComplexity[0] = 1;
+      itemComplexity[1] = 1;
+      itemComplexity[2] = 1;
       I = items.sumDifference(X, Y, itemComplexity);
       break;
     case "x^2+y^2+2xy":
