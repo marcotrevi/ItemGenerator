@@ -438,8 +438,6 @@ class utils {
     monomial X, Y;
     X = generateMonomial(complexity);
     Y = generateNonSimilar(X, complexity);
-    println("X: "+X.stringify());
-    println("Y: "+Y.stringify());
     item I = new item();
     int[] itemComplexity;
     // each item type has its own constructor
@@ -451,11 +449,19 @@ class utils {
       I = items.differenceOfSquares(X, Y, itemComplexity);
       break;
     case "(x+y)(x-y)":
-      itemComplexity = new int[3];
-      itemComplexity[0] = 1;
-      itemComplexity[1] = 1;
-      itemComplexity[2] = 1;
-      I = items.sumDifference(X, Y, itemComplexity);
+    /*
+      itemComplexity = new int[9];
+      itemComplexity[0] = 0;
+      itemComplexity[1] = 0;
+      itemComplexity[2] = 0;
+      itemComplexity[3] = 0;
+      itemComplexity[4] = 0;
+      itemComplexity[5] = 0;
+      itemComplexity[6] = 0;
+      itemComplexity[7] = 0;
+      itemComplexity[8] = 0;
+*/
+      I = items.sumDifference(complexity);
       break;
     case "x^2+y^2+2xy":
       I = items.binomialSquareExpanded(X, Y, complexity);

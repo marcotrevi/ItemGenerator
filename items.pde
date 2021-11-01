@@ -23,14 +23,32 @@ class items {
 
   //################################################################################### (x+y)(x-y)
 
-  item sumDifference(monomial X, monomial Y, int[] complexity) {
-    // complexity[0]: stem complexity
-    // complexity[1]: answer complexity
-    // complexity[2]: other choice complexity
+  item sumDifference(int[] complexity) {
+    // monomials X and Y
+    monomial X, Y;
+    // first complexity terms are for monomials
+    int[] x_comp = new int[3];
+    x_comp[0] = complexity[0];
+    x_comp[1] = complexity[1];
+    x_comp[2] = complexity[2];
+    X = utils.generateMonomial(x_comp);
+
+    int[] y_comp = new int[3];
+    y_comp[0] = complexity[3];  
+    y_comp[1] = complexity[4];  
+    y_comp[2] = complexity[5];  
+    Y = utils.generateNonSimilar(X, y_comp);
+    //    println("X: "+X.stringify());
+    //    println("Y: "+Y.stringify());
+
+
+    // complexity[6]: stem complexity
+    // complexity[7]: answer complexity
+    // complexity[8]: other choice complexity
 
     // stem: (x+y)(x-y) = 
     String stem = "";
-    if (complexity[0] == 0) {
+    if (complexity[6] == 0) {
       // easiest version.
       if (X.sign*Y.sign == 1) {
         // monomials have same sign. Keep order
@@ -47,13 +65,17 @@ class items {
         }
       }
     } else {
-      stem = utils.sumDiff(X, Y, 0, 0, 0);
+      // randomize permutations
+      int p1 = floor(random(0, 2));
+      int p2 = floor(random(0, 2));
+      int p3 = floor(random(0, 2));
+      stem = utils.sumDiff(X, Y, p1, p2, p3);
     }
     // answer
     String answer = "";
     monomial X2 = utils.squareMonomial(X);
     monomial Y2 = utils.squareMonomial(Y);
-    if (complexity[1] == 0) {
+    if (complexity[7] == 0) {
       answer = utils.diff(X2, Y2, 0).stringify();
     } else {
       answer = utils.diff(X2, Y2, 1).stringify();
@@ -80,7 +102,7 @@ class items {
       X2_error = errors.squareError(X, X_errorIndex);
       Y2_error = errors.squareError(Y, Y_errorIndex);
 
-      if (complexity[2] > 0) {
+      if (complexity[8] > 0) {
         perm = floor(random(0, 2));
       }
 

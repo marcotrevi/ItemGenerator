@@ -20,7 +20,7 @@ boolean answered = false;
 boolean start = false;
 boolean pause = true;
 IntList[] history = new IntList[3];
-int[] c = new int[3];
+int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
@@ -34,11 +34,17 @@ void setup() {
   history[0] = new IntList();
   history[1] = new IntList();
   history[2] = new IntList();
-  c[0] = 1;
-  c[1] = 1;
+  c[0] = 0;
+  c[1] = 0;
   c[2] = 0;
+  c[3] = 0;
+  c[4] = 0;
+  c[5] = 0;
+  c[6] = 0;
+  c[7] = 0;
+  c[8] = 0;
   //utils.generateItem("x^2-y^2", c).printme();
-  utils.generateItem("(x+y)(x-y)", c).printme();
+//  utils.generateItem("(x+y)(x-y)", c).printme();
   getNewItem(c);
 }
 
@@ -122,7 +128,7 @@ void getAnswer() {
 
 void getNewItem(int[] complexity) {
   correct = false;
-  I = utils.generateItem("x^2-y^2", complexity);
+  I = utils.generateItem("(x+y)(x-y)", complexity);
   choices = shuffleChoices(I);
   getAnswer();
   history[0].append(complexity[0]);
@@ -131,7 +137,6 @@ void getNewItem(int[] complexity) {
 }
 
 void timeIsUp() {
-  c[0] = 1;
   getNewItem(c);
   c1 = color(50);
   c2 = color(50);
