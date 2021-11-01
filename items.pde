@@ -27,10 +27,8 @@ class items {
     // monomials X and Y
     monomial X, Y;
     // first complexity terms are for monomials
-    X = utils.generateMonomial(utils.subArray(complexity,0,2));
-    Y = utils.generateNonSimilar(X, utils.subArray(complexity,3,5));
-    //    println("X: "+X.stringify());
-    //    println("Y: "+Y.stringify());
+    X = utils.generateMonomial(utils.subArray(complexity, 0, 2));
+    Y = utils.generateNonSimilar(X, utils.subArray(complexity, 3, 5));
 
     // complexity[6]: stem complexity
     // complexity[7]: answer complexity
@@ -145,8 +143,8 @@ class items {
     // complexity vector depends on the particular permutation.
     // complexity vector has 2 components: stem complexity and choice complexity.
     monomial M1, M2;
-    M1 = utils.generateMonomial(utils.subArray(complexity,0,2));
-    M2 = utils.generateNonSimilar(M1, utils.subArray(complexity,3,5));
+    M1 = utils.generateMonomial(utils.subArray(complexity, 0, 2));
+    M2 = utils.generateNonSimilar(M1, utils.subArray(complexity, 3, 5));
 
     monomial X, Y;
     if (random(0, 1)<0.5) {
@@ -276,7 +274,12 @@ class items {
 
   //################################################################################### (x+y)^2
 
-  item binomialSquareCompact(monomial X, monomial Y, int[] complexity) {
+  item binomialSquareCompact(int[] complexity) {
+    monomial X, Y;
+    X = utils.generateMonomial(utils.subArray(complexity, 0, 2));
+    Y = utils.generateNonSimilar(X, utils.subArray(complexity, 3, 5));
+
+
     int[] two = {2, 1};
     // stem: (X + Y)^2 = 
     String stem ="";
@@ -361,7 +364,11 @@ class items {
 
   //################################################################################### x^2 + y^2 + 2xy
 
-  item binomialSquareExpanded(monomial X, monomial Y, int[] complexity) {
+  item binomialSquareExpanded(int[] complexity) {
+    monomial X, Y;
+    X = utils.generateMonomial(utils.subArray(complexity, 0, 2));
+    Y = utils.generateNonSimilar(X, utils.subArray(complexity, 3, 5));
+
     // stem: X^2 + Y^2 + 2SXY = 
     int[] two = {2, 1};
     monomial[] M = new monomial[3];

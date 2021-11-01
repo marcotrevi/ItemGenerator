@@ -444,9 +444,6 @@ class utils {
   //################################################################ ITEM GENERATOR
 
   item generateItem(String type, int[] complexity) {
-    monomial X, Y;
-    X = generateMonomial(complexity);
-    Y = generateNonSimilar(X, complexity);
     item I = new item();
     // each item type has its own constructor
     switch(type) {
@@ -457,10 +454,10 @@ class utils {
       I = items.sumDifference(complexity);
       break;
     case "x^2+y^2+2xy":
-      I = items.binomialSquareExpanded(X, Y, complexity);
+      I = items.binomialSquareExpanded(complexity);
       break;
     case "(x+y)^2":
-      I = items.binomialSquareCompact(X, Y, complexity);
+      I = items.binomialSquareCompact(complexity);
       break;
     }
     return I;
