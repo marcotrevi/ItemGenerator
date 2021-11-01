@@ -312,6 +312,15 @@ class utils {
     return newPosition;
   } 
 
+  int[] subArray(int[] array, int startIndex, int stopIndex) {
+    int l = stopIndex - startIndex + 1;
+    int[] subarray = new int[l];
+    for (int i=0; i<l; i++) {
+      subarray[i] = array[startIndex+i];
+    }
+    return subarray;
+  }
+
   String multiply(String a, String b, int perm) {
     String ans = "";
     switch(perm) {
@@ -439,28 +448,12 @@ class utils {
     X = generateMonomial(complexity);
     Y = generateNonSimilar(X, complexity);
     item I = new item();
-    int[] itemComplexity;
     // each item type has its own constructor
     switch(type) {
     case "x^2-y^2":
-      itemComplexity = new int[2];
-      itemComplexity[0] = 0;
-      itemComplexity[1  ] = 0;
-      I = items.differenceOfSquares(X, Y, itemComplexity);
+      I = items.differenceOfSquares(complexity);
       break;
     case "(x+y)(x-y)":
-    /*
-      itemComplexity = new int[9];
-      itemComplexity[0] = 0;
-      itemComplexity[1] = 0;
-      itemComplexity[2] = 0;
-      itemComplexity[3] = 0;
-      itemComplexity[4] = 0;
-      itemComplexity[5] = 0;
-      itemComplexity[6] = 0;
-      itemComplexity[7] = 0;
-      itemComplexity[8] = 0;
-*/
       I = items.sumDifference(complexity);
       break;
     case "x^2+y^2+2xy":

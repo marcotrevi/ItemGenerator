@@ -27,20 +27,10 @@ class items {
     // monomials X and Y
     monomial X, Y;
     // first complexity terms are for monomials
-    int[] x_comp = new int[3];
-    x_comp[0] = complexity[0];
-    x_comp[1] = complexity[1];
-    x_comp[2] = complexity[2];
-    X = utils.generateMonomial(x_comp);
-
-    int[] y_comp = new int[3];
-    y_comp[0] = complexity[3];  
-    y_comp[1] = complexity[4];  
-    y_comp[2] = complexity[5];  
-    Y = utils.generateNonSimilar(X, y_comp);
+    X = utils.generateMonomial(utils.subArray(complexity,0,2));
+    Y = utils.generateNonSimilar(X, utils.subArray(complexity,3,5));
     //    println("X: "+X.stringify());
     //    println("Y: "+Y.stringify());
-
 
     // complexity[6]: stem complexity
     // complexity[7]: answer complexity
@@ -151,9 +141,13 @@ class items {
 
   //################################################################################### x^2 - y^2
 
-  item differenceOfSquares(monomial M1, monomial M2, int[] complexity) {
+  item differenceOfSquares(int[] complexity) {
     // complexity vector depends on the particular permutation.
     // complexity vector has 2 components: stem complexity and choice complexity.
+    monomial M1, M2;
+    M1 = utils.generateMonomial(utils.subArray(complexity,0,2));
+    M2 = utils.generateNonSimilar(M1, utils.subArray(complexity,3,5));
+
     monomial X, Y;
     if (random(0, 1)<0.5) {
       X = M1;
@@ -171,7 +165,7 @@ class items {
 
     String stem = "";
 
-    switch(complexity[0]) { // managing stem complexity
+    switch(complexity[6]) { // managing stem complexity
     case 0:
       // x^2-y^2
       stem = utils.diff(X2, Y2, 0).stringify();
@@ -194,7 +188,7 @@ class items {
     String answer = "";
     String factor1 = utils.sum(X, Y, floor(random(0, 2))).stringify();
     String factor2 = utils.diff(X, Y, floor(random(0, 2))).stringify();
-    switch(complexity[1]) {
+    switch(complexity[7]) {
     case 0:
       // (x+y)(x-y)
       factor1 = utils.sum(X, Y, 0).stringify();
@@ -275,11 +269,6 @@ class items {
       }
     }
     item I = new item();
-    IntList c = new IntList();
-    c.append(X.complexity);
-    c.append(Y.complexity);
-    c.append(complexity);
-    I.complexity = c;
     setItemParams(I, "x^2-y^2", complexity, answer, stem, E);
 
     return I;
