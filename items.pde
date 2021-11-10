@@ -51,7 +51,7 @@ class items {
     setItemParams(I, "prime factorization", complexity, answer, stem, E);
     return I;
   }
-  
+
   //################################################################################### ARITHMETIC: RATIONALS
 
   item basicRationalOperationsSumDifference(fraction a, fraction b, int[] complexity) {
@@ -103,9 +103,65 @@ class items {
   }
   //################################################################################### ARITHMETIC: POWER
 
-  item powerEvaluation(fraction a, int n, int[] complexity) {
+  item powerEvaluation(int[] complexity) {
+    fraction a = new fraction(1, 1);
+    int n = 0;
+    switch(complexity[0]) {
+    case 0:
+      // base is an integer
+      a.N = utils.pick(math.easyInts);
+      a.D = 1;
+      break;
+    case 1: 
+      a.N = utils.pick(math.easyInts);
+      a.D = 1;
+      if (random(0.1)<0.5) {
+        a.N = -a.N;
+      }
+      break;
+    case 2: 
+      a.N = utils.pick(math.easyInts);
+      a.D = utils.pick(math.easyInts);
+      a.simplify();
+      break;
+    default: 
+      a.N = utils.pick(math.easyInts);
+      a.D = utils.pick(math.easyInts);
+      a.simplify();
+      if (random(0.1)<0.5) {
+        a.N = -a.N;
+      }
+      break;
+    }
+    switch(complexity[1]) {
+    case 0:
+      n = utils.pick(math.easyInts);
+      break;
+    case 1:
+      n = utils.pick(math.easyInts);
+      if (random(0, 1)<0.5) {
+        n = -n;
+      }
+      break;
+    default: 
+      n = utils.pick(math.easyInts);
+      if (random(0, 1)<0.5) {
+        n = -n;
+      }
+      break;
+    }
     // stem: (N/D)^n =  
     String stem = "";
+    String exponent = str(n);
+    if (n<0) {
+      exponent = "("+str(n)+")";
+    }
+    if (a.D == 1 && a.N > 0) {
+      // fraction is an integer
+      stem = a.stringify()+"^"+exponent;
+    } else {
+      stem = "("+a.stringify()+")^"+exponent;
+    }
     // answer
     String answer = "";
     // distractors - each distractor can contain multiple errors
@@ -200,7 +256,7 @@ class items {
     setItemParams(I, "root take-in", complexity, answer, stem, E);
     return I;
   }
-  
+
   item rootTakeOut(fraction a, fraction k, int n, int[] complexity) {
     // stem: n_sqrt(k*a)= 
     String stem = "";

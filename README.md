@@ -55,18 +55,18 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - equations
     - linear
     - quadratic
-- algebric sum of monomials
+- algebraic sum of monomials
 - product of monomials
 - division of monomials
-- algebric sum of polynomials
+- algebraic sum of polynomials
 - product of polynomials
 - division of polynomials
 - notable products
 - factorization
 - zeros of polynomials
-- operations with algebric fractions
-- algebric fractions: field of existence
-- algebric fractions: zeros
+- operations with algebraic fractions
+- algebraic fractions: field of existence
+- algebraic fractions: zeros
 ## class: geometry
 - basic properties of elementary 2D shapes
     - square
@@ -84,7 +84,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - functions
     - graph-expression matching
     - classification
-        - algebric
+        - algebraic
             - linear
             - quadratic
             - polynomial

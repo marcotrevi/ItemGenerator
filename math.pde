@@ -20,7 +20,7 @@ class math {
 
   int[] easyInts = {1, 2, 3, 4, 5};
 
-  int[] mediumInts = {6, 7, 8, 9, 10, 11, 12, 15, 16, 20, 24, 25, 13, 14, 17, 18, 19, 21, 22, 23, 
+  int[] mediumInts = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 20, 24, 25, 13, 14, 17, 18, 19, 21, 22, 23, 
     26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 
     55, 60, 64, 80, 81, 100};
 
@@ -93,7 +93,7 @@ class math {
   fraction fractionSum(fraction f1, fraction f2) {
     // returns the fraction f1 + f2
     int lcm = lcm(f1.D, f2.D);
-    fraction f = new fraction(lcm/f1.D*f1.N + lcm/f2.D*f2.N,lcm);
+    fraction f = new fraction(lcm/f1.D*f1.N + lcm/f2.D*f2.N, lcm);
     return f;
   }
 
@@ -105,7 +105,7 @@ class math {
 
   fraction fractionPow(fraction f, int n) {
     // returns the fraction a^n 
-    fraction F = new fraction(int(pow(f.N,n)),int(pow(f.D,n)));
+    fraction F = new fraction(int(pow(f.N, n)), int(pow(f.D, n)));
     return F;
   }
 

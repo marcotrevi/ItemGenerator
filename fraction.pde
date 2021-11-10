@@ -13,7 +13,11 @@ class fraction {
 
   String stringify() {
     String s = "";
-    s = str(N)+"/"+str(D);
+    if (D == 1) {
+      s = str(N);
+    } else {
+      s = str(N)+"/"+str(D);
+    }
     return s;
   }
 

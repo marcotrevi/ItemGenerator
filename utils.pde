@@ -387,6 +387,10 @@ class utils {
     float[] sample = new float[n];
     return sample;
   }
+  
+  int pick(int[] list){
+    return list[permutation(list.length)[0]];
+  }
 
   boolean foundVariable(int k, monomial M) {
     boolean check = false;
@@ -447,6 +451,11 @@ class utils {
     item I = new item();
     // each item type has its own constructor
     switch(type) {
+      // CLASS: ARITHMETIC
+    case "power evaluation":    
+      I = items.powerEvaluation(complexity);
+      break;
+      // CLASS: ALGEBRA
     case "x^2-y^2":
       I = items.differenceOfSquares(complexity);
       break;
