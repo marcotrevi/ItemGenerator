@@ -2,6 +2,27 @@ class errors {
   errors() {
   }
 
+  //######################################################################################## ERROR: power evaluation
+  fraction powerError(fraction a, int n, int errorType) {
+    fraction f = new fraction(1, 1);
+    switch(errorType) {
+    case 0: // multiplication instead of power.
+      // WARNING: is correct if: b=1; a=2 & b=2
+      f.N = a.N*n;
+      f.D = a.D;
+      break;
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    }
+    return f;
+  }
+
   //######################################################################################## ERROR: square root
 
   monomial rootError(monomial M, int errorType) {
@@ -216,6 +237,11 @@ class errors {
       if (M.isScalar()) {
         availableErrors = utils.removeInt(availableErrors, 2);
       }
+      break;
+    case "power":
+      for (int i=0; i<4; i++) {
+        availableErrors.append(i);
+      }      
       break;
     }
     int[] errors = new int[availableErrors.size()];

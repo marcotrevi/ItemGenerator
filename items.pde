@@ -170,6 +170,25 @@ class items {
     E[1] = new error();
     E[2] = new error();
 
+    int[] perms = utils.permutation(7); // selecting error location in distractors
+    // check available errors on X
+    monomial X = new monomial(0);
+    X.coefficient = a;
+    int[] availability = utils.permutation(errors.availability(X, "power"));
+    int errorIndex = 0;
+    fraction error = new fraction(1,1);
+
+    for (int i=0; i<3; i++) {
+      errorIndex = availability[min(i, availability.length-1)];
+      error = errors.powerError(a, n, errorIndex);
+
+      switch(perms[i]) {
+      case 0: // error on X square
+        E[i].errorName = error.stringify();
+        E[i].errorType.append(errorIndex);
+        break;
+      }
+    }
     item I = new item();
     setItemParams(I, "power evaluation", complexity, answer, stem, E);
     return I;
