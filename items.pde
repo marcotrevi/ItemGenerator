@@ -2,13 +2,13 @@ class items {
   items() {
   }
 
-  //################################################################################### a^n
+  //################################################################################### ARITHMETIC
 
-  item scalarPower(fraction f, int n) {
-    // stem: a^n = 
-    String stem = "("+f.stringify()+")^"+n;
+  item basicIntegerOperationsSumDifference(int a, int b, int[] complexity) {
+    // stem: a+b, a-b 
+    String stem = "";
     // answer
-    String answer = math.fractionPow(f, n).stringify();
+    String answer = "";
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
     E[0] = new error();
@@ -16,10 +16,224 @@ class items {
     E[2] = new error();
 
     item I = new item();
-    int[] complexity = new int[3];
-    setItemParams(I, "a^n", complexity, answer, stem, E);
+    setItemParams(I, "integer+-", complexity, answer, stem, E);
     return I;
   }
+
+  item basicIntegerOperationsProductDivision(int a, int b, int[] complexity) {
+    // stem: a*b, a/b 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "integer*/", complexity, answer, stem, E);
+    return I;
+  }
+
+  item primeFactorization(int a, int[] complexity) {
+    // stem: a =  
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "prime factorization", complexity, answer, stem, E);
+    return I;
+  }
+  
+  //################################################################################### ARITHMETIC: RATIONALS
+
+  item basicRationalOperationsSumDifference(fraction a, fraction b, int[] complexity) {
+    // stem: a+b, a-b 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "rational+-", complexity, answer, stem, E);
+    return I;
+  }
+
+  item basicRationalOperationsProductDivision(fraction a, fraction b, int[] complexity) {
+    // stem: a*b, a/b 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "rational*/", complexity, answer, stem, E);
+    return I;
+  }
+
+  item fractionSimplification(fraction a, int[] complexity) {
+    // stem: N/D =  
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "fraction simplification", complexity, answer, stem, E);
+    return I;
+  }
+  //################################################################################### ARITHMETIC: POWER
+
+  item powerEvaluation(fraction a, int n, int[] complexity) {
+    // stem: (N/D)^n =  
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "power evaluation", complexity, answer, stem, E);
+    return I;
+  }
+
+  item powerPropertySameBase(fraction a, int n1, int n2, int[] complexity) {
+    // stem: a^n1 * a^n2 = OR a^n1 / a^n2 = 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "power property same base", complexity, answer, stem, E);
+    return I;
+  }
+
+  item powerPropertySameExponent(fraction a, fraction b, int n, int[] complexity) {
+    // stem: a^n * b^n = OR a^n / b^n = 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "power property same exponent", complexity, answer, stem, E);
+    return I;
+  }
+
+  item powerPropertyPowerOfPower(fraction a, int n1, int n2, int[] complexity) {
+    // stem: (a^n1)^n2 = 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "power property power of power", complexity, answer, stem, E);
+    return I;
+  }
+
+  //################################################################################### ARITHMETIC: ROOTS
+
+  item rootEvaluation(fraction a, int n, int[] complexity) {
+    // stem: n_sqrt(a) 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "n-th root", complexity, answer, stem, E);
+    return I;
+  }
+
+  item rootTakeIn(fraction a, fraction k, int n, int[] complexity) {
+    // stem: k*n_sqrt(a)= 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "root take-in", complexity, answer, stem, E);
+    return I;
+  }
+  
+  item rootTakeOut(fraction a, fraction k, int n, int[] complexity) {
+    // stem: n_sqrt(k*a)= 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "root take-out", complexity, answer, stem, E);
+    return I;
+  }
+
+  item rootRationalization(fraction a, int n, int[] complexity) {
+    // stem: n_sqrt(a)= 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error();
+    E[1] = new error();
+    E[2] = new error();
+
+    item I = new item();
+    setItemParams(I, "root rationalization", complexity, answer, stem, E);
+    return I;
+  }
+  //################################################################################### CLASS:ALGEBRA
+
 
   //################################################################################### (x+y)(x-y)
 

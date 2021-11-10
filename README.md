@@ -41,7 +41,6 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
         - product/division of same-base powers
         - product/division of same-exponent powers
         - power of a power
-        - negative exponents
 - n-th roots
     - evaluation
     - taking in/out from roots

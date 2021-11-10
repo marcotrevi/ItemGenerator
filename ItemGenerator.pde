@@ -1,4 +1,4 @@
-math math = new math();
+ math math = new math();
 utils utils = new utils();
 errors errors = new errors();
 items items = new items();
