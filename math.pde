@@ -36,16 +36,20 @@ class math {
     // returns an IntList of exponents
     // decomposition[i] is the exponent of the i-th prime number in the factorization of n
     IntList decomposition = new IntList();
-    for (int i=0; i<primes.length; i++ ) {
-      decomposition.append(0);
-      int s = 0;
-      while (n % primes[i] == 0) {
-        s++;
-        decomposition.set(i, s);
-        n = n/primes[i];
-      }
-      if (n == 1) {
-        i = primes.length;
+    if (n==0 || n==1) {
+      decomposition.append(1);
+    } else {
+      for (int i=0; i<primes.length; i++ ) {
+        decomposition.append(0);
+        int s = 0;
+        while (n % primes[i] == 0) {
+          s++;
+          decomposition.set(i, s);
+          n = n/primes[i];
+        }
+        if (n == 1) {
+          i = primes.length;
+        }
       }
     }
     return decomposition;
