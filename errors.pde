@@ -7,24 +7,32 @@ class errors {
     // multiplication instead of power
     // exponent is an integer (exponent.D = 1)
     fraction f = new fraction(base.N*exponent.N, base.D);
+    f.sign = int(pow(base.sign, exponent.N));
     return f;
   }
 
   fraction _001(fraction base, fraction exponent) {
     // sum instead of power
     // exponent is an integer (exponent.D = 1)
-    fraction f = new fraction(base.N+exponent.N, base.D);
+    fraction f = new fraction(0, 0);
+    if (base.sign == -1) {
+      f.N = -base.N+exponent.N;
+      f.D = base.D;
+    } else {
+      f.N = base.N+exponent.N;
+      f.D = base.D;
+    }
     return f;
   }
 
   fraction _002(fraction base, fraction exponent) {
     // forgets minus sign
     // exponent is an integer (exponent.D = 1)
-    fraction f = utils.power(base,exponent.N);
+    fraction f = utils.power(base, exponent.N);
     f.sign = 1;
     return f;
   }
-  
+
   fraction powerError(fraction a, int n, int errorType) {
     fraction f = new fraction(1, 1);
     switch(errorType) {

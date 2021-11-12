@@ -17,10 +17,13 @@ class fraction {
     if (D == 0) {
       s = "NaN";
     } else {
+      if (sign==-1 && N!=0) {
+        s = "-";
+      }
       if (D == 1) {
-        s = str(N);
+        s = s+str(N);
       } else {
-        s = str(N)+"/"+str(D);
+        s = s+str(N)+"/"+str(D);
       }
     }
     return s;

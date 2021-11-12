@@ -86,13 +86,13 @@ class math {
     int gcd = 1;
     IntList dec_a = primeDecomposition(a);
     IntList dec_b = primeDecomposition(b);
-
+/*
     print("decomposition of "+a+": ");
     for (int i=0; i<dec_a.size(); i++) {
       print(dec_a.get(i)+",");
     }
     println();
-
+*/
     int l = min(dec_a.size(), dec_b.size());
     for (int i=0; i<l; i++) {
       if (dec_a.get(i)*dec_b.get(i) != 0) {

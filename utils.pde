@@ -8,6 +8,7 @@ class utils {
   //###################################################################### fraction methods
   fraction power(fraction a, int n) {
     fraction f = new fraction(int(pow(a.N, n)), int(pow(a.D, n)));
+    f.sign = int(pow(a.sign,n));
     f.simplify();
     return f;
   }
@@ -15,10 +16,12 @@ class utils {
   boolean areFractionsEqual(fraction f1, fraction f2) {
     boolean check = false;
     fraction a = new fraction(f1.N, f1.D);
+    a.sign = f1.sign;
     fraction b = new fraction(f2.N, f2.D);
+    b.sign = f2.sign;
     a.simplify();
     b.simplify();
-    if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D) {
+    if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D && a.sign == b.sign) {
       check = true;
     }
     return check;
