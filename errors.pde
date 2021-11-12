@@ -33,6 +33,14 @@ class errors {
     return f;
   }
 
+  fraction _003(fraction base, fraction exponent) {
+    // does nothing (can happen if exponent is 0)
+    // exponent is an integer (exponent.D = 1)
+    fraction f = new fraction(base.N, base.D);
+    f.sign = base.sign;
+    return f;
+  }
+
   fraction powerError(fraction a, int n, int errorType) {
     fraction f = new fraction(1, 1);
     switch(errorType) {

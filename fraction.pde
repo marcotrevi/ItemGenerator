@@ -15,7 +15,7 @@ class fraction {
   String stringify() {
     String s = "";
     if (D == 0) {
-      s = "NaN";
+      s = "dividing by zero!";
     } else {
       if (sign==-1 && N!=0) {
         s = "-";

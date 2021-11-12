@@ -24,14 +24,14 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-  int[] errorCode = {0, 0, 0};
+  int[] errorCode = {0, 0, 3};
   error testError = new error();
   testError.errorCode = errorCode;
   
   fraction[] parameters = new fraction[2];
-  parameters[0] = new fraction(floor(random(0,3)), 1);
+  parameters[0] = new fraction(floor(random(0,3)), floor(random(0,3)));
   parameters[0].sign = -1;
-  parameters[1] = new fraction(floor(random(0,3)), 1);
+  parameters[1] = new fraction(floor(random(0,4)), 1);
  
   fraction answer = utils.power(parameters[0],parameters[1].N);
 println("("+parameters[0].stringify()+")^"+parameters[1].N+" = ?");
