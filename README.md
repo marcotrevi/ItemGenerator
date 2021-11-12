@@ -16,7 +16,7 @@ Each challenge done awards the user with a badge.
 
 # Items
 Items are grouped in sites on the map. I.e. the "arithmetic" class items are all grouped in the same spot. Some items may not be accessible on the first run because they may need some prerequisites or some other skill from other sites.
-## class: nomenclature
+## class: nomenclature (0.x.x.x)
 - term 
 - product
 - quotient
@@ -26,7 +26,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - exponent
 - reciprocal
 - opposite
-## class: arithmetic
+## class: arithmetic (1.x.x.x)
 - basic operations with integers
     - sum/difference
     - product/division
@@ -51,7 +51,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
         - logarithm of a product/division
         - logarithm of a power
         - change of base
-## class: algebra
+## class: algebra (2.x.x.x)
 - equations
     - linear
     - quadratic
@@ -67,7 +67,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - operations with algebraic fractions
 - algebraic fractions: field of existence
 - algebraic fractions: zeros
-## class: geometry
+## class: geometry (3.x.x.x)
 - basic properties of elementary 2D shapes
     - square
     - rectangle
@@ -80,7 +80,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
     - pyramid
     - cone
     - prism
-## class: analysis
+## class: analysis (4.x.x.x)
 - functions
     - graph-expression matching
     - classification
@@ -103,6 +103,35 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - integrals
     - primitives
     - definite integrals
+# Error types
+## class: nomenclature
+## class: arithmetic
+- basic operations with integers
+    - sum/difference/product/quotient error: generic calculation error: 2+5 = 3 or 2*3 = 7
+    - difference error: minus sign not considered: -4+5 = 9 or 5-3 = 8
+    - difference error: multiplication instead of difference: 5-3 = -15
+    - product error: sum instead of product, with correct sign rule: 2*3 = 5 or (-3)*5 = -8 or 2*(-3) = -5
+- basic operations with fractions
+    - sum/difference
+        - classic error of summing/subtracting numerator & denominator: 1/2 + 3/4 = (1+3) / (2+4)
+    - product/division
+    - simplification
+- powers of integers and fractions
+    - evaluation
+    - properties:
+        - product/division of same-base powers
+        - product/division of same-exponent powers
+        - power of a power
+- n-th roots
+    - evaluation
+    - taking in/out from roots
+    - rationalization
+- logarithms
+    - evaluation
+    - properties:
+        - logarithm of a product/division
+        - logarithm of a power
+        - change of base
 
 # Complexity management
 Each item has its own complexity. The complexity of an item is a integer vector: each coordinate represents an item paramenter.

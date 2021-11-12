@@ -208,7 +208,6 @@ class errors {
     return S;
   }
 
-
   //############################################################################ END ERRORS
   boolean isAvailable(error E, fraction[] parameters, fraction answer) {
     boolean check = true;
@@ -218,12 +217,20 @@ class errors {
     return check;
   }
 
-  int[] availabilityArithmetic(String type) {
+  int[] availabilityArithmetic(int type, fraction[] parameters, fraction answer) {
     IntList availableErrors = new IntList();
-
     switch(type) {
+    case 0:
+      // "power evaluation" errors: there are 4 on the list
+      error[] E = new error[4];
+      E[0].errorCode[2] = 0; 
+      for (int i=0; i<4; i++) {
+        if (isAvailable(E[i], parameters, answer)) {
+          availableErrors.append(i);
+        }
+      }
+      break;
     }
-
     int[] errors = new int[availableErrors.size()];
     for (int i=0; i<availableErrors.size(); i++) {
       errors[i] = availableErrors.get(i);

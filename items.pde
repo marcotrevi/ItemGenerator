@@ -2,6 +2,33 @@ class items {
   items() {
   }
 
+  //################################################################################### GENERAL ITEM TEMPLATE
+  item generalItem(int[] complexity) {
+    // stem 
+    String stem = "";
+    // answer
+    String answer = "";
+    // distractors - each distractor can contain multiple errors
+    error[] E = new error[3];
+    E[0] = new error(); 
+    E[1] = new error();
+    E[2] = new error();
+
+    /*
+    general logic: 
+    - get error availability as a permutation of possible error indexes;
+    - E[0] = errors[perm[0]] is the first permutation element;
+    - check if E[1] = errors[perm[1]] is not equal to E[0]
+    - if E[1] is equal to E[0], try errors[perm[2]], errors[perm[3]] etc until errors[perm[k]] is OK (how to be sure that process terminates?)
+    - check if E[2] = errors[perm[k+1]] is not equal to E[0] or to E[1], else try other errors (again: how to be sure that process terminates?)
+    */
+
+    item I = new item();
+    setItemParams(I, "general item template", complexity, answer, stem, E);
+    return I;
+  }
+  
+  
   //################################################################################### ARITHMETIC
 
   item basicIntegerOperationsSumDifference(int a, int b, int[] complexity) {

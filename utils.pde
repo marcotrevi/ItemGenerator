@@ -8,7 +8,7 @@ class utils {
   //###################################################################### fraction methods
   fraction power(fraction a, int n) {
     fraction f = new fraction(int(pow(a.N, n)), int(pow(a.D, n)));
-    f.sign = int(pow(a.sign,n));
+    f.sign = int(pow(a.sign, n));
     f.simplify();
     return f;
   }
@@ -474,6 +474,9 @@ class utils {
     item I = new item();
     // each item type has its own constructor
     switch(type) {
+    case "general":
+      I = items.generalItem(complexity);
+      break;
       // CLASS: ARITHMETIC
     case "power evaluation":    
       I = items.powerEvaluation(complexity);
