@@ -128,7 +128,7 @@ void getAnswer() {
 
 void getNewItem(int[] complexity) {
   correct = false;
-  I = utils.generateItem("power evaluation", complexity);
+  I = utils.generateItem("x^2-y^2", complexity);
   choices = shuffleChoices(I);
   getAnswer();
   history[0].append(complexity[0]);

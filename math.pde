@@ -1,6 +1,6 @@
 class math {
   // all math utilities
-  int[] primes =  {2, 3, 5, 7, 11, 13, 17, 19, 23, 
+  int[] primes =  {1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 
     29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 
     71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 
     113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 
@@ -31,23 +31,25 @@ class math {
 
   math() {
   }
-
+  
   IntList primeDecomposition(int n) {
     // returns an IntList of exponents
     // decomposition[i] is the exponent of the i-th prime number in the factorization of n
+    int N = n;
     IntList decomposition = new IntList();
-    if (n==0 || n==1) {
-      decomposition.append(1);
-    } else {
-      for (int i=0; i<primes.length; i++ ) {
+    decomposition.append(1); // 1 is always factor
+    for (int i=1; i<primes.length; i++ ) {
+      if (n==1 || n==0) {
+        i = primes.length; // exits
+      } else {
         decomposition.append(0);
         int s = 0;
-        while (n % primes[i] == 0) {
+        while (N % primes[i] == 0) {
           s++;
           decomposition.set(i, s);
-          n = n/primes[i];
+          N = N/primes[i];
         }
-        if (n == 1) {
+        if (N == 1) {
           i = primes.length;
         }
       }
