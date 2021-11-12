@@ -17,6 +17,14 @@ class errors {
     return f;
   }
 
+  fraction _002(fraction base, fraction exponent) {
+    // forgets minus sign
+    // exponent is an integer (exponent.D = 1)
+    fraction f = utils.power(base,exponent.N);
+    f.sign = 1;
+    return f;
+  }
+  
   fraction powerError(fraction a, int n, int errorType) {
     fraction f = new fraction(1, 1);
     switch(errorType) {
@@ -188,7 +196,7 @@ class errors {
   //############################################################################ END ERRORS
   boolean isAvailable(error E, fraction[] parameters, fraction answer) {
     boolean check = true;
-    if (utils.areFractionsEqual(E.evaluate(parameters),answer) || !E.isAvailableWith(parameters)) {
+    if (utils.areFractionsEqual(E.evaluate(parameters), answer) || !E.isAvailableWith(parameters)) {
       check = false;
     }
     return check;

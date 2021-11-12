@@ -1,6 +1,7 @@
 class fraction {
   int N = 1;
   int D = 1;
+  int sign = 1; // positive sign by default
 
   fraction(int N, int D) {
     this.N = N;
@@ -13,10 +14,14 @@ class fraction {
 
   String stringify() {
     String s = "";
-    if (D == 1) {
-      s = str(N);
+    if (D == 0) {
+      s = "NaN";
     } else {
-      s = str(N)+"/"+str(D);
+      if (D == 1) {
+        s = str(N);
+      } else {
+        s = str(N)+"/"+str(D);
+      }
     }
     return s;
   }

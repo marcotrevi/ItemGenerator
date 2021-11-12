@@ -25,6 +25,9 @@ class error {
         case 1: // error 0.0.1
           f = errors._001(base, exponent);
           break;
+        case 2: // error 0.0.2
+          f = errors._002(base, exponent);
+          break;
         }
         break;
       }

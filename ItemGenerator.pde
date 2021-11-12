@@ -24,19 +24,25 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-
-  int[] errorCode = {0, 0, 0};
+/*
+  int[] errorCode = {0, 0, 1};
   error testError = new error();
   testError.errorCode = errorCode;
   
   fraction[] parameters = new fraction[2];
-  parameters[0] = new fraction(0, 1);
+  parameters[0] = new fraction(2, 1);
   parameters[1] = new fraction(1, 1);
-  fraction answer = utils.power(parameters[0],parameters[1].N);
-  
+  fraction answer = new fraction(0,2);
+  answer = utils.power(parameters[0],2);
+  */
+//  fraction answer = utils.power(parameters[0],parameters[1].N);
+//  println(answer.N+"/"+answer.D);
+/*
   println("error: "+testError.evaluate(parameters).stringify());
   println("answer: "+answer.stringify());
   println("is available: "+errors.isAvailable(testError, parameters, answer));
+  */
+  println(math.gcd(0,1));
 
   //  size(1000, 600);
   utils.initTable();
@@ -59,7 +65,7 @@ void setup() {
   c[8] = 0;
   //utils.generateItem("x^2-y^2", c).printme();
   //  utils.generateItem("(x+y)(x-y)", c).printme();
-  getNewItem(c);
+  // getNewItem(c);
 }
 
 /*

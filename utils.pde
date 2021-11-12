@@ -18,7 +18,7 @@ class utils {
     fraction b = new fraction(f2.N, f2.D);
     a.simplify();
     b.simplify();
-    if (a.N == b.N && a.D == b.D) {
+    if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D) {
       check = true;
     }
     return check;
