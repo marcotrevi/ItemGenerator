@@ -1,4 +1,4 @@
- math math = new math();
+  math math = new math();
 utils utils = new utils();
 errors errors = new errors();
 items items = new items();
@@ -12,7 +12,7 @@ int W = 1000;
 int H = 600;
 float h = 50;
 color c1, c2, c3, c4;
-int[] perms = new int[4];
+int[] Perms = new int[4];
 int indexPressed = -1;
 int indexAnswer = -1;
 boolean getNewItem = true;
@@ -108,19 +108,19 @@ String[] shuffleChoices(item I) {
   choices[1] = I.distractors[0];
   choices[2] = I.distractors[1];
   choices[3] = I.distractors[2];
-  perms = utils.permutation(4);
+  Perms = utils.permutation(4);
   String[] shuffle = new String[4];
-  shuffle[0] = choices[perms[0]];
-  shuffle[1] = choices[perms[1]];
-  shuffle[2] = choices[perms[2]];
-  shuffle[3] = choices[perms[3]];
+  shuffle[0] = choices[Perms[0]];
+  shuffle[1] = choices[Perms[1]];
+  shuffle[2] = choices[Perms[2]];
+  shuffle[3] = choices[Perms[3]];
   return shuffle;
 }
 
 void getAnswer() {
   indexAnswer = -1;
   for (int i=0; i<4; i++) {
-    if (perms[i] == 0) {
+    if (Perms[i] == 0) {
       indexAnswer = i;
     }
   }

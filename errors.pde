@@ -7,17 +7,19 @@ class errors {
     fraction f = new fraction(1, 1);
     switch(errorType) {
     case 0: // multiplication instead of power.
-      // WARNING: is correct if: b=1; a=2 & b=2
+      // WARNING: is correct if: n=1; a=2 & n=2
       f.N = a.N*n;
       f.D = a.D;
       break;
-    case 1:
+    case 1: // sum instead of power
+      // WARNING: is correct if: a=0 & n=1; a=2 & n=2
+      f.N = a.N + n;
+      f.D = a.D;  
       break;
-    case 2:
-      break;
-    case 3:
-      break;
-    case 4:
+    case 2: // does nothing if n=0
+      // WARNING: is correct if: n=1; available only if: n=0
+      f.N = a.N;
+      f.D = a.D;
       break;
     }
     return f;
@@ -170,6 +172,18 @@ class errors {
 
 
   //############################################################################ END ERRORS
+  int[] availabilityArithmetic(String type) {
+    IntList availableErrors = new IntList();
+
+    switch(type) {
+    }
+
+    int[] errors = new int[availableErrors.size()];
+    for (int i=0; i<availableErrors.size(); i++) {
+      errors[i] = availableErrors.get(i);
+    }
+    return errors;
+  }
 
   int[] availability(monomial M, String type) {
     IntList availableErrors = new IntList();
@@ -241,7 +255,7 @@ class errors {
     case "power":
       for (int i=0; i<4; i++) {
         availableErrors.append(i);
-      }      
+      }
       break;
     }
     int[] errors = new int[availableErrors.size()];

@@ -4,6 +4,14 @@ class utils {
   utils() {
   }
 
+
+  //###################################################################### fraction methods
+  fraction power(fraction a, int n) {
+    fraction f = new fraction(int(pow(a.N, n)), int(pow(a.D, n)));
+    f.simplify();
+    return f;
+  }
+
   //###################################################################### methods which return a nice monomial 
 
   monomial generateMonomial(int[] complexity) {
@@ -387,8 +395,8 @@ class utils {
     float[] sample = new float[n];
     return sample;
   }
-  
-  int pick(int[] list){
+
+  int pick(int[] list) {
     return list[permutation(list.length)[0]];
   }
 

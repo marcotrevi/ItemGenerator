@@ -104,91 +104,91 @@ class items {
   //################################################################################### ARITHMETIC: POWER
 
   item powerEvaluation(int[] complexity) {
-    fraction a = new fraction(1, 1);
-    int n = 0;
+    fraction base = new fraction(1, 1);
+    int exponent = 0;
     switch(complexity[0]) {
     case 0:
       // base is an integer
-      a.N = utils.pick(math.easyInts);
-      a.D = 1;
+      base.N = utils.pick(math.easyInts);
+      base.D = 1;
       break;
     case 1: 
-      a.N = utils.pick(math.easyInts);
-      a.D = 1;
+      base.N = utils.pick(math.easyInts);
+      base.D = 1;
       if (random(0.1)<0.5) {
-        a.N = -a.N;
+        base.N = -base.N;
       }
       break;
     case 2: 
-      a.N = utils.pick(math.easyInts);
-      a.D = utils.pick(math.easyInts);
-      a.simplify();
+      base.N = utils.pick(math.easyInts);
+      base.D = utils.pick(math.easyInts);
+      base.simplify();
       break;
     default: 
-      a.N = utils.pick(math.easyInts);
-      a.D = utils.pick(math.easyInts);
-      a.simplify();
+      base.N = utils.pick(math.easyInts);
+      base.D = utils.pick(math.easyInts);
+      base.simplify();
       if (random(0.1)<0.5) {
-        a.N = -a.N;
+        base.N = -base.N;
       }
       break;
     }
     switch(complexity[1]) {
     case 0:
-      n = utils.pick(math.easyInts);
+      exponent = utils.pick(math.easyInts);
       break;
     case 1:
-      n = utils.pick(math.easyInts);
+      exponent = utils.pick(math.easyInts);
       if (random(0, 1)<0.5) {
-        n = -n;
+        exponent = -exponent;
       }
       break;
     default: 
-      n = utils.pick(math.easyInts);
+      exponent = utils.pick(math.easyInts);
       if (random(0, 1)<0.5) {
-        n = -n;
+        exponent = -exponent;
       }
       break;
     }
     // stem: (N/D)^n =  
     String stem = "";
-    String exponent = str(n);
-    if (n<0) {
-      exponent = "("+str(n)+")";
-    }
-    if (a.D == 1 && a.N > 0) {
-      // fraction is an integer
-      stem = a.stringify()+"^"+exponent;
+    String _exponent = "";
+    if (exponent<0) {
+      _exponent = "("+str(exponent)+")";
     } else {
-      stem = "("+a.stringify()+")^"+exponent;
+      _exponent = str(exponent);
+    }
+    if (base.D == 1 && base.N > 0) {
+      // fraction is an integer
+      stem = base.stringify()+"^"+_exponent;
+    } else {
+      stem = "("+base.stringify()+")^"+_exponent;
     }
     // answer
     String answer = "";
+
+    answer = utils.power(base, exponent).stringify();
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
     E[2] = new error();
 
-    int[] perms = utils.permutation(7); // selecting error location in distractors
     // check available errors on X
     monomial X = new monomial(0);
-    X.coefficient = a;
+    X.coefficient = base;
     int[] availability = utils.permutation(errors.availability(X, "power"));
     int errorIndex = 0;
-    fraction error = new fraction(1,1);
+    fraction error = new fraction(1, 1);
 
     for (int i=0; i<3; i++) {
-      errorIndex = availability[min(i, availability.length-1)];
-      error = errors.powerError(a, n, errorIndex);
-
-      switch(perms[i]) {
-      case 0: // error on X square
-        E[i].errorName = error.stringify();
-        E[i].errorType.append(errorIndex);
-        break;
-      }
+      errorIndex = availability[i];
+      //      errorIndex = availability[min(i, availability.length-1)];
+      error = errors.powerError(base, exponent, errorIndex);
+      E[i].errorName = error.stringify();
+      E[i].errorType.append(errorIndex);
     }
+
     item I = new item();
     setItemParams(I, "power evaluation", complexity, answer, stem, E);
     return I;
