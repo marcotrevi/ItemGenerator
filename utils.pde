@@ -12,6 +12,18 @@ class utils {
     return f;
   }
 
+  boolean areFractionsEqual(fraction f1, fraction f2) {
+    boolean check = false;
+    fraction a = new fraction(f1.N, f1.D);
+    fraction b = new fraction(f2.N, f2.D);
+    a.simplify();
+    b.simplify();
+    if (a.N == b.N && a.D == b.D) {
+      check = true;
+    }
+    return check;
+  }
+
   //###################################################################### methods which return a nice monomial 
 
   monomial generateMonomial(int[] complexity) {

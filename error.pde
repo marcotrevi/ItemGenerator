@@ -7,17 +7,23 @@ class error {
   fraction scalar;
 
   error() {
-//    this.errorCode = errorCode;
+    //    this.errorCode = errorCode;
   }
 
-  fraction evaluateError(fraction[] parameters) {
+  fraction evaluate(fraction[] parameters) {
     fraction f = new fraction(0, 0);
     switch(errorCode[0]) {
     case 0:
       switch(errorCode[1]) {
-      case 0:
+      case 0: // powers
+        fraction base = parameters[0];
+        fraction exponent = parameters[1];
         switch(errorCode[2]) {
         case 0: // error 0.0.0
+          f = errors._000(base, exponent);
+          break;
+        case 1: // error 0.0.1
+          f = errors._001(base, exponent);
           break;
         }
         break;

@@ -1,4 +1,4 @@
-  math math = new math();
+math math = new math();
 utils utils = new utils();
 errors errors = new errors();
 items items = new items();
@@ -24,7 +24,21 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-  size(1000, 600);
+
+  int[] errorCode = {0, 0, 0};
+  error testError = new error();
+  testError.errorCode = errorCode;
+  
+  fraction[] parameters = new fraction[2];
+  parameters[0] = new fraction(0, 1);
+  parameters[1] = new fraction(1, 1);
+  fraction answer = utils.power(parameters[0],parameters[1].N);
+  
+  println("error: "+testError.evaluate(parameters).stringify());
+  println("answer: "+answer.stringify());
+  println("is available: "+errors.isAvailable(testError, parameters, answer));
+
+  //  size(1000, 600);
   utils.initTable();
   c1 = color(50, 50, 50);
   c2 = color(50, 50, 50);
@@ -44,31 +58,33 @@ void setup() {
   c[7] = 0;
   c[8] = 0;
   //utils.generateItem("x^2-y^2", c).printme();
-//  utils.generateItem("(x+y)(x-y)", c).printme();
+  //  utils.generateItem("(x+y)(x-y)", c).printme();
   getNewItem(c);
 }
 
+/*
 void draw() {
-  // start timer
-  if (!pause) {
-    time = (millis() - pauseTime - resetTime) % maxTime;
-  }
-
-  elapsedTime = time-timeOld;
-  background(0);
-  buttons();  
-  displayItem();
-  progressBar();
-  displayHistory();
-
-  if (elapsedTime < 0) {
-    // cycle is complete
-    timeIsUp();
-    getNewItem = true;
-    answered = false;
-  }
-  timeOld = time;
-}
+ // start timer
+ if (!pause) {
+ time = (millis() - pauseTime - resetTime) % maxTime;
+ }
+ 
+ elapsedTime = time-timeOld;
+ background(0);
+ buttons();  
+ displayItem();
+ progressBar();
+ displayHistory();
+ 
+ if (elapsedTime < 0) {
+ // cycle is complete
+ timeIsUp();
+ getNewItem = true;
+ answered = false;
+ }
+ timeOld = time;  
+ }
+ */
 
 void displayHistory() {
   noStroke();

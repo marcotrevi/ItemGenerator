@@ -3,18 +3,18 @@ class errors {
   }
 
   //######################################################################################## ERROR: power evaluation
-  error errorArithmeticPower(fraction base, int exponent, int type) {
-    error E = new error();
-    E.errorCode[0] = 0;
-    E.errorCode[1] = 0;
-    E.errorCode[2] = type; 
-    switch(type) {
-    case 0: // multiplication instead of power
-      E.scalar.N = base.N*exponent;
-      E.scalar.D = base.D;
-      break;
-    }
-    return E;
+  fraction _000(fraction base, fraction exponent) {
+    // multiplication instead of power
+    // exponent is an integer (exponent.D = 1)
+    fraction f = new fraction(base.N*exponent.N, base.D);
+    return f;
+  }
+
+  fraction _001(fraction base, fraction exponent) {
+    // sum instead of power
+    // exponent is an integer (exponent.D = 1)
+    fraction f = new fraction(base.N+exponent.N, base.D);
+    return f;
   }
 
   fraction powerError(fraction a, int n, int errorType) {
@@ -188,7 +188,7 @@ class errors {
   //############################################################################ END ERRORS
   boolean isAvailable(error E, fraction[] parameters, fraction answer) {
     boolean check = true;
-    if (E.evaluateError(parameters) == answer || !E.isAvailableWith(parameters)) {
+    if (utils.areFractionsEqual(E.evaluate(parameters),answer) || !E.isAvailableWith(parameters)) {
       check = false;
     }
     return check;
