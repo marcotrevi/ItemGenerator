@@ -24,23 +24,6 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-  int[] errorCode = {0, 0, 3};
-  error testError = new error();
-  testError.errorCode = errorCode;
-
-  fraction[] parameters = new fraction[2];
-  parameters[0] = new fraction(floor(random(0, 3)), floor(random(0, 3)));
-  parameters[0].sign = -1;
-  parameters[1] = new fraction(floor(random(0, 4)), 1);
-
-  fraction answer = utils.power(parameters[0], parameters[1].N);
-  println("("+parameters[0].stringify()+")^"+parameters[1].N+" = ?");
-  println("error: "+testError.evaluate(parameters).stringify());
-  println("answer: "+answer.stringify());
-  println("are they equal? "+utils.areFractionsEqual(testError.evaluate(parameters), answer));
-  println("is available: "+errors.isAvailable(testError, parameters, answer));
-
-
   //  size(1000, 600);
   utils.initTable();
   c1 = color(50, 50, 50);
@@ -51,7 +34,7 @@ void setup() {
   history[0] = new IntList();
   history[1] = new IntList();
   history[2] = new IntList();
-  c[0] = 0;
+  c[0] = 1;
   c[1] = 0;
   c[2] = 0;
   c[3] = 0;

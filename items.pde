@@ -16,19 +16,19 @@ class items {
 
     /*
     general logic: 
-    - get error availability as a permutation of possible error indexes;
-    - E[0] = errors[perm[0]] is the first permutation element;
-    - check if E[1] = errors[perm[1]] is not equal to E[0]
-    - if E[1] is equal to E[0], try errors[perm[2]], errors[perm[3]] etc until errors[perm[k]] is OK (how to be sure that process terminates?)
-    - check if E[2] = errors[perm[k+1]] is not equal to E[0] or to E[1], else try other errors (again: how to be sure that process terminates?)
-    */
+     - get error availability as a permutation of possible error indexes;
+     - E[0] = errors[perm[0]] is the first permutation element;
+     - check if E[1] = errors[perm[1]] is not equal to E[0]
+     - if E[1] is equal to E[0], try errors[perm[2]], errors[perm[3]] etc until errors[perm[k]] is OK (how to be sure that process terminates?)
+     - check if E[2] = errors[perm[k+1]] is not equal to E[0] or to E[1], else try other errors (again: how to be sure that process terminates?)
+     */
 
     item I = new item();
     setItemParams(I, "general item template", complexity, answer, stem, E);
     return I;
   }
-  
-  
+
+
   //################################################################################### ARITHMETIC
 
   item basicIntegerOperationsSumDifference(int a, int b, int[] complexity) {
@@ -132,7 +132,7 @@ class items {
 
   item powerEvaluation(int[] complexity) {
     fraction base = new fraction(1, 1);
-    int exponent = 0;
+    fraction exponent = new fraction(1, 1);
     switch(complexity[0]) {
     case 0:
       // base is an integer
@@ -143,7 +143,7 @@ class items {
       base.N = utils.pick(math.easyInts);
       base.D = 1;
       if (random(0.1)<0.5) {
-        base.N = -base.N;
+        base.sign = -1;
       }
       break;
     case 2: 
@@ -156,36 +156,36 @@ class items {
       base.D = utils.pick(math.easyInts);
       base.simplify();
       if (random(0.1)<0.5) {
-        base.N = -base.N;
+        base.sign = -1;
       }
       break;
     }
     switch(complexity[1]) {
     case 0:
-      exponent = utils.pick(math.easyInts);
+      exponent.N = utils.pick(math.easyInts);
       break;
     case 1:
-      exponent = utils.pick(math.easyInts);
+      exponent.N = utils.pick(math.easyInts);
       if (random(0, 1)<0.5) {
-        exponent = -exponent;
+        exponent.sign = -1;
       }
       break;
     default: 
-      exponent = utils.pick(math.easyInts);
+      exponent.N = utils.pick(math.easyInts);
       if (random(0, 1)<0.5) {
-        exponent = -exponent;
+        exponent.sign = -1;
       }
       break;
     }
     // stem: (N/D)^n =  
     String stem = "";
     String _exponent = "";
-    if (exponent<0) {
-      _exponent = "("+str(exponent)+")";
+    if (exponent.sign < 0) {
+      _exponent = "("+str(exponent.N)+")";
     } else {
-      _exponent = str(exponent);
+      _exponent = str(exponent.N);
     }
-    if (base.D == 1 && base.N > 0) {
+    if (base.D == 1 && base.sign > 0) {
       // fraction is an integer
       stem = base.stringify()+"^"+_exponent;
     } else {
@@ -194,28 +194,39 @@ class items {
     // answer
     String answer = "";
 
-    answer = utils.power(base, exponent).stringify();
+    answer = utils.power(base, exponent.N).stringify();
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
     E[0] = new error();
     E[1] = new error();
     E[2] = new error();
 
-    // check available errors on X
-    monomial X = new monomial(0);
-    X.coefficient = base;
-    int[] availability = utils.permutation(errors.availability(X, "power"));
-    int errorIndex = 0;
-    fraction error = new fraction(1, 1);
+    // check error availability
+    fraction[] parameters = new fraction[2];
+    parameters[0] = base;
+    parameters[1] = exponent;
+    //println("stem: "+base.stringify()+"^"+exponent.N);
+
+    int n_cases = 6;
+
+    IntList availableErrors = new IntList();
+    for (int i=0; i<n_cases; i++) {
+      availableErrors.append(i);
+    }
+    int errorIndex = -1;
+    int errorType = -1;
 
     for (int i=0; i<3; i++) {
-      errorIndex = availability[i];
-      //      errorIndex = availability[min(i, availability.length-1)];
-      error = errors.powerError(base, exponent, errorIndex);
-      E[i].errorName = error.stringify();
-      E[i].errorType.append(errorIndex);
+      // first choice
+      availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[0]
+      //println("available errors: "+availableErrors);
+      errorIndex = floor(random(0, availableErrors.size()));
+      errorType = availableErrors.get(errorIndex);
+      //println("selected error: "+errorType);
+      E[i].errorName = errors.powerError(base, exponent.N, errorType).stringify();
+      E[i].errorType.append(errorType);
+      availableErrors = utils.removeInt(availableErrors, errorType); // remove used error
     }
-
     item I = new item();
     setItemParams(I, "power evaluation", complexity, answer, stem, E);
     return I;

@@ -16,7 +16,7 @@ Each challenge done awards the user with a badge.
 
 # Items
 Items are grouped in sites on the map. I.e. the "arithmetic" class items are all grouped in the same spot. Some items may not be accessible on the first run because they may need some prerequisites or some other skill from other sites.
-## class: nomenclature (0.x.x.x)
+## class: nomenclature
 - term 
 - product
 - quotient
@@ -26,7 +26,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - exponent
 - reciprocal
 - opposite
-## class: arithmetic (1.x.x.x)
+## class: arithmetic
 - basic operations with integers
     - sum/difference
     - product/division
@@ -51,7 +51,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
         - logarithm of a product/division
         - logarithm of a power
         - change of base
-## class: algebra (2.x.x.x)
+## class: algebra
 - equations
     - linear
     - quadratic
@@ -67,7 +67,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - operations with algebraic fractions
 - algebraic fractions: field of existence
 - algebraic fractions: zeros
-## class: geometry (3.x.x.x)
+## class: geometry
 - basic properties of elementary 2D shapes
     - square
     - rectangle
@@ -80,7 +80,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
     - pyramid
     - cone
     - prism
-## class: analysis (4.x.x.x)
+## class: analysis
 - functions
     - graph-expression matching
     - classification
@@ -107,23 +107,29 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 ## class: nomenclature
 ## class: arithmetic
 - basic operations with integers
-    - sum/difference/product/quotient error: generic calculation error: 2+5 = 3 or 2*3 = 7
-    - difference error: minus sign not considered: -4+5 = 9 or 5-3 = 8
-    - difference error: multiplication instead of difference: 5-3 = -15
-    - product error: sum instead of product, with correct sign rule: 2*3 = 5 or (-3)*5 = -8 or 2*(-3) = -5
+    - [] generic calculation error: 2+5 = 3 or 2*3 = 7
+    - [] difference error: minus sign not considered: -4+5 = 9 or 5-3 = 8
+    - [] difference error: multiplication instead of difference: 5-3 = -15
+    - [] product error: sum instead of product, with correct sign rule: 2*3 = 5 or (-3)*5 = -8 or 2*(-3) = -5
 - basic operations with fractions
     - sum/difference
-        - classic error of summing/subtracting numerator & denominator: 1/2 + 3/4 = (1+3) / (2+4)
+        - [] classic error of summing/subtracting numerator & denominator: 1/2 + 3/4 = (1+3)/(2+4)
     - product/division
+        - [] calculates lcm and then multiplies numerator: 2/3 * 3/4 = 6/12 
     - simplification
 - powers of integers and fractions
     - evaluation
+        - [] generic calculation error: 2^3 = 9
+        - [] product instead of power: 3^4 = 12
+        - [] sum instead of power: 3^4 = 7
     - properties:
         - product/division of same-base powers
+            - [] 
         - product/division of same-exponent powers
         - power of a power
 - n-th roots
     - evaluation
+        - [] generic calculation error: sqrt(16) = 3
     - taking in/out from roots
     - rationalization
 - logarithms
@@ -132,7 +138,60 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
         - logarithm of a product/division
         - logarithm of a power
         - change of base
-
+## class: algebra
+- equations
+    - linear
+    - quadratic
+- algebraic sum of monomials
+- product of monomials
+- division of monomials
+- algebraic sum of polynomials
+- product of polynomials
+- division of polynomials
+- notable products
+    - square of a binomial
+    - difference of squares
+- factorization
+- zeros of polynomials
+- operations with algebraic fractions
+- algebraic fractions: field of existence
+- algebraic fractions: zeros
+## class: geometry
+- basic properties of elementary 2D shapes
+    - square
+    - rectangle
+    - circle
+    - 90-30-60 triangle, 90-45-45 triangle, generic 90-triangle
+- basic properties of 3D shapes
+    - cube
+    - parallelepiped
+    - sphere
+    - pyramid
+    - cone
+    - prism
+## class: analysis
+- functions
+    - graph-expression matching
+    - classification
+        - algebraic
+            - linear
+            - quadratic
+            - polynomial
+            - rational
+            - irrational
+        - trascendental
+            - goniometric
+            - exponential
+            - logarithmic
+- derivatives
+    - elementary derivatives
+    - properties:
+        - derivative of linear combination
+        - derivative of product
+        - chain rule
+- integrals
+    - primitives
+    - definite integrals
 # Complexity management
 Each item has its own complexity. The complexity of an item is a integer vector: each coordinate represents an item paramenter.
 The complexity vector gets updated depending on the user performance. If the user answers correctly a certain number of items with the same complexity, the complexity vector increases. (maybe one coordinate at a time?) If the user fails to answer correctly, complexity is lowered.

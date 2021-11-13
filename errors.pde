@@ -3,61 +3,42 @@ class errors {
   }
 
   //######################################################################################## ERROR: power evaluation
-  fraction _000(fraction base, fraction exponent) {
-    // multiplication instead of power
-    // exponent is an integer (exponent.D = 1)
-    fraction f = new fraction(base.N*exponent.N, base.D);
-    f.sign = int(pow(base.sign, exponent.N));
-    return f;
-  }
-
-  fraction _001(fraction base, fraction exponent) {
-    // sum instead of power
-    // exponent is an integer (exponent.D = 1)
-    fraction f = new fraction(0, 0);
-    if (base.sign == -1) {
-      f.N = -base.N+exponent.N;
-      f.D = base.D;
-    } else {
-      f.N = base.N+exponent.N;
-      f.D = base.D;
-    }
-    return f;
-  }
-
-  fraction _002(fraction base, fraction exponent) {
-    // forgets minus sign
-    // exponent is an integer (exponent.D = 1)
-    fraction f = utils.power(base, exponent.N);
-    f.sign = 1;
-    return f;
-  }
-
-  fraction _003(fraction base, fraction exponent) {
-    // does nothing (can happen if exponent is 0)
-    // exponent is an integer (exponent.D = 1)
-    fraction f = new fraction(base.N, base.D);
-    f.sign = base.sign;
-    return f;
-  }
 
   fraction powerError(fraction a, int n, int errorType) {
+    // #errors: 3
     fraction f = new fraction(1, 1);
     switch(errorType) {
     case 0: // multiplication instead of power.
       // WARNING: is correct if: n=1; a=2 & n=2
       f.N = a.N*n;
       f.D = a.D;
+      f.sign = a.sign;
       break;
     case 1: // sum instead of power
       // WARNING: is correct if: a=0 & n=1; a=2 & n=2
       f.N = a.N + n;
       f.D = a.D;  
+      f.sign = a.sign;
       break;
     case 2: // does nothing if n=0
       // WARNING: is correct if: n=1; available only if: n=0
       f.N = a.N;
       f.D = a.D;
+      f.sign = a.sign;
+      break;
+    case 3: // forgets minus sign
+      f = utils.power(a, n);
+      f.sign = 1;
+      break;
+    case 4: // 
+      f.N = 0;
+      f.D = 1;
+      f.sign = a.sign;
+      break;
+    case 5:
+      f.N = 1;
+      f.D = 1;
+      f.sign = a.sign;
       break;
     }
     return f;
@@ -66,6 +47,7 @@ class errors {
   //######################################################################################## ERROR: square root
 
   monomial rootError(monomial M, int errorType) {
+    // #errors: 4
     // monomial M is already the correct root.
     monomial R = new monomial(M.nVariables);
     R.variables = M.variables;
@@ -116,6 +98,7 @@ class errors {
   //######################################################################################## ERROR: double product
 
   monomial doubleProductError(monomial M, monomial M2, int errorType) {
+    // #errors: 2
     monomial DP = new monomial(M.nVariables);
     DP.variables = M.variables;
     DP.sign = 1;
@@ -142,7 +125,7 @@ class errors {
   //######################################################################################## ERROR: square
 
   monomial squareError(monomial M, int errorType) {
-    // there are 6 errors in this list
+    // #errors: 6
     monomial S = new monomial(M.nVariables);
     S.variables = M.variables;
     switch(errorType) {
@@ -209,33 +192,24 @@ class errors {
   }
 
   //############################################################################ END ERRORS
-  boolean isAvailable(error E, fraction[] parameters, fraction answer) {
-    boolean check = true;
-    if (utils.areFractionsEqual(E.evaluate(parameters), answer) || !E.isAvailableWith(parameters)) {
-      check = false;
-    }
-    return check;
-  }
 
-  int[] availabilityArithmetic(int type, fraction[] parameters, fraction answer) {
-    IntList availableErrors = new IntList();
+  IntList availabilityArithmetic(String type, IntList availableErrors, fraction[] parameters) {
+    IntList subsetErrors = new IntList();
+    int n_cases = availableErrors.size();
     switch(type) {
-    case 0:
-      // "power evaluation" errors: there are 4 on the list
-      error[] E = new error[4];
-      E[0].errorCode[2] = 0; 
-      for (int i=0; i<4; i++) {
-        if (isAvailable(E[i], parameters, answer)) {
-          availableErrors.append(i);
-        }
+    case "power evaluation":
+      // parameters[0]: base
+      // parameters[1]: exponent
+      fraction base = parameters[0];
+      int exponent = parameters[1].N;
+      for (int i=0; i<n_cases; i++) {
+        int index = availableErrors.get(i);
+        if (!utils.areFractionsEqual(powerError(base, exponent, index), utils.power(base, exponent)))
+          subsetErrors.append(index);
       }
       break;
     }
-    int[] errors = new int[availableErrors.size()];
-    for (int i=0; i<availableErrors.size(); i++) {
-      errors[i] = availableErrors.get(i);
-    }
-    return errors;
+    return subsetErrors;
   }
 
   int[] availability(monomial M, String type) {
