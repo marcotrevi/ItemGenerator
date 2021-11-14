@@ -131,59 +131,15 @@ class items {
   //################################################################################### ARITHMETIC: POWER
 
   item powerEvaluation(int[] complexity) {
-    fraction base = new fraction(1, 1);
-    fraction exponent = new fraction(1, 1);
-    switch(complexity[0]) {
-    case 0:
-      // base is an integer
-      base.N = utils.pick(math.easyInts);
-      base.D = 1;
-      break;
-    case 1: 
-      base.N = utils.pick(math.easyInts);
-      base.D = 1;
-      if (random(0.1)<0.5) {
-        base.sign = -1;
-      }
-      break;
-    case 2: 
-      base.N = utils.pick(math.easyInts);
-      base.D = utils.pick(math.easyInts);
-      base.simplify();
-      break;
-    default: 
-      base.N = utils.pick(math.easyInts);
-      base.D = utils.pick(math.easyInts);
-      base.simplify();
-      if (random(0.1)<0.5) {
-        base.sign = -1;
-      }
-      break;
-    }
-    switch(complexity[1]) {
-    case 0:
-      exponent.N = utils.pick(math.easyInts);
-      break;
-    case 1:
-      exponent.N = utils.pick(math.easyInts);
-      if (random(0, 1)<0.5) {
-        exponent.sign = -1;
-      }
-      break;
-    default: 
-      exponent.N = utils.pick(math.easyInts);
-      if (random(0, 1)<0.5) {
-        exponent.sign = -1;
-      }
-      break;
-    }
+    fraction base = utils.generateFraction(complexity[0]);
+    fraction exponent = utils.generateFraction(complexity[1]);
     // stem: (N/D)^n =  
     String stem = "";
     String _exponent = "";
     if (exponent.sign < 0) {
-      _exponent = "("+str(exponent.N)+")";
+      _exponent = "("+exponent.stringify()+")";
     } else {
-      _exponent = str(exponent.N);
+      _exponent = exponent.stringify();
     }
     if (base.D == 1 && base.sign > 0) {
       // fraction is an integer
@@ -192,9 +148,8 @@ class items {
       stem = "("+base.stringify()+")^"+_exponent;
     }
     // answer
-    String answer = "";
+    fraction answer = utils.power(base, exponent);
 
-    answer = utils.power(base, exponent.N).stringify();
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
     E[0] = new error();
@@ -215,20 +170,86 @@ class items {
     }
     int errorIndex = -1;
     int errorType = -1;
+    boolean found;
 
-    for (int i=0; i<3; i++) {
-      // first choice
-      availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[0]
-      //println("available errors: "+availableErrors);
+    // first choice
+    fraction error0 = new fraction(0, 0);
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[0]
+    if (availableErrors.size()>0) {
       errorIndex = floor(random(0, availableErrors.size()));
       errorType = availableErrors.get(errorIndex);
-      //println("selected error: "+errorType);
-      E[i].errorName = errors.powerError(base, exponent.N, errorType).stringify();
-      E[i].errorType.append(errorType);
+      error0 = errors.powerError(base, exponent.N, errorType);
       availableErrors = utils.removeInt(availableErrors, errorType); // remove used error
+    } else {
+      println("no more errors 0 available!");
+      // must generate random fraction
+      errorType = -1;
+      error0 = utils.generateFraction(max(1, complexity[0]));
+      while (utils.areFractionsEqual(error0, answer)) {
+        error0 = utils.generateFraction(max(1, complexity[0]));
+      }
     }
+    E[0].errorName = error0.stringify();
+    E[0].errorType.append(errorType);
+
+    // second choice
+    found = false;
+    fraction error1 = new fraction(0, 0);
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[1]
+    while (availableErrors.size() > 0 && found == false) {
+      // search for an available error
+      errorIndex = floor(random(0, availableErrors.size()));
+      errorType = availableErrors.get(errorIndex);
+      error1 = errors.powerError(base, exponent.N, errorType);
+      // check if error type does not give same answer as E[0]
+      if (!utils.areFractionsEqual(error1, error0)) {
+        // OK, proceed
+        found = true;
+      }
+      availableErrors = utils.removeInt(availableErrors, errorType); // remove used or unusable error
+    }
+    if (!found) {
+      println("no more errors 1 available!");
+      // must generate random fraction
+      errorType = -1;
+      error1 = utils.generateFraction(max(1, complexity[0]));
+      while (utils.areFractionsEqual(error1, answer) || utils.areFractionsEqual(error1, error0)) {
+        error1 = utils.generateFraction(max(1, complexity[0]));
+      }
+    }
+    E[1].errorName = error1.stringify();
+    E[1].errorType.append(errorType);
+
+    // third choice
+    found = false;
+    fraction error2 = new fraction(0, 0);
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[2]
+    while (availableErrors.size() > 0 && found == false) {
+      // search for an available error
+      errorIndex = floor(random(0, availableErrors.size()));
+      errorType = availableErrors.get(errorIndex);
+      error2 = errors.powerError(base, exponent.N, errorType);
+      // check if error type does not give same answer as E[0] and E[1]
+      if (!utils.areFractionsEqual(error2, error0) && !utils.areFractionsEqual(error2, error1)) {
+        // OK, proceed
+        found = true;
+      }
+      availableErrors = utils.removeInt(availableErrors, errorType); // remove used or unusable error
+    }
+    if (!found) {
+      println("no more errors 2 available!");
+      // must generate random fraction
+      errorType = -1;
+      error2 = utils.generateFraction(max(1, complexity[0]));
+      while (utils.areFractionsEqual(error2, answer) || utils.areFractionsEqual(error2, error0) || utils.areFractionsEqual(error2, error1)) {
+        error2 = utils.generateFraction(max(1, complexity[0]));
+      }
+    }
+    E[2].errorName = error2.stringify();
+    E[2].errorType.append(errorType);
+
     item I = new item();
-    setItemParams(I, "power evaluation", complexity, answer, stem, E);
+    setItemParams(I, "power evaluation", complexity, answer.stringify(), stem, E);
     return I;
   }
 

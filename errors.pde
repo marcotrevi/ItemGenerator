@@ -4,19 +4,21 @@ class errors {
 
   //######################################################################################## ERROR: power evaluation
 
-  fraction powerError(fraction a, int n, int errorType) {
+  fraction powerError(fraction a, int N, int errorType) {
     // #errors: 3
     fraction f = new fraction(1, 1);
+    fraction n = new fraction(1,1);
+    n.N = N;
     switch(errorType) {
     case 0: // multiplication instead of power.
       // WARNING: is correct if: n=1; a=2 & n=2
-      f.N = a.N*n;
+      f.N = a.N*n.N;
       f.D = a.D;
       f.sign = a.sign;
       break;
     case 1: // sum instead of power
       // WARNING: is correct if: a=0 & n=1; a=2 & n=2
-      f.N = a.N + n;
+      f.N = a.N + n.N;
       f.D = a.D;  
       f.sign = a.sign;
       break;
@@ -30,12 +32,12 @@ class errors {
       f = utils.power(a, n);
       f.sign = 1;
       break;
-    case 4: // 
+    case 4: // 0
       f.N = 0;
       f.D = 1;
       f.sign = a.sign;
       break;
-    case 5:
+    case 5: // 1
       f.N = 1;
       f.D = 1;
       f.sign = a.sign;
@@ -201,10 +203,10 @@ class errors {
       // parameters[0]: base
       // parameters[1]: exponent
       fraction base = parameters[0];
-      int exponent = parameters[1].N;
+      fraction exponent = parameters[1];
       for (int i=0; i<n_cases; i++) {
         int index = availableErrors.get(i);
-        if (!utils.areFractionsEqual(powerError(base, exponent, index), utils.power(base, exponent)))
+        if (!utils.areFractionsEqual(powerError(base, exponent.N, index), utils.power(base, exponent)))
           subsetErrors.append(index);
       }
       break;

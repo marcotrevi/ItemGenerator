@@ -6,9 +6,20 @@ class utils {
 
 
   //###################################################################### fraction methods
-  fraction power(fraction a, int n) {
-    fraction f = new fraction(int(pow(a.N, n)), int(pow(a.D, n)));
-    f.sign = int(pow(a.sign, n));
+
+  fraction power(fraction base, fraction exponent) { 
+    fraction f = new fraction(1, 1);
+    if (exponent.isInt()) {
+      f.sign = int(pow(base.sign, exponent.N));
+      if (exponent.sign == 1) {
+        f.N = int(pow(base.N, exponent.N));
+        f.D = int(pow(base.D, exponent.N));
+      } else if (exponent.sign == -1) {
+        f.N = int(pow(base.D, exponent.N));
+        f.D = int(pow(base.N, exponent.N));
+      }
+    } else {
+    }
     f.simplify();
     return f;
   }
@@ -27,16 +38,53 @@ class utils {
     return check;
   }
 
-  //###################################################################### methods which return a nice monomial 
+  //###################################################################### methods which return a fraction of set complexity
+  fraction generateFraction(int complexity) {
+     /*
+     fraction complexity:
+     0 - returns the number 1 
+     1 - returns a positive easy integer
+     2 - returns an easy integer with random sign
+     3 - returns a fraction with random sign
+     */
+    fraction f;
+    switch(complexity) {
+    case 0:
+      f = new fraction(1, 1);
+      break;
+    case 1:
+      f = new fraction(math.easyInts[floor(random(math.easyInts.length))], 1);
+      break;
+    case 2:
+      f = new fraction(math.easyInts[floor(random(math.easyInts.length))], 1);
+      break;
+    case 3:
+      f = new fraction(math.easyInts[floor(random(math.easyInts.length))], math.easyInts[floor(random(math.easyInts.length))]);    
+      break;
+    default:
+      f = new fraction(math.primes[floor(random(math.primes.length))], math.primes[floor(random(math.primes.length))]);    
+      break;
+    }
+
+    if (complexity > 1) {
+      if (random(0, 1) < 0.5) { // slight preference to positive coefficients
+        f.sign = 1;
+      } else {
+        f.sign = -1;
+      }
+    }
+
+    f.simplify();
+    return f;
+  }
+
+  //###################################################################### methods which return a monomial of set complexity
 
   monomial generateMonomial(int[] complexity) {
     // monomial complexity is a discrete 3D vector: (coefficient, number of variables, max degree)
     // (0,0,0) is the scalar 1
-    int num = 1;
-    int den = 1;
     int nVariables;
-    fraction coefficient;
-    int sign = 1;
+    fraction coefficient = generateFraction(complexity[0]);
     switch(complexity[1]) {
       /*
       n. variables complexity:
@@ -57,51 +105,10 @@ class utils {
       nVariables = floor(random(3, 5));
       break;
     }
-
-    switch(complexity[0]) {
-      /*
-   coefficient complexity:
-       0 - coefficient is 1 or an easy integer if monomial is a scalar
-       1 - coefficient is an integer
-       2 - coefficient is a fraction
-       */
-    case 0:
-      if (nVariables == 1) {
-        num = 1;
-        den = 1;
-      } else {
-        num = math.easyInts[floor(random(math.easyInts.length))];
-        den = 1;
-      }
-      break;
-    case 1:
-      num = math.easyInts[floor(random(math.easyInts.length))];
-      den = 1;
-      break;
-    case 2:
-      num = math.easyInts[floor(random(math.easyInts.length))];
-      den = math.easyInts[floor(random(math.easyInts.length))];    
-      break;
-    default:
-      num = math.primes[floor(random(math.primes.length))];
-      den = math.primes[floor(random(math.primes.length))];    
-      break;
-    }
-    coefficient = new fraction(num, den);
-    coefficient.simplify();
-
-    if (complexity[0] == 0) {
-      sign = 1;
-    } else {
-      if (random(0, 1) < 0.66) { // slight preference to positive coefficients
-        sign = 1;
-      } else {
-        sign = -1;
-      }
-    }
+    
     monomial m = new monomial(nVariables);
     m.coefficient = coefficient;
-    m.sign = sign;
+    m.sign = coefficient.sign;
     int[] p = permutation(varNames.length);
     for (int i=0; i<m.nVariables; i++) {
       m.variables[i] = p[i];

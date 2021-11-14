@@ -12,6 +12,16 @@ class fraction {
     println(N+"/"+D);
   }
 
+  boolean isInt() {
+    boolean check = false;
+    fraction f = new fraction(N, D);
+    f.simplify();
+    if (f.D == 1) {
+      check = true;
+    }
+    return check;
+  }
+
   String stringify() {
     String s = "";
     if (D == 0) {
