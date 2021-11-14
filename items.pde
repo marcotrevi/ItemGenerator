@@ -131,6 +131,7 @@ class items {
   //################################################################################### ARITHMETIC: POWER
 
   item powerEvaluation(int[] complexity) {
+    int n_cases = 4;
     fraction base = utils.generateFraction(complexity[0]);
     fraction exponent = utils.generateFraction(complexity[1]);
     // stem: (N/D)^n =  
@@ -162,7 +163,6 @@ class items {
     parameters[1] = exponent;
     //println("stem: "+base.stringify()+"^"+exponent.N);
 
-    int n_cases = 6;
 
     IntList availableErrors = new IntList();
     for (int i=0; i<n_cases; i++) {

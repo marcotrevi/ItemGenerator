@@ -5,16 +5,19 @@ class errors {
   //######################################################################################## ERROR: power evaluation
 
   fraction powerError(fraction a, int N, int errorType) {
-    // #errors: 3
+    // #errors: 4
     fraction f = new fraction(1, 1);
-    fraction n = new fraction(1,1);
+    fraction n = new fraction(1, 1);
     n.N = N;
+    if (N<0) {
+      n.sign = -1;
+    }
     switch(errorType) {
     case 0: // multiplication instead of power.
       // WARNING: is correct if: n=1; a=2 & n=2
       f.N = a.N*n.N;
       f.D = a.D;
-      f.sign = a.sign;
+      f.sign = a.sign*n.sign;
       break;
     case 1: // sum instead of power
       // WARNING: is correct if: a=0 & n=1; a=2 & n=2
@@ -31,16 +34,6 @@ class errors {
     case 3: // forgets minus sign
       f = utils.power(a, n);
       f.sign = 1;
-      break;
-    case 4: // 0
-      f.N = 0;
-      f.D = 1;
-      f.sign = a.sign;
-      break;
-    case 5: // 1
-      f.N = 1;
-      f.D = 1;
-      f.sign = a.sign;
       break;
     }
     return f;
@@ -206,8 +199,9 @@ class errors {
       fraction exponent = parameters[1];
       for (int i=0; i<n_cases; i++) {
         int index = availableErrors.get(i);
-        if (!utils.areFractionsEqual(powerError(base, exponent.N, index), utils.power(base, exponent)))
+        if (!utils.areFractionsEqual(powerError(base, exponent.N, index), utils.power(base, exponent))) {
           subsetErrors.append(index);
+        }
       }
       break;
     }
