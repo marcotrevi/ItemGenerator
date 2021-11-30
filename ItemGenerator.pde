@@ -36,8 +36,8 @@ void setup() {
   c3 = color(50, 50, 50);
   c4 = color(50, 50, 50);
 
-  fraction A = new fraction(0, 0);
-  fraction B = new fraction(0, 0);
+  fraction A = new fraction(0, 1);
+  fraction B = new fraction(0, 3);
   println(utils.areFractionsEqual(A, B));
 
   history[0] = new IntList();

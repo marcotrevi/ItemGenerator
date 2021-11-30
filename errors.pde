@@ -178,7 +178,7 @@ class errors {
 
   //############################################################################ END ERRORS
 
-  IntList availabilityArithmetic(String type, IntList availableErrors, fraction[] parameters) {
+  IntList availabilityArithmetic(String type, IntList availableErrors, fraction[] parameters, fraction answer) {
     IntList subsetErrors = new IntList();
     int n_cases = availableErrors.size();
     switch(type) {
@@ -189,7 +189,7 @@ class errors {
       fraction exponent = parameters[1];
       for (int i=0; i<n_cases; i++) {
         int index = availableErrors.get(i);
-        if (!utils.areFractionsEqual(powerError(base, exponent, index), utils.power(base, exponent))) {
+        if (!utils.areFractionsEqual(powerError(base, exponent, index), answer)) {
           subsetErrors.append(index);
         }
       }

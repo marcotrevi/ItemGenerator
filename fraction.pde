@@ -36,6 +36,9 @@ class fraction {
         s = s+str(N)+"/"+str(D);
       }
     }
+    if (N == 0 ) {
+      s = "0";
+    }
     return s;
   }
 

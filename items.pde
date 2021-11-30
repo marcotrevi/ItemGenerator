@@ -197,7 +197,7 @@ class items {
 
     // first choice
     fraction error0 = new fraction(0, 0);
-    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[0]
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters, answer); // getting possible errors for E[0]
     if (availableErrors.size()>0) {
       errorIndex = floor(random(0, availableErrors.size()));
       errorType = availableErrors.get(errorIndex);
@@ -218,7 +218,7 @@ class items {
     // second choice
     found = false;
     fraction error1 = new fraction(0, 0);
-    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[1]
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters, answer); // getting possible errors for E[1]
     while (availableErrors.size() > 0 && found == false) {
       // search for an available error
       errorIndex = floor(random(0, availableErrors.size()));
@@ -246,7 +246,7 @@ class items {
     // third choice
     found = false;
     fraction error2 = new fraction(0, 0);
-    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters); // getting possible errors for E[2]
+    availableErrors = errors.availabilityArithmetic("power evaluation", availableErrors, parameters, answer); // getting possible errors for E[2]
     while (availableErrors.size() > 0 && found == false) {
       // search for an available error
       errorIndex = floor(random(0, availableErrors.size()));

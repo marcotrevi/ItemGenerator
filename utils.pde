@@ -35,8 +35,10 @@ class utils {
     if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D && a.sign == b.sign) {
       check = true;
     }
-    if (a.D == 0 && b.D == 0) {
-      // indeterminate forms are equal
+    
+    if ((a.D == 0 && b.D == 0) || (a.N == 0 && b.N == 0)) {
+      // all indeterminate forms are equal :)
+      // all zeros are equal :)
       check = true;
     }
     return check;
