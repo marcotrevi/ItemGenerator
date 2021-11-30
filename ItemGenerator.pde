@@ -24,11 +24,11 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-  fraction F = new fraction(2,3);
+  fraction F = new fraction(2, 3);
   F.sign = -1;
-  fraction esp = new fraction(3,1);
+  fraction esp = new fraction(3, 1);
   esp.sign = -1;
-  println(utils.power(F,esp).stringify());
+  println(utils.power(F, esp).stringify());
   //  size(1000, 600);
   utils.initTable();
   c1 = color(50, 50, 50);
@@ -36,13 +36,17 @@ void setup() {
   c3 = color(50, 50, 50);
   c4 = color(50, 50, 50);
 
+  fraction A = new fraction(0, 0);
+  fraction B = new fraction(0, 0);
+  println(utils.areFractionsEqual(A, B));
+
   history[0] = new IntList();
   history[1] = new IntList();
   history[2] = new IntList();
-  c[0] = 2;
-  c[1] = 2;
-  c[2] = 0;
-  c[3] = 0;
+  c[0] = 3;
+  c[1] = 1;
+  c[2] = 1;
+  c[3] = 1;
   c[4] = 0;
   c[5] = 0;
   c[6] = 0;

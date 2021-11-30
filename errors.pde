@@ -4,35 +4,25 @@ class errors {
 
   //######################################################################################## ERROR: power evaluation
 
-  fraction powerError(fraction a, int N, int errorType) {
-    // #errors: 4
+  fraction powerError(fraction base, fraction exponent, int errorType) {
+    // #errors: 3
     fraction f = new fraction(1, 1);
-    fraction n = new fraction(1, 1);
-    n.N = N;
-    if (N<0) {
-      n.sign = -1;
-    }
     switch(errorType) {
     case 0: // multiplication instead of power.
-      // WARNING: is correct if: n=1; a=2 & n=2
-      f.N = a.N*n.N;
-      f.D = a.D;
-      f.sign = a.sign*n.sign;
+      // WARNING: is correct if: exponent=1; base=2 & exponent=2
+      f.N = base.N*exponent.N;
+      f.D = base.D;
+      f.sign = base.sign*exponent.sign;
       break;
     case 1: // sum instead of power
-      // WARNING: is correct if: a=0 & n=1; a=2 & n=2
-      f.N = a.N + n.N;
-      f.D = a.D;  
-      f.sign = a.sign;
+      // WARNING: is correct if: base=0 & exponent=1; base=2 & exponent=2
+      f.N = base.N + exponent.N;
+      f.D = base.D;  
+      f.sign = base.sign;
       break;
-    case 2: // does nothing if n=0
-      // WARNING: is correct if: n=1; available only if: n=0
-      f.N = a.N;
-      f.D = a.D;
-      f.sign = a.sign;
-      break;
-    case 3: // forgets minus sign
-      f = utils.power(a, n);
+    case 2: // forgets minus sign
+    // WARNING: is correct if exponent>0
+      f = utils.power(base, exponent);
       f.sign = 1;
       break;
     }
@@ -199,7 +189,7 @@ class errors {
       fraction exponent = parameters[1];
       for (int i=0; i<n_cases; i++) {
         int index = availableErrors.get(i);
-        if (!utils.areFractionsEqual(powerError(base, exponent.N, index), utils.power(base, exponent))) {
+        if (!utils.areFractionsEqual(powerError(base, exponent, index), utils.power(base, exponent))) {
           subsetErrors.append(index);
         }
       }

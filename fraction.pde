@@ -25,7 +25,7 @@ class fraction {
   String stringify() {
     String s = "";
     if (D == 0) {
-      s = "dividing by zero!";
+      s = "indeterminato";
     } else {
       if (sign==-1 && N!=0) {
         s = "-";

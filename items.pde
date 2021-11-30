@@ -31,7 +31,7 @@ class items {
 
   //################################################################################### ARITHMETIC
 
-  item basicIntegerOperationsSumDifference(int a, int b, int[] complexity) {
+  item basicIntegerOperationsSumDifference(int[] complexity) {
     // stem: a+b, a-b 
     String stem = "";
     // answer
@@ -47,7 +47,7 @@ class items {
     return I;
   }
 
-  item basicIntegerOperationsProductDivision(int a, int b, int[] complexity) {
+  item basicIntegerOperationsProductDivision(int[] complexity) {
     // stem: a*b, a/b 
     String stem = "";
     // answer
@@ -63,7 +63,7 @@ class items {
     return I;
   }
 
-  item primeFactorization(int a, int[] complexity) {
+  item primeFactorization(int[] complexity) {
     // stem: a =  
     String stem = "";
     // answer
@@ -81,8 +81,8 @@ class items {
 
   //################################################################################### ARITHMETIC: RATIONALS
 
-  item basicRationalOperationsSumDifference(fraction a, fraction b, int[] complexity) {
-    // stem: a+b, a-b 
+  item basicRationalOperationsSumDifference(int[] complexity) {
+    // stem: a+b, a-b with a and b fractions
     String stem = "";
     // answer
     String answer = "";
@@ -97,8 +97,8 @@ class items {
     return I;
   }
 
-  item basicRationalOperationsProductDivision(fraction a, fraction b, int[] complexity) {
-    // stem: a*b, a/b 
+  item basicRationalOperationsProductDivision(int[] complexity) {
+    // stem: a*b, a/b with a and b fractions
     String stem = "";
     // answer
     String answer = "";
@@ -113,8 +113,8 @@ class items {
     return I;
   }
 
-  item fractionSimplification(fraction a, int[] complexity) {
-    // stem: N/D =  
+  item fractionSimplification(int[] complexity) {
+    // stem: N*k / D*k =  
     String stem = "";
     // answer
     String answer = "";
@@ -131,25 +131,48 @@ class items {
   //################################################################################### ARITHMETIC: POWER
 
   item powerEvaluation(int[] complexity) {
-    int n_cases = 4;
+    // complexity components:
+    // 0: base complexity: max 3
+    // 1: exponent complexity: max 1 // only non negative integers
+    // 2: exponent sign complexity: max 1(-)
+    // 3: stem complexity: max 1
+    int n_cases = 3;
     fraction base = utils.generateFraction(complexity[0]);
     fraction exponent = utils.generateFraction(complexity[1]);
-    // stem: (N/D)^n =  
+    if (complexity[2] > 0) {
+      exponent.sign = -1;
+    } else {
+      exponent.sign = 1;
+    }
+    // stem: "(N/D)^n =" or "-(N/D)^n ="
+    // n can be positive or negative but is an integer
     String stem = "";
     String _exponent = "";
-    if (exponent.sign < 0) {
+    if (exponent.sign < 0 && exponent.N != 0) {
       _exponent = "("+exponent.stringify()+")";
     } else {
       _exponent = exponent.stringify();
     }
-    if (base.D == 1 && base.sign > 0) {
+    if ((base.N == 0 && base.D == 1) || (base.D == 1 && base.sign > 0)) {
       // fraction is an integer
       stem = base.stringify()+"^"+_exponent;
     } else {
       stem = "("+base.stringify()+")^"+_exponent;
     }
     // answer
-    fraction answer = utils.power(base, exponent);
+    fraction answer = new fraction(1,1);
+    if ((base.N == 0 && exponent.N == 0) || (base.N == 0 && exponent.sign == -1)) {
+      // dividing by zero OR indeterminate form
+      answer = new fraction(0,0);
+    } else {
+      // power operation is legit
+      answer = utils.power(base, exponent);
+    }
+
+    if (complexity[3] > 0) {
+      stem = "-"+stem;
+      answer.sign = -answer.sign;
+    }
 
     // distractors - each distractor can contain multiple errors
     error[] E = new error[3];
@@ -178,7 +201,7 @@ class items {
     if (availableErrors.size()>0) {
       errorIndex = floor(random(0, availableErrors.size()));
       errorType = availableErrors.get(errorIndex);
-      error0 = errors.powerError(base, exponent.N, errorType);
+      error0 = errors.powerError(base, exponent, errorType);
       availableErrors = utils.removeInt(availableErrors, errorType); // remove used error
     } else {
       println("no more errors 0 available!");
@@ -200,7 +223,7 @@ class items {
       // search for an available error
       errorIndex = floor(random(0, availableErrors.size()));
       errorType = availableErrors.get(errorIndex);
-      error1 = errors.powerError(base, exponent.N, errorType);
+      error1 = errors.powerError(base, exponent, errorType);
       // check if error type does not give same answer as E[0]
       if (!utils.areFractionsEqual(error1, error0)) {
         // OK, proceed
@@ -228,7 +251,7 @@ class items {
       // search for an available error
       errorIndex = floor(random(0, availableErrors.size()));
       errorType = availableErrors.get(errorIndex);
-      error2 = errors.powerError(base, exponent.N, errorType);
+      error2 = errors.powerError(base, exponent, errorType);
       // check if error type does not give same answer as E[0] and E[1]
       if (!utils.areFractionsEqual(error2, error0) && !utils.areFractionsEqual(error2, error1)) {
         // OK, proceed

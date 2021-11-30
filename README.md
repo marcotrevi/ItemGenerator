@@ -16,6 +16,7 @@ Each challenge done awards the user with a badge.
 
 # Items
 Items are grouped in sites on the map. I.e. the "arithmetic" class items are all grouped in the same spot. Some items may not be accessible on the first run because they may need some prerequisites or some other skill from other sites.
+Already implemented items are marked with [x]; partially implemented items (work in progress) are marked with [:]
 ## class: nomenclature
 - term 
 - product
@@ -36,7 +37,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
     - product/division
     - simplification
 - powers of integers and fractions
-    - evaluation
+    - [:] evaluation
     - properties:
         - product/division of same-base powers
         - product/division of same-exponent powers
@@ -61,7 +62,7 @@ Items are grouped in sites on the map. I.e. the "arithmetic" class items are all
 - algebraic sum of polynomials
 - product of polynomials
 - division of polynomials
-- notable products
+- [x] notable products
 - factorization
 - zeros of polynomials
 - operations with algebraic fractions

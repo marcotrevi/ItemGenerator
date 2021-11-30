@@ -35,12 +35,16 @@ class utils {
     if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D && a.sign == b.sign) {
       check = true;
     }
+    if (a.D == 0 && b.D == 0) {
+      // indeterminate forms are equal
+      check = true;
+    }
     return check;
   }
 
   //###################################################################### methods which return a fraction of set complexity
   fraction generateFraction(int complexity) {
-     /*
+    /*
      fraction complexity:
      0 - returns the number 1 
      1 - returns a positive easy integer
@@ -59,7 +63,7 @@ class utils {
       f = new fraction(math.easyInts[floor(random(math.easyInts.length))], 1);
       break;
     case 3:
-      f = new fraction(math.easyInts[floor(random(math.easyInts.length))], math.easyInts[floor(random(math.easyInts.length))]);    
+      f = new fraction(math.easyInts[floor(random(math.easyInts.length))], math.easyInts[floor(random(1, math.easyInts.length))]);    
       break;
     default:
       f = new fraction(math.primes[floor(random(math.primes.length))], math.primes[floor(random(math.primes.length))]);    
@@ -67,7 +71,7 @@ class utils {
     }
 
     if (complexity > 1) {
-      if (random(0, 1) < 0.5) { // slight preference to positive coefficients
+      if (random(0, 1) < 0.5) {
         f.sign = 1;
       } else {
         f.sign = -1;
@@ -105,7 +109,7 @@ class utils {
       nVariables = floor(random(3, 5));
       break;
     }
-    
+
     monomial m = new monomial(nVariables);
     m.coefficient = coefficient;
     m.sign = coefficient.sign;
