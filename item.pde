@@ -1,5 +1,5 @@
 class item {
-  String type, stem, answer;
+  String itemType, stem, answer;
   String[] distractors = new String[3];
   String[] errors = new String[3];
   IntList complexity = new IntList();
@@ -18,7 +18,7 @@ class item {
       space = space + " ";
     }
     println("---------------------------------------------------------------------------------------------");
-    println("item type___: "+type);
+    println("item type___: "+itemType);
     println("---------------------------------------------------------------------------------------------");
     println("stem________: "+stem);
     println("---------------------------------------------------------------------------------------------");

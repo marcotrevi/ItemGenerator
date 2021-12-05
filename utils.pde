@@ -487,10 +487,10 @@ class utils {
 
   //################################################################ ITEM GENERATOR
 
-  item generateItem(String type, int[] complexity) {
+  item generateItem(String itemType, int[] complexity) {
     item I = new item();
     // each item type has its own constructor
-    switch(type) {
+    switch(itemType) {
     case "general":
       I = items.generalItem(complexity);
       break;
@@ -515,11 +515,53 @@ class utils {
     return I;
   }
 
+  void normalizeComplexity(int[] complexity, String itemType) {
+    int[] maxComplexity = getMaxComplexity(itemType);
+    for (int i=0; i<complexity.length; i++) {
+      complexity[i] = min(complexity[i], maxComplexity[i]);
+    }
+  }
+
+  int[] getMaxComplexity(String itemType) {
+    int[] maxComplexity = new int[complexityVectorMaxLength];
+    for (int i=0; i<complexityVectorMaxLength; i++) {
+      maxComplexity[i] = 0;
+    }
+    switch(itemType) {
+    case "power evaluation":
+      // 0: base complexity: max 3
+      // 1: exponent complexity: max 1 // only non negative integers
+      // 2: exponent sign complexity: max 1(-)
+      // 3: stem complexity: max 1
+      maxComplexity[0] = 3;
+      maxComplexity[1] = 1;
+      maxComplexity[2] = 1;
+      maxComplexity[3] = 1;
+      break;
+    }
+    return maxComplexity;
+  }
+
+  boolean maxComplexityReached(int[] complexity, int[] maxComplexity) {
+    boolean check = true;
+    for (int i=0; i<complexity.length; ) {
+      if (complexity[i] < maxComplexity[i]) {
+        check = false;
+      }
+    }
+    return check;
+  }
+
+  void updateComplexity(int[] complexity, int[] maxComplexity) {
+  }
+
   //################################################################################### csv table utilities
 
-  void addCsvRow(Table table, float complexity, String stem, String answer, String distractor1, String distractor2, String distractor3) {
+  void addCsvRow(Table table, int[] complexity, String stem, String answer, String distractor1, String distractor2, String distractor3) {
     TableRow newRow = table.addRow();
-    newRow.setFloat("complexity", complexity);
+    for (int i=0; i<complexityVectorMaxLength; i++) {
+      newRow.setInt("complexity"+str(i), complexity[i]);
+    }
     newRow.setString("stem", stem);
     newRow.setString("answer", answer);
     newRow.setString("distractor1", distractor1);
@@ -528,7 +570,11 @@ class utils {
   }
 
   void initTable() {
-    T.addColumn("complexity");
+    String name = "";
+    for (int i=0; i<complexityVectorMaxLength; i++) {
+      name = "complexity"+str(i);  
+      T.addColumn(name);
+    }
     T.addColumn("stem");
     T.addColumn("answer");  
     T.addColumn("distractor1"); 
@@ -536,7 +582,9 @@ class utils {
     T.addColumn("distractor3"); 
     // this is to facilitate deleting previous column names
     TableRow newRow = T.addRow();
-    newRow.setString("complexity", "difficulty");
+    for (int i=0; i<complexityVectorMaxLength; i++) {
+      newRow.setString("complexity"+str(i), "complexity"+str(i));
+    }
     newRow.setString("stem", "stem");
     newRow.setString("answer", "choice");
     newRow.setString("distractor1", "choice");
@@ -544,28 +592,31 @@ class utils {
     newRow.setString("distractor3", "choice");
   }
 
-  void generateCsv(Table table, String itemType, int[] complexity, int nItems, String name) {
-    for (int i=0; i<nItems; i++) {
-      item I = generateItem(itemType, complexity);
-      addCsvRow(table, I.difficulty, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+  void generateBatch(String itemType, String name) {
+    boolean completed = false;
+    // default: generates 100 items for each complexity vector
+    int nItems = 10;
+    initTable();
+    int[] complexity = new int[complexityVectorMaxLength];
+    int[] maxComplexity = getMaxComplexity(itemType);
+    for (int i=0; i<complexityVectorMaxLength; i++) {
+      complexity[i] = 0;
     }
-    saveTable(table, "data/"+ name +".csv");
-  }
-
-  void init() {
-    T.addColumn("complexity");
-    T.addColumn("stem");
-    T.addColumn("answer");  
-    T.addColumn("distractor1"); 
-    T.addColumn("distractor2"); 
-    T.addColumn("distractor3"); 
-    // this is to facilitate deleting previous column names
-    TableRow newRow = T.addRow();
-    newRow.setString("complexity", "difficulty");
-    newRow.setString("stem", "choice");
-    newRow.setString("answer", "choice");
-    newRow.setString("distractor1", "choice");
-    newRow.setString("distractor2", "choice");
-    newRow.setString("distractor3", "choice");
+    while (!completed) {
+      // generate items with set complexity
+      for (int i=0; i<nItems; i++) {
+        item I = generateItem(itemType, complexity);
+        addCsvRow(T, complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
+      }
+      // update complexity
+      if (maxComplexityReached(complexity, maxComplexity)) {
+        completed = true;
+      } else {
+        updateComplexity(complexity, maxComplexity);
+      }
+    }
+    // same stem items cleanup
+    // save table
+    saveTable(T, "data/"+ name +".csv");
   }
 }

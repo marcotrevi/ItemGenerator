@@ -137,12 +137,15 @@ class items {
     // 2: exponent sign complexity: max 1(-)
     // 3: stem complexity: max 1
     int n_cases = 3;
+    // complexity check
+    utils.normalizeComplexity(complexity, "power evaluation");
+
     fraction base = utils.generateFraction(complexity[0]);
     fraction exponent = utils.generateFraction(complexity[1]);
-    if (complexity[2] > 0) {
-      exponent.sign = -1;
-    } else {
+    if (complexity[2] == 0) {
       exponent.sign = 1;
+    } else {
+      exponent.sign = -1;
     }
     // stem: "(N/D)^n =" or "-(N/D)^n ="
     // n can be positive or negative but is an integer
@@ -160,10 +163,10 @@ class items {
       stem = "("+base.stringify()+")^"+_exponent;
     }
     // answer
-    fraction answer = new fraction(1,1);
+    fraction answer = new fraction(1, 1);
     if ((base.N == 0 && exponent.N == 0) || (base.N == 0 && exponent.sign == -1)) {
       // dividing by zero OR indeterminate form
-      answer = new fraction(0,0);
+      answer = new fraction(0, 0);
     } else {
       // power operation is legit
       answer = utils.power(base, exponent);
@@ -915,9 +918,9 @@ class items {
     return I;
   }
 
-  void setItemParams(item I, String type, int[] complexity, String answer, String stem, error[] E) {
+  void setItemParams(item I, String itemType, int[] complexity, String answer, String stem, error[] E) {
 
-    I.type = type;
+    I.itemType = itemType;
     //    I.complexity = complexity;
     I.answer = answer;
     I.stem = stem;
