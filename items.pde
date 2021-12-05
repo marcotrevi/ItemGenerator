@@ -207,7 +207,7 @@ class items {
       error0 = errors.powerError(base, exponent, errorType);
       availableErrors = utils.removeInt(availableErrors, errorType); // remove used error
     } else {
-      println("no more errors 0 available!");
+      //println("no more errors 0 available!");
       // must generate random fraction
       errorType = -1;
       error0 = utils.generateFraction(max(1, complexity[0]));
@@ -235,7 +235,7 @@ class items {
       availableErrors = utils.removeInt(availableErrors, errorType); // remove used or unusable error
     }
     if (!found) {
-      println("no more errors 1 available!");
+      //println("no more errors 1 available!");
       // must generate random fraction
       errorType = -1;
       error1 = utils.generateFraction(max(1, complexity[0]));
@@ -263,7 +263,7 @@ class items {
       availableErrors = utils.removeInt(availableErrors, errorType); // remove used or unusable error
     }
     if (!found) {
-      println("no more errors 2 available!");
+      //println("no more errors 2 available!");
       // must generate random fraction
       errorType = -1;
       error2 = utils.generateFraction(max(1, complexity[0]));

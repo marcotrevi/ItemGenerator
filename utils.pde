@@ -515,6 +515,52 @@ class utils {
     return I;
   }
 
+  void buildTree(node N, int[] maxComplexity, int depth) {
+    // max depth is length of maxComplexity array
+    // if max depth is not reached, add maxComplexity[depth] children to node N and call recursively on each child
+    // else stop
+    if (depth < maxComplexity.length) {
+      int nChildren = maxComplexity[depth]+1; 
+      addChildren(N, nChildren);
+      for (int i=0; i<nChildren; i++) {
+        buildTree(N.children.get(i), maxComplexity, depth+1);
+      }
+    }
+  }
+
+  void getLeaves(node N, int[] maxComplexity, int depth) {
+    if (depth < maxComplexity.length) {
+      int nChildren = maxComplexity[depth]+1; 
+      for (int i=0; i<nChildren; i++) {
+        getLeaves(N.children.get(i), maxComplexity, depth+1);
+      }
+    } else {
+      println(N.name);
+    }
+  }
+
+  void setComplexityMatrix(node N, int[] maxComplexity, int depth, ArrayList complexityMatrix) {
+    if (depth < maxComplexity.length) {
+      int nChildren = maxComplexity[depth]+1; 
+      for (int i=0; i<nChildren; i++) {
+        setComplexityMatrix(N.children.get(i), maxComplexity, depth+1, complexityMatrix);
+      }
+    } else {
+      complexityMatrix.add(N.name);
+    }
+  }
+
+  void addChildren(node N, int nChildren) {
+    for (int i=0; i<nChildren; i++) {
+      node child = new node();
+      for (int j=0; j<N.name.size(); j++) {
+        child.name.append(N.name.get(j));
+      }
+      child.name.append(i);
+      N.children.add(child);
+    }
+  }
+
   void normalizeComplexity(int[] complexity, String itemType) {
     int[] maxComplexity = getMaxComplexity(itemType);
     for (int i=0; i<complexity.length; i++) {
@@ -550,9 +596,6 @@ class utils {
       }
     }
     return check;
-  }
-
-  void updateComplexity(int[] complexity, int[] maxComplexity) {
   }
 
   //################################################################################### csv table utilities
@@ -593,27 +636,36 @@ class utils {
   }
 
   void generateBatch(String itemType, String name) {
-    boolean completed = false;
     // default: generates 100 items for each complexity vector
-    int nItems = 10;
+    int nItems = 1;
     initTable();
     int[] complexity = new int[complexityVectorMaxLength];
     int[] maxComplexity = getMaxComplexity(itemType);
+    // get complexity matrix
+    ArrayList<IntList> complexityMatrix = new ArrayList<IntList>();
+    node N = new node();
+    buildTree(N, maxComplexity, 0);
+    setComplexityMatrix(N, maxComplexity, 0, complexityMatrix);
+
     for (int i=0; i<complexityVectorMaxLength; i++) {
       complexity[i] = 0;
     }
-    while (!completed) {
+    int k = 0;
+    int complexityDimension = complexityMatrix.size();
+    while (k < complexityDimension) {
+      // update complexity
+      print(k+" - ");
+      for (int j=0; j<complexityMatrix.get(k).size(); j++) {
+        complexity[j] = complexityMatrix.get(k).get(j);
+        print(complexity[j]+" ");
+      }
       // generate items with set complexity
       for (int i=0; i<nItems; i++) {
         item I = generateItem(itemType, complexity);
         addCsvRow(T, complexity, I.stem, I.answer, I.distractors[0], I.distractors[1], I.distractors[2]);
       }
-      // update complexity
-      if (maxComplexityReached(complexity, maxComplexity)) {
-        completed = true;
-      } else {
-        updateComplexity(complexity, maxComplexity);
-      }
+      k++;
+      println();
     }
     // same stem items cleanup
     // save table
