@@ -34,10 +34,10 @@ class fraction {
         s = s+str(N);
       } else {
         s = s+str(N)+"/"+str(D);
+      }    
+      if (N == 0 ) {
+        s = "0";
       }
-    }
-    if (N == 0 ) {
-      s = "0";
     }
     return s;
   }
@@ -46,5 +46,10 @@ class fraction {
     int gcd = math.gcd(N, D);
     N = N/gcd;
     D = D/gcd;
+    if (N == 0 && D != 0) {
+      // standard zero form: 0/1
+      N = 0;
+      D = 1;
+    }
   }
 }

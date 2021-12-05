@@ -20,6 +20,10 @@ class utils {
       }
     } else {
     }
+    if ((base.N == 0 && exponent.N == 0) || (base.N == 0 && exponent.sign == -1)) {
+      f.N = 0;
+      f.D = 0;
+    }
     f.simplify();
     return f;
   }
@@ -35,7 +39,7 @@ class utils {
     if (a.D!=0 && b.D!=0 && a.N == b.N && a.D == b.D && a.sign == b.sign) {
       check = true;
     }
-    
+
     if ((a.D == 0 && b.D == 0) || (a.N == 0 && b.N == 0)) {
       // all indeterminate forms are equal :)
       // all zeros are equal :)

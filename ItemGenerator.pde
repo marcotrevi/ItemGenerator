@@ -24,9 +24,9 @@ int[] c = new int[9];
 boolean correct = false;
 
 void setup() {
-  fraction F = new fraction(2, 3);
-  F.sign = -1;
-  fraction esp = new fraction(3, 1);
+  fraction F = new fraction(0, 1);
+  F.sign = 1;
+  fraction esp = new fraction(2, 1);
   esp.sign = -1;
   println(utils.power(F, esp).stringify());
   //  size(1000, 600);
@@ -38,7 +38,7 @@ void setup() {
 
   fraction A = new fraction(0, 1);
   fraction B = new fraction(0, 3);
-  println(utils.areFractionsEqual(A, B));
+  //println(utils.areFractionsEqual(A, B));
 
   history[0] = new IntList();
   history[1] = new IntList();
